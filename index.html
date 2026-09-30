@@ -85,6 +85,16 @@
     .presence-note p{margin:0;color:#3d5566;font-size:14.5px;line-height:1.6;max-width:none}
 .dir-rev{display:inline-flex;align-items:center;gap:4px;font-weight:800;color:#8a5a00;text-decoration:none}a.dir-rev:hover{text-decoration:underline}
 .dir-actions .pro-copy{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;font-weight:800;border:1.5px solid #cfe2ea;color:var(--navy);background:#f7fbfd;cursor:pointer}.dir-actions .pro-copy:hover{background:#eaf5fb}
+    /* question buttons slide away so the full answer has room; a toggle brings them back */
+    #rw-panel > *{flex-shrink:0}
+    #rw-log{flex:1 1 0;min-height:48px}
+    #rw-chips{flex:0 1 auto;min-height:92px;max-height:55%;overflow-y:auto;transition:max-height .3s ease,padding .3s ease,opacity .25s ease}
+    #rw-chips.collapsed{max-height:0;min-height:0;padding-top:0;padding-bottom:0;opacity:0;overflow:hidden}
+    #rw-chips-toggle{align-self:center;margin:6px auto 0;border:1.5px solid #1b70c2;background:#eef7fc;color:#0b4164;border-radius:999px;padding:6px 16px;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer}
+    #rw-chips-toggle:hover{background:#dff0fa}
+    @media(prefers-reduced-motion:reduce){#rw-chips{transition:none}}
+    #rw-chips:empty{min-height:0;padding:0}
+    @media (max-height:720px){#rw-panel .rw-top{padding:8px 14px}#rw-panel .rw-top .rw-face{width:32px;height:32px}#rw-panel .rw-top small{font-size:11px}#rw-panel #rw-bar{padding:5px 12px}#rw-panel #rw-voice{padding:4px 10px}#rw-panel #rw-lang{height:28px}#rw-panel .rw-foot{font-size:9.5px;padding:0 10px 5px}#rw-panel #rw-form{padding-top:6px;padding-bottom:6px}}
 </style>
 
 <script type="application/ld+json">
@@ -578,6 +588,7 @@
   <div id="rw-bar"><button type="button" id="rw-voice" aria-pressed="true">🔊 Voice on</button><label class="rw-lang-wrap"><span id="rw-lang-lbl">Language</span> <select id="rw-lang" aria-label="Rachel's language"></select></label></div>
   <div id="rw-soon" role="dialog" aria-modal="true" aria-labelledby="rw-soon-h" hidden><div class="rw-soon-card"><h3 id="rw-soon-h">Voice not available yet</h3><p></p><button type="button" id="rw-soon-ok">OK</button></div></div>
   <div id="rw-log" role="log" aria-live="polite"></div>
+  <button type="button" id="rw-chips-toggle" aria-expanded="true" aria-controls="rw-chips" hidden></button>
   <div id="rw-chips"></div>
   <form id="rw-form" autocomplete="off"><label for="rw-input" class="hp" style="position:absolute;left:-9999px">Message Rachel</label><input id="rw-input" placeholder="Type your message…" maxlength="400"><button type="submit">Send</button></form>
   <div class="rw-foot">Rachel helps you search sponsored listings. She can’t give medical or legal advice. Emergencies: call 911.</div>
@@ -1254,6 +1265,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       phone: 'Phone', view: att => `View ${att ? 'attorney' : 'doctor'}’s profile →`,
       closing: att => `Click <b>View profile</b> on any of them to see their full page. Listings are sponsored by the professionals, and I can’t give ${att ? 'legal' : 'medical'} advice, so please confirm details directly with their office. Anything else I can help you with?`,
       startOver: 'Start over', whySay: 'Why I picked them: ',
+      cFree: 'Searching the WebSwan Media Network directory and chatting with me is <b>completely free</b> for you. Each doctor or attorney sets the fees for their own services, so please ask their office directly.', cAbout: 'WebSwan Media Network is a directory of <b>doctors and attorneys</b>. Tell me what you need and where you are, and I’ll find you about 3 to 5 good matches with their phone number and profile.', cWsmn: 'WSMN stands for <b>WebSwan Media Network</b>, our advertising platform.',
       fewQs: 'I’ll ask just a few quick questions to narrow it down, then I’ll give you about 3 to 5 good matches.',
       stateMissed: x => `Thanks! I still need the <b>state</b> for “${x}”. Please pick your state from the list below or type it (for example “Florida” or “FL”).`,
       send: 'Send', foot: 'Rachel helps you search sponsored listings. She can’t give medical or legal advice. Emergencies: call 911.',
@@ -1285,6 +1297,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       phone: 'Téléphone', view: att => `Voir le profil ${att ? 'de l’avocat' : 'du médecin'} →`,
       closing: att => `Cliquez sur <b>Voir le profil</b> pour afficher la fiche complète. Ces annonces sont financées par les professionnels, et je ne peux pas donner d’avis ${att ? 'juridique' : 'médical'} : confirmez les détails directement auprès de leur cabinet. Puis-je vous aider pour autre chose ?`,
       startOver: 'Recommencer', whySay: 'Pourquoi ce choix : ',
+      cFree: 'Chercher dans l’annuaire WebSwan Media Network et discuter avec moi est <b>entièrement gratuit</b> pour vous. Chaque médecin ou avocat fixe ses propres honoraires : renseignez-vous directement auprès de son cabinet.', cAbout: 'WebSwan Media Network est un annuaire de <b>médecins et d’avocats</b>. Dites-moi ce dont vous avez besoin et où vous êtes, et je vous trouve environ 3 à 5 bons choix avec leur numéro et leur profil.', cWsmn: 'WSMN signifie <b>WebSwan Media Network</b>, notre plateforme publicitaire.',
       fewQs: 'Je vais vous poser quelques questions rapides pour affiner la recherche, puis je vous proposerai environ 3 à 5 bons choix.',
       stateMissed: x => `Merci ! Il me manque encore l’<b>État</b> pour « ${x} ». Choisissez votre État dans la liste ci-dessous ou écrivez-le (par exemple « Floride » ou « FL »).`,
       send: 'Envoyer', foot: 'Rachel vous aide à chercher parmi les annonces des professionnels. Elle ne donne pas d’avis médical ou juridique. En cas d’urgence : 911.',
@@ -1317,6 +1330,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       phone: 'Teléfono', view: att => `Ver perfil del ${att ? 'abogado' : 'médico'} →`,
       closing: att => `Toque <b>Ver perfil</b> en cualquiera para ver su página completa. Estos anuncios son pagados por los profesionales y yo no puedo dar consejos ${att ? 'legales' : 'médicos'}, así que confirme los detalles directamente con su oficina. ¿Le puedo ayudar con algo más?`,
       startOver: 'Empezar de nuevo', whySay: 'Por qué lo recomiendo: ',
+      cFree: 'Buscar en el directorio de WebSwan Media Network y conversar conmigo es <b>totalmente gratis</b> para usted. Cada médico o abogado pone el precio de sus propios servicios, así que pregúntele directamente a su oficina.', cAbout: 'WebSwan Media Network es un directorio de <b>médicos y abogados</b>. Dígame qué necesita y dónde está, y le encuentro entre 3 y 5 buenas opciones con su teléfono y su perfil.', cWsmn: 'WSMN significa <b>WebSwan Media Network</b>, nuestra plataforma de publicidad.',
       fewQs: 'Le voy a hacer unas preguntas rápidas para afinar la búsqueda y luego le doy entre 3 y 5 buenas opciones.',
       stateMissed: x => `¡Gracias! Todavía necesito el <b>estado</b> de “${x}”. Elija su estado en la lista de abajo o escríbalo (por ejemplo “Florida” o “FL”).`,
       send: 'Enviar', foot: 'Rachel le ayuda a buscar entre los anuncios de profesionales. No da consejos médicos ni legales. Emergencias: llame al 911.',
@@ -1349,6 +1363,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       phone: 'Telefone', view: att => `Ver perfil do ${att ? 'advogado' : 'médico'} →`,
       closing: att => `Toque em <b>Ver perfil</b> para ver a página completa. Esses anúncios são pagos pelos próprios profissionais e eu não posso dar orientação ${att ? 'jurídica' : 'médica'}, então confirme os detalhes direto com o consultório ou escritório. Posso te ajudar com mais alguma coisa?`,
       startOver: 'Começar de novo', whySay: 'Por que indiquei: ',
+      cFree: 'Buscar no diretório da WebSwan Media Network e conversar comigo é <b>totalmente grátis</b> para você. Cada médico ou advogado define o valor dos próprios serviços, então pergunte direto no consultório ou escritório.', cAbout: 'A WebSwan Media Network é um diretório de <b>médicos e advogados</b>. Me diga o que você precisa e onde está, e eu encontro de 3 a 5 boas opções com o telefone e o perfil de cada um.', cWsmn: 'WSMN significa <b>WebSwan Media Network</b>, a nossa plataforma de anúncios.',
       fewQs: 'Vou te fazer umas perguntinhas rápidas para afinar a busca e depois te passo de 3 a 5 boas opções.',
       stateMissed: x => `Obrigada! Ainda preciso do <b>estado</b> de “${x}”. Escolha o seu estado na lista abaixo ou digite (por exemplo “Flórida” ou “FL”).`,
       send: 'Enviar', foot: 'A Rachel ajuda você a buscar entre os anúncios dos profissionais. Ela não dá orientação médica nem jurídica. Emergências: ligue 911.',
@@ -1381,6 +1396,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       phone: 'Telefòn', view: att => `Gade pwofil ${att ? 'avoka a' : 'doktè a'} →`,
       closing: att => `Klike sou <b>Gade pwofil</b> pou w wè tout enfòmasyon yo. Se pwofesyonèl yo ki peye pou yo parèt nan anyè a, epi m pa ka ba w konsèy ${att ? 'legal' : 'medikal'}, donk tanpri konfime tout detay yo dirèkteman ak biwo yo. Èske gen lòt bagay m ka fè pou ou?`,
       startOver: 'Rekòmanse', whySay: 'Poukisa m chwazi l: ',
+      cFree: 'Chèche nan anyè WebSwan Media Network la epi pale avè m <b>gratis nèt</b> pou ou. Chak doktè oswa avoka fikse pri pa yo pou sèvis yo, kidonk mande biwo yo dirèkteman.', cAbout: 'WebSwan Media Network se yon anyè <b>doktè ak avoka</b>. Di m sa w bezwen ak ki kote w ye, epi m ap jwenn apeprè 3 a 5 bon chwa pou ou ak nimewo telefòn yo ak pwofil yo.', cWsmn: 'WSMN vle di <b>WebSwan Media Network</b>, platfòm piblisite nou an.',
       fewQs: 'M ap poze w kèk ti kesyon rapid pou m ka jwenn sa ki pi bon pou ou, epi m ap ba w apeprè 3 a 5 bon chwa.',
       stateMissed: x => `Mèsi! M toujou bezwen <b>eta</b> a pou “${x}”. Chwazi eta w nan lis anba a oswa ekri l (pa egzanp “Florid” oswa “FL”).`,
       send: 'Voye', foot: 'Rachel ede w chèche pami pwofesyonèl ki nan anyè a. Li pa bay konsèy medikal ni legal. Ijans: rele 911.',
@@ -1514,6 +1530,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     function mark(btn, playing) { if (!btn) return; btn.classList.toggle('on', playing); btn.innerHTML = playing ? t('stop') : t('listen'); btn.setAttribute('aria-label', playing ? t('stop').replace(/^\S+\s/, '') : t('listen').replace(/^\S+\s/, '')); }
     function speak(el, btn, queue) {
       if (!ok) return;
+      try {
       const words = textOf(el); if (!words) return;
       if (!queue) synth.cancel();
       if (synth.paused) synth.resume();
@@ -1527,6 +1544,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       u.onstart = () => { if (current && current !== btn) mark(current, false); current = btn; mark(btn, true); };
       u.onend = u.onerror = () => { mark(btn, false); if (current === btn) current = null; };
       synth.speak(u);
+      } catch (e) { console.warn('Rachel voice error', e); if (btn) mark(btn, false); }
     }
     function attach(d) {
       if (!ok || d.classList.contains('rw-typing')) return;
@@ -1575,7 +1593,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     en: {
       chip: 'I’m a doctor or attorney (provider)', seeker: 'I’m looking for a doctor or attorney',
       hello: 'Hi, this is Rachel WebSwan with WebSwan Media Network. 👋 Are you looking for information about <b>joining WebSwan Media Network</b> and what it takes to become part of the network?',
-      topics: [['about', 'What is WSMN?'], ['what', 'How to apply'], ['included', 'What I get'], ['pricing', 'How much it costs'], ['annual', 'What the annual fee covers'], ['monthly', 'What the monthly fee covers'], ['tania', 'Talk with Tania'], ['scope', 'My own website']],
+      topics: [['about', 'What does WSMN stand for?'], ['what', 'How to apply'], ['included', 'What I get'], ['pricing', 'How much it costs'], ['annual', 'What the annual fee covers'], ['monthly', 'What the monthly fee covers'], ['tania', 'Talk with Tania'], ['scope', 'My own website']],
       yes: 'Yes, tell me more', no: 'No, I have another question', feesAsk: 'Would you like me to explain how the fees work?', feesChip: 'Yes, explain the fees', noMsg: 'No problem! Tap a topic below or type your question.', form: 'Go to the form', search: 'Search the directory instead', site: 'Visit webswanmedianetwork.com',
       fx: {"callChip": "📅 Schedule a 10-minute appointment"},
       a: {
@@ -1583,7 +1601,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         included: 'WebSwan Media Network gives participating doctors and attorneys a <b>professional digital ecosystem</b>. It can include:<br>• Your WSMN provider profile<br>• Directory visibility<br>• A hosted WSMN profile link<br>• Your professional, business and service information<br>• Links to your existing website<br>• Links to your existing patient or client portal<br>• Review visibility, where applicable<br>• Searchability within the WSMN network<br>• WSMN-controlled infrastructure<br>• Ongoing technical maintenance',
         scope: 'WSMN takes care of the WSMN pages, applications, database and infrastructure we control. We are not responsible for maintaining, repairing or making compliant a separate website we did not build, like one on Wix, GoDaddy or another platform. Your own website and patient or client portal stay with you and your website vendor. If you’d like us to build you a new website, call or text <b>(415) 877-0687</b>.',
         pricing: 'Happy to walk you through it! 😊 Your fees keep your whole WSMN presence working for you: your profile, your place in the directory, your hosted links and the technology behind them. There are three parts:<br><br><b>1. One-time setup fee</b>: we create and configure your WSMN presence.<br><b>2. Annual network and infrastructure fee</b>: covers your hosted WSMN presence, the directory listing infrastructure, your hosted links and the supporting digital ecosystem.<br><b>3. Monthly maintenance fee</b>: covers monitoring, link checks and maintenance of the WSMN-controlled ecosystem.<br><br>If we built your website or phone application (SBPA), the setup fee is waived. For current pricing and timing, call or send a text to <b>(415) 877-0687</b>.',
-        about: 'WebSwan Media Network is a searchable professional network for <b>doctors and attorneys</b>. People looking for a provider search by specialty, state and city or ZIP code, or chat with me, and find a clear profile of your practice with your phone number, your website and your patient or client portal. We bring you the audience; your practice does the rest.',
+        wsmn: 'WSMN stands for <b>WebSwan Media Network</b>, our advertising platform.',
+        about: 'WSMN stands for <b>WebSwan Media Network</b>, our advertising platform.',
         annual: 'The <b>annual network and infrastructure fee</b> keeps your spot in the WSMN ecosystem all year: your hosted WSMN presence, the directory listing infrastructure, your hosted links and the digital ecosystem that supports your listing.',
         monthly: 'The <b>monthly maintenance fee</b> keeps everything running smoothly: monitoring, link checks and maintenance of the WSMN-controlled ecosystem, plus updates to the information we manage for you. It covers the WSMN side only, not a separate Wix, GoDaddy or WordPress website that WebSwan didn’t build.',
         tania: 'Of course! You can schedule a <b>10-minute appointment with Tania</b> to talk about joining WebSwan Media Network. Call <b>(239) 667-0151</b> to set it up. That number is for phone calls only.',
@@ -1598,7 +1617,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     fr: {
       chip: 'Je suis médecin ou avocat (professionnel)', seeker: 'Je cherche un médecin ou un avocat',
       hello: 'Bonjour, ici Rachel WebSwan, de WebSwan Media Network. 👋 Souhaitez-vous des informations pour <b>rejoindre WebSwan Media Network</b> et savoir ce qu’il faut pour faire partie du réseau ?',
-      topics: [['about', 'C’est quoi WSMN ?'], ['what', 'Comment postuler'], ['included', 'Ce que j’obtiens'], ['pricing', 'Combien ça coûte'], ['annual', 'Ce que couvrent les frais annuels'], ['monthly', 'Ce que couvrent les frais mensuels'], ['tania', 'Parler avec Tania'], ['scope', 'Mon propre site web']],
+      topics: [['about', 'Que veut dire WSMN ?'], ['what', 'Comment postuler'], ['included', 'Ce que j’obtiens'], ['pricing', 'Combien ça coûte'], ['annual', 'Ce que couvrent les frais annuels'], ['monthly', 'Ce que couvrent les frais mensuels'], ['tania', 'Parler avec Tania'], ['scope', 'Mon propre site web']],
       yes: 'Oui, dites-m’en plus', no: 'Non, j’ai une autre question', feesAsk: 'Voulez-vous que je vous explique comment fonctionnent les frais ?', feesChip: 'Oui, expliquez les frais', noMsg: 'Pas de problème ! Choisissez un sujet ci-dessous ou écrivez votre question.', form: 'Aller au formulaire', search: 'Chercher dans l’annuaire', site: 'Visiter webswanmedianetwork.com',
       fx: {"callChip": "📅 Prendre un rendez-vous de 10 minutes"},
       a: {
@@ -1606,7 +1625,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         included: 'WebSwan Media Network offre aux médecins et avocats participants un <b>écosystème numérique professionnel</b>. Il peut comprendre :<br>• Votre profil de professionnel WSMN<br>• Une visibilité dans l’annuaire<br>• Un lien de profil hébergé par WSMN<br>• Vos informations professionnelles, commerciales et sur vos services<br>• Des liens vers votre site web actuel<br>• Des liens vers votre portail patients ou clients actuel<br>• La visibilité de vos avis, le cas échéant<br>• La possibilité d’être trouvé dans le réseau WSMN<br>• Une infrastructure contrôlée par WSMN<br>• Une maintenance technique continue',
         scope: 'WSMN s’occupe des pages, applications, bases de données et de l’infrastructure que WSMN contrôle. Nous ne sommes pas responsables de l’entretien, de la réparation ou de la mise en conformité d’un site que nous n’avons pas créé, par exemple sur Wix, GoDaddy ou une autre plateforme. Votre propre site et votre portail patients ou clients restent sous votre responsabilité et celle de votre fournisseur. Si vous souhaitez que nous créions un nouveau site, appelez ou envoyez un SMS au <b>(415) 877-0687</b>.',
         pricing: 'Avec plaisir ! 😊 Vos frais font fonctionner toute votre présence WSMN pour vous : votre profil, votre place dans l’annuaire, vos liens hébergés et la technologie derrière. Il y a trois parties :<br><br><b>1. Frais de mise en place (une seule fois)</b> : nous créons et configurons votre présence WSMN.<br><b>2. Frais annuels de réseau et d’infrastructure</b> : ils couvrent l’hébergement de votre présence WSMN, l’infrastructure de l’annuaire, vos liens hébergés et l’écosystème numérique qui les soutient.<br><b>3. Frais de maintenance mensuels</b> : ils couvrent la surveillance, la vérification des liens et l’entretien de l’écosystème contrôlé par WSMN.<br><br>Si nous avons créé votre site web ou votre application mobile (SBPA), les frais de mise en place sont offerts. Pour les tarifs actuels et les délais, appelez ou envoyez un SMS au <b>(415) 877-0687</b>.',
-        about: 'WebSwan Media Network est un réseau professionnel consultable pour les <b>médecins et les avocats</b>. Les personnes qui cherchent un professionnel filtrent par spécialité, État et ville ou code postal, ou discutent avec moi, et trouvent une fiche claire de votre cabinet avec votre numéro, votre site web et votre portail patients ou clients. Nous vous apportons le public ; votre cabinet fait le reste.',
+        wsmn: 'WSMN signifie <b>WebSwan Media Network</b>, notre plateforme publicitaire.',
+        about: 'WSMN signifie <b>WebSwan Media Network</b>, notre plateforme publicitaire.',
         annual: 'Les <b>frais annuels de réseau et d’infrastructure</b> gardent votre place dans l’écosystème WSMN toute l’année : l’hébergement de votre présence WSMN, l’infrastructure de l’annuaire, vos liens hébergés et l’écosystème numérique qui soutient votre fiche.',
         monthly: 'Les <b>frais de maintenance mensuels</b> font en sorte que tout fonctionne bien : surveillance, vérification des liens et entretien de l’écosystème contrôlé par WSMN, plus les mises à jour des informations que nous gérons pour vous. Ils couvrent uniquement la partie WSMN, pas un site Wix, GoDaddy ou WordPress que WebSwan n’a pas créé.',
         tania: 'Bien sûr ! Vous pouvez prendre un <b>rendez-vous de 10 minutes avec Tania</b> pour parler de votre adhésion à WebSwan Media Network. Appelez le <b>(239) 667-0151</b> pour le fixer. Ce numéro reçoit uniquement des appels.',
@@ -1621,7 +1641,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     es: {
       chip: 'Soy médico o abogado (proveedor)', seeker: 'Busco un médico o un abogado',
       hello: 'Hola, le habla Rachel WebSwan, de WebSwan Media Network. 👋 ¿Busca información sobre cómo <b>unirse a WebSwan Media Network</b> y lo que se necesita para formar parte de la red?',
-      topics: [['about', '¿Qué es WSMN?'], ['what', 'Cómo aplicar'], ['included', 'Qué recibo'], ['pricing', 'Cuánto cuesta'], ['annual', 'Qué cubre la cuota anual'], ['monthly', 'Qué cubre la cuota mensual'], ['tania', 'Hablar con Tania'], ['scope', 'Mi propio sitio web']],
+      topics: [['about', '¿Qué significa WSMN?'], ['what', 'Cómo aplicar'], ['included', 'Qué recibo'], ['pricing', 'Cuánto cuesta'], ['annual', 'Qué cubre la cuota anual'], ['monthly', 'Qué cubre la cuota mensual'], ['tania', 'Hablar con Tania'], ['scope', 'Mi propio sitio web']],
       yes: 'Sí, cuénteme más', no: 'No, tengo otra pregunta', feesAsk: '¿Quiere que le explique cómo funcionan los cargos?', feesChip: 'Sí, explíqueme los cargos', noMsg: '¡Claro! Toque un tema abajo o escriba su pregunta.', form: 'Ir al formulario', search: 'Buscar en el directorio', site: 'Visitar webswanmedianetwork.com',
       fx: {"callChip": "📅 Agendar una cita de 10 minutos"},
       a: {
@@ -1629,7 +1649,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         included: 'WebSwan Media Network les ofrece a los médicos y abogados participantes un <b>ecosistema digital profesional</b>. Puede incluir:<br>• Su perfil de proveedor en WSMN<br>• Visibilidad en el directorio<br>• Un enlace a su perfil alojado en WSMN<br>• Su información profesional, del negocio y de sus servicios<br>• Enlaces a su sitio web actual<br>• Enlaces a su portal actual de pacientes o clientes<br>• Visibilidad de sus reseñas, cuando aplique<br>• Poder ser encontrado dentro de la red WSMN<br>• Infraestructura controlada por WSMN<br>• Mantenimiento técnico continuo',
         scope: 'WSMN se encarga de las páginas, aplicaciones, base de datos e infraestructura que WSMN controla. No somos responsables de mantener, reparar ni poner en cumplimiento un sitio web que no hicimos nosotros, como uno en Wix, GoDaddy u otra plataforma. Su propio sitio web y su portal de pacientes o clientes siguen siendo responsabilidad suya y de su proveedor. Si quiere que le hagamos un sitio web nuevo, llame o envíe un mensaje de texto al <b>(415) 877-0687</b>.',
         pricing: '¡Con gusto se lo explico! 😊 Sus cuotas mantienen toda su presencia en WSMN trabajando para usted: su perfil, su lugar en el directorio, sus enlaces alojados y la tecnología que hay detrás. Son tres partes:<br><br><b>1. Cargo único de configuración</b>: creamos y configuramos su presencia en WSMN.<br><b>2. Cuota anual de red e infraestructura</b>: cubre el hospedaje de su presencia en WSMN, la infraestructura del directorio, sus enlaces alojados y el ecosistema digital que lo respalda.<br><b>3. Cuota mensual de mantenimiento</b>: cubre el monitoreo, la revisión de enlaces y el mantenimiento del ecosistema que controla WSMN.<br><br>Si nosotros hicimos su sitio web o su aplicación para celular (SBPA), el cargo de configuración es gratis. Para precios actuales y tiempos, llame o envíe un mensaje de texto al <b>(415) 877-0687</b>.',
-        about: 'WebSwan Media Network es una red profesional donde se puede buscar a <b>médicos y abogados</b>. Las personas que buscan un proveedor filtran por especialidad, estado y ciudad o código postal, o conversan conmigo, y encuentran un perfil claro de su práctica con su teléfono, su sitio web y su portal de pacientes o clientes. Nosotros le traemos el público; su práctica hace el resto.',
+        wsmn: 'WSMN significa <b>WebSwan Media Network</b>, nuestra plataforma de publicidad.',
+        about: 'WSMN significa <b>WebSwan Media Network</b>, nuestra plataforma de publicidad.',
         annual: 'La <b>cuota anual de red e infraestructura</b> mantiene su lugar en el ecosistema WSMN todo el año: el hospedaje de su presencia en WSMN, la infraestructura del directorio, sus enlaces alojados y el ecosistema digital que respalda su perfil.',
         monthly: 'La <b>cuota mensual de mantenimiento</b> mantiene todo funcionando bien: monitoreo, revisión de enlaces y mantenimiento del ecosistema que controla WSMN, además de actualizar la información que manejamos por usted. Cubre solo la parte de WSMN, no un sitio web aparte en Wix, GoDaddy o WordPress que WebSwan no hizo.',
         tania: '¡Claro que sí! Puede programar una <b>cita de 10 minutos con Tania</b> para hablar sobre cómo unirse a WebSwan Media Network. Llame al <b>(239) 667-0151</b> para agendarla. Ese número es solo para llamadas.',
@@ -1644,7 +1665,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     pt: {
       chip: 'Sou médico ou advogado (profissional)', seeker: 'Estou procurando um médico ou advogado',
       hello: 'Oi, aqui é a Rachel WebSwan, da WebSwan Media Network. 👋 Você quer saber como <b>entrar para a WebSwan Media Network</b> e o que é preciso para fazer parte da rede?',
-      topics: [['about', 'O que é a WSMN?'], ['what', 'Como me inscrever'], ['included', 'O que eu recebo'], ['pricing', 'Quanto custa'], ['annual', 'O que a taxa anual cobre'], ['monthly', 'O que a mensalidade cobre'], ['tania', 'Falar com a Tania'], ['scope', 'Meu próprio site']],
+      topics: [['about', 'O que significa WSMN?'], ['what', 'Como me inscrever'], ['included', 'O que eu recebo'], ['pricing', 'Quanto custa'], ['annual', 'O que a taxa anual cobre'], ['monthly', 'O que a mensalidade cobre'], ['tania', 'Falar com a Tania'], ['scope', 'Meu próprio site']],
       yes: 'Sim, quero saber mais', no: 'Não, tenho outra dúvida', feesAsk: 'Quer que eu explique como funcionam as taxas?', feesChip: 'Sim, me explica as taxas', noMsg: 'Sem problema! Toque em um tema abaixo ou digite sua dúvida.', form: 'Ir para o formulário', search: 'Buscar no diretório', site: 'Visitar webswanmedianetwork.com',
       fx: {"callChip": "📅 Agendar 10 minutos com a Tania"},
       a: {
@@ -1652,7 +1673,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         included: 'A WebSwan Media Network oferece aos médicos e advogados participantes um <b>ecossistema digital profissional</b>. Ele pode incluir:<br>• O seu perfil de profissional na WSMN<br>• Visibilidade no diretório<br>• Um link do seu perfil hospedado na WSMN<br>• As suas informações profissionais, do negócio e dos seus serviços<br>• Links para o seu site atual<br>• Links para o seu portal de pacientes ou clientes atual<br>• Visibilidade das suas avaliações, quando for o caso<br>• Ser encontrado dentro da rede WSMN<br>• Infraestrutura controlada pela WSMN<br>• Manutenção técnica contínua',
         scope: 'A WSMN cuida das páginas, aplicativos, banco de dados e infraestrutura que a WSMN controla. Não somos responsáveis por manter, consertar ou deixar em conformidade um site que não fomos nós que fizemos, como um site no Wix, GoDaddy ou outra plataforma. O seu próprio site e o seu portal de pacientes ou clientes continuam sob a sua responsabilidade e do seu fornecedor. Se quiser que a gente faça um site novo pra você, ligue ou mande mensagem para <b>(415) 877-0687</b>.',
         pricing: 'Claro, te explico! 😊 As taxas mantêm toda a sua presença na WSMN trabalhando por você: o seu perfil, o seu lugar no diretório, os seus links hospedados e a tecnologia por trás. São três partes:<br><br><b>1. Taxa única de configuração</b>: a gente cria e configura a sua presença na WSMN.<br><b>2. Taxa anual de rede e infraestrutura</b>: cobre a hospedagem da sua presença na WSMN, a infraestrutura do diretório, os seus links hospedados e o ecossistema digital por trás.<br><b>3. Mensalidade de manutenção</b>: cobre o monitoramento, a verificação de links e a manutenção do ecossistema controlado pela WSMN.<br><br>Se a gente fez o seu site ou o seu aplicativo (SBPA), a taxa de configuração sai de graça. Para os preços atuais e os prazos, ligue ou mande uma mensagem de texto para <b>(415) 877-0687</b>.',
-        about: 'A WebSwan Media Network é uma rede profissional onde as pessoas encontram <b>médicos e advogados</b>. Quem procura um profissional busca por especialidade, estado e cidade ou CEP, ou conversa comigo, e encontra um perfil claro do seu trabalho com o seu telefone, o seu site e o seu portal de pacientes ou clientes. A gente traz o público; o seu trabalho faz o resto.',
+        wsmn: 'WSMN significa <b>WebSwan Media Network</b>, a nossa plataforma de anúncios.',
+        about: 'WSMN significa <b>WebSwan Media Network</b>, a nossa plataforma de anúncios.',
         annual: 'A <b>taxa anual de rede e infraestrutura</b> garante o seu lugar no ecossistema WSMN o ano todo: a hospedagem da sua presença na WSMN, a infraestrutura do diretório, os seus links hospedados e o ecossistema digital que sustenta o seu perfil.',
         monthly: 'A <b>mensalidade de manutenção</b> mantém tudo funcionando direitinho: monitoramento, verificação de links e manutenção do ecossistema controlado pela WSMN, além de atualizar as informações que a gente cuida pra você. Cobre só a parte da WSMN, não um site separado no Wix, GoDaddy ou WordPress que a WebSwan não fez.',
         tania: 'Claro! Você pode agendar um <b>atendimento de 10 minutos com a Tania</b> para conversar sobre entrar na WebSwan Media Network. Ligue para <b>(239) 667-0151</b> para marcar. Esse número é só para ligações.',
@@ -1667,7 +1689,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     ht: {
       chip: 'Mwen se doktè oswa avoka (pwofesyonèl)', seeker: 'M ap chèche yon doktè oswa yon avoka',
       hello: 'Bonjou, se Rachel WebSwan ak WebSwan Media Network. 👋 Èske w ap chèche enfòmasyon sou kijan pou w <b>antre nan WebSwan Media Network</b> ak sa li mande pou w fè pati rezo a?',
-      topics: [['about', 'Kisa WSMN ye?'], ['what', 'Kijan pou m aplike'], ['included', 'Sa m jwenn'], ['pricing', 'Konbyen sa koute'], ['annual', 'Sa frè chak ane a kouvri'], ['monthly', 'Sa frè chak mwa a kouvri'], ['tania', 'Pale ak Tania'], ['scope', 'Pwòp sit entènèt mwen']],
+      topics: [['about', 'Kisa WSMN vle di?'], ['what', 'Kijan pou m aplike'], ['included', 'Sa m jwenn'], ['pricing', 'Konbyen sa koute'], ['annual', 'Sa frè chak ane a kouvri'], ['monthly', 'Sa frè chak mwa a kouvri'], ['tania', 'Pale ak Tania'], ['scope', 'Pwòp sit entènèt mwen']],
       yes: 'Wi, di m plis', no: 'Non, m gen yon lòt kesyon', feesAsk: 'Èske w ta renmen m esplike w kijan frè yo mache?', feesChip: 'Wi, esplike m frè yo', noMsg: 'Pa gen pwoblèm! Chwazi yon sijè anba a oswa ekri kesyon w.', form: 'Ale nan fòmilè a', search: 'Chèche nan anyè a', site: 'Vizite webswanmedianetwork.com',
       fx: {"callChip": "📅 Pran yon randevou 10 minit"},
       a: {
@@ -1675,7 +1697,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         included: 'WebSwan Media Network bay doktè ak avoka ki patisipe yo yon <b>ekosistèm dijital pwofesyonèl</b>. Li ka gen ladan l:<br>• Pwofil pwofesyonèl ou sou WSMN<br>• Vizibilite nan anyè a<br>• Yon lyen pwofil WSMN<br>• Enfòmasyon pwofesyonèl ou, biznis ou ak sèvis ou<br>• Lyen sou sit entènèt ou deja genyen an<br>• Lyen sou pòtay pasyan oswa kliyan ou deja genyen an<br>• Avi moun bay sou ou, lè sa aplike<br>• Moun ka jwenn ou lè yo chèche nan rezo WSMN nan<br>• Enfrastrikti WSMN kontwole<br>• Antretyen teknik tout tan',
         scope: 'WSMN okipe paj, aplikasyon, baz done ak enfrastrikti WSMN kontwole yo. Nou pa responsab pou n kenbe, repare oswa mete an règ yon sit entènèt nou pa t fè, tankou yon sit sou Wix, GoDaddy oswa yon lòt platfòm. Pwòp sit ou ak pòtay pasyan oswa kliyan ou rete responsablite pa w ak konpayi ki bay sèvis sit la. Si w ta renmen nou fè yon nouvo sit pou ou, rele oswa voye tèks bay <b>(415) 877-0687</b>.',
         pricing: 'Avèk plezi! 😊 Frè yo fè tout prezans ou sou WSMN travay pou ou: pwofil ou, plas ou nan anyè a, lyen ou yo ak teknoloji ki dèyè yo. Gen twa pati:<br><br><b>1. Frè konfigirasyon (yon sèl fwa)</b>: nou kreye epi konfigire prezans ou sou WSMN.<br><b>2. Frè chak ane pou rezo ak enfrastrikti</b>: li kouvri ebèjman prezans ou sou WSMN, enfrastrikti anyè a, lyen ou yo ak ekosistèm dijital ki soutni yo.<br><b>3. Frè antretyen chak mwa</b>: li kouvri siveyans, tchèk lyen yo ak antretyen ekosistèm WSMN kontwole a.<br><br>Si se nou ki fè sit entènèt ou oswa aplikasyon telefòn ou (SBPA), frè konfigirasyon an gratis. Pou pri kounye a ak delè, rele oswa voye yon tèks bay <b>(415) 877-0687</b>.',
-        about: 'WebSwan Media Network se yon rezo pwofesyonèl kote moun ka chèche <b>doktè ak avoka</b>. Moun k ap chèche yon pwofesyonèl ka chèche pa espesyalite, eta ak vil oswa zip kòd, oswa pale avè m, epi yo jwenn yon pwofil klè sou biwo w ak nimewo telefòn ou, sit entènèt ou ak pòtay pasyan oswa kliyan ou. Nou pote moun yo ba ou; biwo w fè rès la.',
+        wsmn: 'WSMN vle di <b>WebSwan Media Network</b>, platfòm piblisite nou an.',
+        about: 'WSMN vle di <b>WebSwan Media Network</b>, platfòm piblisite nou an.',
         annual: '<b>Frè chak ane pou rezo ak enfrastrikti a</b> kenbe plas ou nan ekosistèm WSMN nan pandan tout ane a: ebèjman prezans ou sou WSMN, enfrastrikti anyè a, lyen ou yo ak ekosistèm dijital ki soutni fich ou.',
         monthly: '<b>Frè antretyen chak mwa a</b> kenbe tout bagay ap mache byen: siveyans, tchèk lyen yo ak antretyen ekosistèm WSMN kontwole a, plis mizajou enfòmasyon nou jere pou ou. Li kouvri pati WSMN nan sèlman, li pa kouvri yon lòt sit sou Wix, GoDaddy oswa WordPress WebSwan pa t fè.',
         tania: 'Men wi! Ou ka pran yon <b>randevou 10 minit ak Tania</b> pou nou pale sou kijan pou w antre nan WebSwan Media Network. Rele <b>(239) 667-0151</b> pou w fikse l. Nimewo sa a se pou apèl telefòn sèlman.',
@@ -1691,6 +1714,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   const P = () => PRO[LANG] || PRO.en;
   const PRO_INTENT = /advertis|get (my practice )?listed|list my|my (practice|firm|office|clinic)|i'?m an? (doctor|dentist|chiropractor|physician|lawyer|attorney)|i am an? (doctor|dentist|chiropractor|physician|lawyer|attorney)|join (the|your) directory|publicit|anunci|je suis (m[ée]decin|avocat|dentiste)|soy (m[ée]dico|abogad|dentista)|sou (m[ée]dic|advogad|dentista)|mwen se (dokt|avoka|dantis)|piblisite/i;
   const PRO_KEYS = [
+    ['wsmn', /stand for|stands for|wsmn mean|meaning of wsmn|what does wsmn|veut dire|signifie|significa|vle di/i],
     ['tania', /tan[iy]a|owner|founder|speak (with|to) (someone|a person|a human)|talk (with|to) (someone|a person|a human)|appointment|schedule|book a (call|meeting)|rendez|propri[ée]taire|cita|agendar|agenda|marcar|dona|randevou|pale ak yon moun/i],
     ['annual', /annual|yearly|per year|a year|annuel|par an|anual|al a[nñ]o|por ano|chak ane|pa ane/i],
     ['monthly', /monthly|per month|a month|maintenance|mensuel|par mois|mensual|al mes|mensalidade|manuten|por m[eê]s|chak mwa|pa mwa|antretyen/i],
@@ -1744,11 +1768,23 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   function say(html, who) {
     const d = document.createElement('div'); d.className = 'rw-msg ' + (who === 'me' ? 'me' : 'bot');
     d.innerHTML = who === 'me' ? esc(html) : html;
-    if (who !== 'me') VOICE.attach(d);
-    R.log.appendChild(d); R.log.scrollTop = R.log.scrollHeight;
+    R.log.appendChild(d); R.log.scrollTop = R.log.scrollHeight;   // the written answer always appears first
+    if (who !== 'me') { try { VOICE.attach(d); } catch (e) { console.warn('Rachel voice skipped', e); } }
+  }
+  const CHIPS_TXT = { en: ['▾ More questions', '✕ Close questions'], fr: ['▾ Autres questions', '✕ Fermer les questions'], es: ['▾ Más preguntas', '✕ Cerrar preguntas'], pt: ['▾ Mais perguntas', '✕ Fechar perguntas'], ht: ['▾ Plis kesyon', '✕ Fèmen kesyon yo'] };
+  function setChipsOpen(open) {
+    const tg = $('rw-chips-toggle'), L = CHIPS_TXT[LANG] || CHIPS_TXT.en;
+    R.chips.classList.toggle('collapsed', !open);
+    tg.textContent = open ? L[1] : L[0]; tg.setAttribute('aria-expanded', String(open));
+    if (open) setTimeout(() => { R.chips.scrollTop = 0; }, 0); else R.log.scrollTop = R.log.scrollHeight;
   }
   function rwChips(list, opts) {
     R.chips.innerHTML = '';
+    const many = (list || []).length > 3 && !(opts && opts.state);
+    const bots = R.log.querySelectorAll('.rw-msg.bot'), last = bots[bots.length - 1];
+    const longAnswer = last && (last.textContent || '').replace(/🔊 Listen|⏹ Stop/g, '').length > 120;
+    $('rw-chips-toggle').hidden = !many;
+    if (many) setChipsOpen(!(longAnswer && S && S.mode === 'pro')); else R.chips.classList.remove('collapsed');
     (list || []).forEach(c => {
       const b = document.createElement('button'); b.type = 'button'; b.className = 'rw-chip'; b.textContent = c.label || c; b.dataset.v = c.value != null ? c.value : (c.label || c);
       b.addEventListener('click', () => handle(c.value != null ? c.value : (c.label || c), c.label || c));
@@ -1856,17 +1892,33 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     }
     finish();
   }
+  const consumerQ = txt => /stand for|stands for|wsmn mean|what does wsmn|what is wsmn|what'?s wsmn|veut dire|signifie|significa|vle di|c'?est quoi wsmn|qu'?est.ce que wsmn|qu[eé] es wsmn|o que [eé] (a )?wsmn|kisa wsmn/i.test(txt) ? 'cWsmn'
+        : /how much|cost|price|pric|\bfees?\b|\bfree\b|\bpay\b|charge|combien|co[uû]te|gratuit|cu[aá]nto|cuesta|gratis|cobra|quanto|custa|gr[aá]tis|konbyen|koute|peye/i.test(txt) ? 'cFree'
+        : /what is (webswan|wsmn|this)|what'?s (webswan|wsmn)|how does (this|it) work|who are you|qu'?est.ce que|c'?est quoi|qu[eé] es|o que [eé]|kisa (webswan|wsmn|sa)/i.test(txt) ? 'cAbout' : '';
   function handle(val, label) {
+    try { handleInner(val, label); }
+    catch (e) { console.error('Rachel error', e); try { say(t('trouble')); rwChips([{ label: t('startOver'), value: 'Start over' }]); } catch (e2) {} }
+  }
+  function handleInner(val, label) {
     const txt = String(val || '').trim(); if (!txt) return;
     VOICE.stop();
     if (S.step === 'loading') return;
     say(label || txt, 'me'); R.chips.innerHTML = '';
-    if (S.step === 'done' && !/^(start over|restart|reset)$/i.test(txt)) { reset(); qIndex = 0; }
+    if (S.step === 'done' && !/^(start over|restart|reset)$/i.test(txt) && !(consumerQ(txt) && !detectSpecialty(txt, S.type))) { reset(); qIndex = 0; }
     const hadSpec = !!S.specialty;
     if (/^(start over|restart|reset)$/i.test(txt)) { start(true); return; }
     if (isCrisis(txt)) { say(t('crisis')); rwChips([{ label: t('startOver'), value: 'Start over' }]); return; }
     if (isEmergency(txt)) { say(t('emergency')); }
     if (S.mode === 'pro') { proHandle(txt); return; }
+    if (['start', 'type', 'specialty', 'state', 'city', 'done'].includes(S.step) && !/^(Searcher mode|Provider mode|Find a doctor|Find an attorney|Doctor|Attorney|Anywhere in .*|Start over)$/i.test(txt)) {
+      const cq = consumerQ(txt);
+      if (cq && !detectSpecialty(txt, S.type) && !detectPlace(txt).state && !detectPlace(txt).zip) {
+        say(t(cq));
+        if (S.step === 'done') { rwChips([{ label: t('startOver'), value: 'Start over' }]); setPH(); return; }
+        if (S.step === 'start') { rwChips([{ label: '🔎 ' + P().seeker, value: 'Searcher mode' }, { label: '🩺⚖️ ' + P().chip, value: 'Provider mode' }]); setPH(); return; }
+        next(); setPH(); return;
+      }
+    }
     if (S.step === 'start' && (txt === 'Provider mode' || PRO_INTENT.test(txt))) { proStart(); return; }
     if (S.step === 'start' && txt === 'Searcher mode') { S.step = 'type'; next(); setPH(); return; }
     // pick up anything useful the person typed, at any step
@@ -1999,6 +2051,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     if (S.step === 'city') S.askedCity = false; if (S.step === 'need') S.askedNeed = false;
     say(t('langSet')); R.chips.innerHTML = ''; next(); setPH();
   });
+  $('rw-chips-toggle').addEventListener('click', () => setChipsOpen(R.chips.classList.contains('collapsed')));
   $('rw-soon-ok').addEventListener('click', () => { $('rw-soon').hidden = true; });
   $('rw-soon').addEventListener('click', e => { if (e.target.id === 'rw-soon') e.target.hidden = true; });
   let started = false;
