@@ -65,6 +65,18 @@
     .rw-listen{display:inline-flex;align-items:center;gap:4px;margin-top:6px;border:1.5px solid #cfe2ea;background:#f7fbfd;color:#0b4164;border-radius:999px;padding:3px 10px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
     .rw-listen:hover{background:#eaf5fb}
     .rw-listen.on{background:#1b70c2;border-color:#1b70c2;color:#fff}
+    #rw-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;background:#eef7fc;border-bottom:1px solid #d7e7ed}
+    #rw-voice{display:inline-flex;align-items:center;gap:6px;border:1.5px solid #1b70c2;background:#1b70c2;color:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+    #rw-voice.off{background:#fff;color:#1b70c2}
+    .rw-lang-wrap{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#0b4164}
+    #rw-lang{height:32px;border:1.5px solid #cfe2ea;border-radius:10px;background:#fff;font:inherit;font-size:13px;color:#0b4164;padding:0 6px;max-width:150px}
+    .rw-note{font-size:12.5px;background:#fff8e6;border-color:#f3d98b;color:#5a4300}
+    #rw-panel{position:fixed}#rw-soon{position:absolute;inset:0;z-index:5;background:rgba(6,39,67,.55);display:flex;align-items:center;justify-content:center;padding:18px}
+    #rw-soon[hidden]{display:none}
+    .rw-soon-card{background:#fff;border-radius:18px;padding:22px 20px;max-width:300px;text-align:center;box-shadow:0 20px 50px rgba(8,42,72,.35)}
+    .rw-soon-card h3{margin:0 0 8px;color:#082a48;font-size:18px}
+    .rw-soon-card p{margin:0 0 16px;color:#3d5566;font-size:14.5px;line-height:1.5}
+    #rw-soon-ok{border:none;background:#1b70c2;color:#fff;font:inherit;font-weight:800;border-radius:999px;padding:10px 26px;cursor:pointer}
 </style>
 
 <script type="application/ld+json">
@@ -547,7 +559,9 @@
 <!-- ===== RACHEL WEBSWAN (guided directory assistant) ===== -->
 <button id="rw-launch" type="button" aria-expanded="false" aria-controls="rw-panel"><span class="rw-face" aria-hidden="true">R</span><span class="rw-lbl">Chat with Rachel WebSwan</span></button>
 <div id="rw-panel" role="dialog" aria-label="Chat with Rachel WebSwan" hidden>
-  <div class="rw-top"><span class="rw-face" aria-hidden="true">R</span><div><b>Rachel WebSwan</b><small>WebSwan Media Network · Directory assistant</small></div><button type="button" id="rw-voice" aria-pressed="false" aria-label="Read every reply out loud: off" title="Tap to have Rachel read every reply out loud" hidden>🔇</button><button type="button" id="rw-close" aria-label="Close chat">×</button></div>
+  <div class="rw-top"><span class="rw-face" aria-hidden="true">R</span><div><b>Rachel WebSwan</b><small>WebSwan Media Network · Directory assistant</small></div><button type="button" id="rw-close" aria-label="Close chat">×</button></div>
+  <div id="rw-bar"><button type="button" id="rw-voice" aria-pressed="true">🔊 Voice on</button><label class="rw-lang-wrap"><span id="rw-lang-lbl">Language</span> <select id="rw-lang" aria-label="Rachel's language"></select></label></div>
+  <div id="rw-soon" role="dialog" aria-modal="true" aria-labelledby="rw-soon-h" hidden><div class="rw-soon-card"><h3 id="rw-soon-h">Voice not available yet</h3><p></p><button type="button" id="rw-soon-ok">OK</button></div></div>
   <div id="rw-log" role="log" aria-live="polite"></div>
   <div id="rw-chips"></div>
   <form id="rw-form" autocomplete="off"><label for="rw-input" class="hp" style="position:absolute;left:-9999px">Message Rachel</label><input id="rw-input" placeholder="Type your message…" maxlength="400"><button type="submit">Send</button></form>
@@ -1061,6 +1075,15 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   try { const pid = new URLSearchParams(location.search).get('pro'); if (pid) openProfile(pid); } catch (e) {}
 
   // ---------- RACHEL WEBSWAN (guided assistant, searches the live database) ----------
+  const STATE_L = { // state names as each language says them
+    FL: { fr: 'Floride', pt: 'Flórida', ht: 'Florid' }, CA: { fr: 'Californie', pt: 'Califórnia', ht: 'Kalifòni' }, GA: { fr: 'Géorgie', pt: 'Geórgia', ht: 'Jòji' },
+    NY: { fr: 'New York', es: 'Nueva York', pt: 'Nova York', ht: 'Nouyòk' }, NJ: { fr: 'New Jersey', es: 'Nueva Jersey', pt: 'Nova Jersey', ht: 'Nouvo Jèze' },
+    NC: { fr: 'Caroline du Nord', es: 'Carolina del Norte', pt: 'Carolina do Norte', ht: 'Karolin di Nò' }, SC: { fr: 'Caroline du Sud', es: 'Carolina del Sur', pt: 'Carolina do Sul', ht: 'Karolin di Sid' },
+    PA: { fr: 'Pennsylvanie', es: 'Pensilvania', pt: 'Pensilvânia', ht: 'Pennsilvani' }, LA: { fr: 'Louisiane', es: 'Luisiana', pt: 'Luisiana', ht: 'Lwizyàn' },
+    MA: { ht: 'Masachousèt' }, TX: { es: 'Texas', ht: 'Teksas' }, IL: { ht: 'Ilinwa' }, VA: { fr: 'Virginie', pt: 'Virgínia', ht: 'Vijini' },
+    NM: { fr: 'Nouveau-Mexique', es: 'Nuevo México', pt: 'Novo México', ht: 'Nouvo Meksik' }, HI: { es: 'Hawái', pt: 'Havaí', ht: 'Awayi' }, PR: { fr: 'Porto Rico', pt: 'Porto Rico', ht: 'Pòtoriko' }
+  };
+  const stateL = code => (STATE_L[code] && STATE_L[code][LANG]) || stateName(code);
   const R = { box: $('rw-panel'), log: $('rw-log'), form: $('rw-form'), input: $('rw-input'), chips: $('rw-chips') };
   const SPEC_TYPE = {}; Object.entries(DIR_LISTS).forEach(([t, groups]) => Object.values(groups).flat().forEach(s => { SPEC_TYPE[s] = t; }));
   const SYN = [
@@ -1117,12 +1140,15 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     for (const s of names) { const k = norm(s.replace(/\(.*?\)/g, '')); if (k.length > 4 && ok(s) && n.includes(' ' + k + ' ')) return s; }
     const low = txt.toLowerCase();
     for (const [re, s] of SYN) if (ok(s) && re.test(low)) return s;
+    for (const [re, s] of SYN_I18N) if (ok(s) && re.test(low)) return s;
     return '';
   }
   function detectType(txt) {
     const low = txt.toLowerCase();
     if (/lawyer|attorney|law firm|legal|\bsue\b|\bcourt\b/.test(low)) return 'attorney';
     if (/doctor|\bdr\b|physician|dentist|clinic|specialist|surgeon|chiropract|medical/.test(low)) return 'doctor';
+    if (TYPE_WORDS.attorney.test(low)) return 'attorney';
+    if (TYPE_WORDS.doctor.test(low)) return 'doctor';
     return '';
   }
   function detectPlace(txt) {
@@ -1153,40 +1179,307 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   function isEmergency(txt) { return /(chest pain|can'?t breathe|cannot breathe|overdose|stroke|heart attack|bleeding a lot|unconscious|emergency(?! dent))/i.test(txt); }
   function isCrisis(txt) { return /(suicid|kill myself|end my life|hurt myself|self.?harm)/i.test(txt); }
 
+  // ---------- RACHEL LANGUAGES (what she writes and speaks) ----------
+  const RW_LANGS = [['en', 'English'], ['fr', 'Français'], ['es', 'Español'], ['pt', 'Português (Brasil)'], ['ht', 'Kreyòl ayisyen']];
+  let LANG = 'en';
+  try { const l = localStorage.getItem('rw_lang'); if (RW_LANGS.some(x => x[0] === l)) LANG = l; } catch (e) {}
+  const W = { // who words
+    en: { doctor: 'doctor', attorney: 'attorney', doctors: 'doctors', attorneys: 'attorneys' },
+    fr: { doctor: 'médecin', attorney: 'avocat', doctors: 'médecins', attorneys: 'avocats' },
+    es: { doctor: 'médico', attorney: 'abogado', doctors: 'médicos', attorneys: 'abogados' },
+    pt: { doctor: 'médico', attorney: 'advogado', doctors: 'médicos', attorneys: 'advogados' },
+    ht: { doctor: 'doktè', attorney: 'avoka', doctors: 'doktè', attorneys: 'avoka' }
+  };
+  const TX = {
+    en: {
+      greet: 'Hi, I’m <b>Rachel WebSwan</b> with WebSwan Media Network. 👋 How can I assist you today?<br><span class="rw-sub">Tell me what you’re looking for, like “I need a chiropractor near Orlando, FL” or “divorce attorney in Houston, Texas.”</span>',
+      findDoc: 'Find a doctor', findAtt: 'Find an attorney', doctorChip: 'Doctor', attorneyChip: 'Attorney',
+      letsFind: w => `Great, let’s find you the right ${w}.`,
+      askType: 'Are you looking for a <b>doctor</b> or an <b>attorney</b>?',
+      askSpec: (w, att) => `What type of ${w} do you need? Tell me the specialty, or describe the problem in your own words${att ? ' (for example “car accident” or “divorce”)' : ' (for example “back pain” or “braces for my son”)'}.`,
+      gotIt: x => `${x}. Got it!`, inPlace: p => ` in ${p}`,
+      askState: 'What state are you in?', chooseState: 'Choose your state…',
+      askCity: st => `Great! What <b>city</b> or <b>ZIP code</b> in ${st} should I search? You can type your city, your ZIP code, or both (for example “Fort Myers” or “33901” or “Fort Myers 33901”).`,
+      anywhere: st => 'Anywhere in ' + st, zipIn: (z, st) => `ZIP code ${z} in ${st}. Got it!`,
+      askNeed: 'In order to better assist you, tell me more about your need. The more you share, the better I can match you.',
+      skip: 'Skip',
+      specMissed: w => `Thank you. I didn’t catch the exact specialty, so I’ll look at all ${w} and match on what you described. You can also tap a specialty below.`,
+      crisis: 'I’m really sorry you’re going through this. Please call or text <b>988</b> (Suicide &amp; Crisis Lifeline) right now, or call <b>911</b> if you’re in immediate danger. You don’t have to go through this alone.',
+      emergency: 'If this is a medical emergency, please call <b>911</b> or go to the nearest emergency room right away. I can help you find a doctor for follow-up care afterward.',
+      searching: (sp, pl) => `Perfect, thank you! Let me search the WebSwan Media Network Directory for ${sp} in ${pl}…`,
+      trouble: 'I’m having trouble reaching the directory right now. Please try again in a moment, or call (239) 667-0151.',
+      none: (sp, st) => `I’m sorry, I don’t have ${sp} listed in ${st} yet. New professionals join the WebSwan Media Network Directory every week, so please check back soon.`,
+      broadened: sp => `I didn’t find an exact match for ${sp}, so I included closely related specialists. `,
+      reviewed: (n, k) => `I reviewed <b>${n}</b> ${n === 1 ? 'listing' : 'listings'} and here ${k === 1 ? 'is my top match' : `are my top ${k} matches`} for you:`,
+      thisIs: (nm, spec) => `This is ${nm}${spec ? ` (${spec})` : ''}.`,
+      phone: 'Phone', view: att => `View ${att ? 'attorney' : 'doctor'}’s profile →`,
+      closing: att => `Click <b>View profile</b> on any of them to see their full page. Listings are sponsored by the professionals, and I can’t give ${att ? 'legal' : 'medical'} advice, so please confirm details directly with their office. Anything else I can help you with?`,
+      startOver: 'Start over', whySay: 'Why I picked them: ',
+      stateMissed: x => `Thanks! I still need the <b>state</b> for “${x}”. Please pick your state from the list below or type it (for example “Florida” or “FL”).`,
+      send: 'Send', foot: 'Rachel helps you search sponsored listings. She can’t give medical or legal advice. Emergencies: call 911.',
+      langSet: 'Okay! I’ll write and speak in English from now on.',
+      listen: '🔊 Listen', stop: '⏹ Stop', voiceOn: 'Voice on', voiceOff: 'Voice off', langLabel: 'Language',
+      ph: { start: 'Type what you need (e.g. dentist in Miami, FL)…', type: 'Type doctor or attorney…', specD: 'Type the specialty or your problem (e.g. back pain)…', specA: 'Type the specialty or your case (e.g. divorce)…', state: 'Type your state (e.g. Florida)…', city: 'Type your city or ZIP code…', need: 'Tell me more about your need…', q: 'Type your answer or tap an option…', done: 'Type a new search…' }
+    },
+    fr: {
+      greet: 'Bonjour ! Je m’appelle <b>Rachel WebSwan</b>, de WebSwan Media Network. 👋 Comment puis-je vous aider aujourd’hui ?<br><span class="rw-sub">Dites-moi ce que vous cherchez, par exemple : « Je cherche un chiropracteur près d’Orlando, FL » ou « un avocat spécialisé en divorce à Houston, au Texas ».</span>',
+      findDoc: 'Trouver un médecin', findAtt: 'Trouver un avocat', doctorChip: 'Médecin', attorneyChip: 'Avocat',
+      letsFind: w => `Très bien, trouvons ensemble le bon ${w}.`,
+      askType: 'Cherchez-vous un <b>médecin</b> ou un <b>avocat</b> ?',
+      askSpec: (w, att) => `Quel type de ${w} vous faut-il ? Indiquez-moi la spécialité, ou décrivez simplement votre situation${att ? ' (par exemple « accident de voiture » ou « divorce »)' : ' (par exemple « mal de dos » ou « appareil dentaire pour mon fils »)'}.`,
+      gotIt: x => `${x}. C’est noté !`, inPlace: p => ` à ${p}`,
+      askState: 'Dans quel État habitez-vous ?', chooseState: 'Choisissez votre État…',
+      askCity: st => `Parfait ! Dans quelle <b>ville</b> ou quel <b>code postal (ZIP)</b> de l’État de ${st} dois-je chercher ? Vous pouvez écrire la ville, le code postal, ou les deux (par exemple « Fort Myers » ou « 33901 »).`,
+      anywhere: st => 'N’importe où en ' + st, zipIn: (z, st) => `Code postal ${z}, ${st}. C’est noté !`,
+      askNeed: 'Pour mieux vous aider, dites-m’en un peu plus sur votre besoin. Plus vous me donnez de détails, mieux je pourrai vous orienter.',
+      skip: 'Passer',
+      specMissed: w => `Merci. Je n’ai pas bien identifié la spécialité, alors je vais regarder tous les ${w} et chercher d’après ce que vous m’avez décrit. Vous pouvez aussi choisir une spécialité ci-dessous.`,
+      crisis: 'Je suis vraiment désolée que vous traversiez cela. Appelez ou envoyez un SMS au <b>988</b> (ligne d’aide en cas de crise suicidaire) dès maintenant, ou composez le <b>911</b> si vous êtes en danger immédiat. Vous n’êtes pas seul(e).',
+      emergency: 'S’il s’agit d’une urgence médicale, composez le <b>911</b> ou rendez-vous immédiatement aux urgences les plus proches. Je pourrai ensuite vous aider à trouver un médecin pour le suivi.',
+      searching: (sp, pl) => `Parfait, merci ! Je lance la recherche dans l’annuaire WebSwan Media Network : ${sp}, ${pl}…`,
+      trouble: 'Je n’arrive pas à accéder à l’annuaire pour le moment. Réessayez dans un instant ou appelez le (239) 667-0151.',
+      none: (sp, st) => `Je suis désolée, je n’ai pas encore de ${sp} inscrit dans l’État de ${st}. De nouveaux professionnels rejoignent l’annuaire chaque semaine : revenez bientôt !`,
+      broadened: sp => `Je n’ai pas trouvé de résultat exact pour ${sp}, j’ai donc ajouté des spécialistes du même domaine. `,
+      reviewed: (n, k) => `J’ai passé en revue <b>${n}</b> ${n === 1 ? 'professionnel' : 'professionnels'}. Voici ${k === 1 ? 'celui qui vous correspond le mieux' : `les ${k} qui vous correspondent le mieux`} :`,
+      thisIs: (nm, spec) => `Je vous présente ${nm}${spec ? ` (${spec})` : ''}.`,
+      phone: 'Téléphone', view: att => `Voir le profil ${att ? 'de l’avocat' : 'du médecin'} →`,
+      closing: att => `Cliquez sur <b>Voir le profil</b> pour afficher la fiche complète. Ces annonces sont financées par les professionnels, et je ne peux pas donner d’avis ${att ? 'juridique' : 'médical'} : confirmez les détails directement auprès de leur cabinet. Puis-je vous aider pour autre chose ?`,
+      startOver: 'Recommencer', whySay: 'Pourquoi ce choix : ',
+      stateMissed: x => `Merci ! Il me manque encore l’<b>État</b> pour « ${x} ». Choisissez votre État dans la liste ci-dessous ou écrivez-le (par exemple « Floride » ou « FL »).`,
+      send: 'Envoyer', foot: 'Rachel vous aide à chercher parmi les annonces des professionnels. Elle ne donne pas d’avis médical ou juridique. En cas d’urgence : 911.',
+      langSet: 'D’accord ! À partir de maintenant, j’écris et je parle en français.',
+      listen: '🔊 Écouter', stop: '⏹ Arrêter', voiceOn: 'Voix activée', voiceOff: 'Voix coupée', langLabel: 'Langue',
+      pick: ['Spécialités : ', 'Exerce depuis {n} ans', 'Cabinet à '],
+      ph: { start: 'Écrivez ce que vous cherchez…', type: 'Écrivez « médecin » ou « avocat »…', specD: 'Écrivez la spécialité ou votre problème…', specA: 'Écrivez la spécialité ou votre situation…', state: 'Écrivez votre État (ex. Floride)…', city: 'Écrivez votre ville ou code postal…', need: 'Décrivez votre besoin…', q: 'Écrivez votre réponse ou choisissez une option…', done: 'Lancez une nouvelle recherche…' }
+    },
+    es: {
+      greet: '¡Hola! Soy <b>Rachel WebSwan</b>, de WebSwan Media Network. 👋 ¿En qué le puedo ayudar hoy?<br><span class="rw-sub">Dígame qué está buscando, por ejemplo: “Necesito un quiropráctico cerca de Orlando, FL” o “abogado de divorcio en Houston, Texas”.</span>',
+      findDoc: 'Buscar un médico', findAtt: 'Buscar un abogado', doctorChip: 'Médico', attorneyChip: 'Abogado',
+      letsFind: w => `¡Perfecto! Vamos a encontrar el ${w} indicado para usted.`,
+      askType: '¿Está buscando un <b>médico</b> o un <b>abogado</b>?',
+      askSpec: (w, att) => `¿Qué tipo de ${w} necesita? Dígame la especialidad o explíqueme el problema con sus propias palabras${att ? ' (por ejemplo “accidente de auto” o “divorcio”)' : ' (por ejemplo “dolor de espalda” o “brackets para mi hijo”)'}.`,
+      gotIt: x => `${x}. ¡Entendido!`, inPlace: p => ` en ${p}`,
+      askState: '¿En qué estado vive?', chooseState: 'Elija su estado…',
+      askCity: st => `¡Muy bien! ¿En qué <b>ciudad</b> o <b>código postal (ZIP)</b> de ${st} busco? Puede escribir la ciudad, el código postal o los dos (por ejemplo “Fort Myers” o “33901”).`,
+      anywhere: st => 'En cualquier parte de ' + st, zipIn: (z, st) => `Código postal ${z}, ${st}. ¡Entendido!`,
+      askNeed: 'Para ayudarle mejor, cuénteme un poco más sobre lo que necesita. Mientras más detalles me dé, mejor le puedo recomendar.',
+      skip: 'Omitir',
+      specMissed: w => `Gracias. No identifiqué la especialidad exacta, así que voy a revisar todos los ${w} y buscar según lo que me describió. También puede elegir una especialidad aquí abajo.`,
+      crisis: 'Siento mucho que esté pasando por esto. Llame o envíe un mensaje de texto al <b>988</b> (Línea de Prevención del Suicidio y Crisis) ahora mismo, o llame al <b>911</b> si está en peligro inmediato. No está solo(a).',
+      emergency: 'Si se trata de una emergencia médica, llame al <b>911</b> o vaya de inmediato a la sala de emergencias más cercana. Después le puedo ayudar a encontrar un médico para el seguimiento.',
+      searching: (sp, pl) => `¡Perfecto, gracias! Estoy buscando en el directorio de WebSwan Media Network: ${sp} en ${pl}…`,
+      trouble: 'En este momento no puedo conectarme con el directorio. Intente de nuevo en un momento o llame al (239) 667-0151.',
+      none: (sp, st) => `Lo siento, todavía no tengo ${sp} en ${st}. Cada semana se unen nuevos profesionales al directorio, así que vuelva a consultar pronto.`,
+      broadened: sp => `No encontré un resultado exacto para ${sp}, así que incluí especialistas del mismo campo. `,
+      reviewed: (n, k) => `Revisé <b>${n}</b> ${n === 1 ? 'profesional' : 'profesionales'} y ${k === 1 ? 'esta es mi mejor recomendación' : `estas son mis ${k} mejores recomendaciones`} para usted:`,
+      thisIs: (nm, spec) => `Le presento a ${nm}${spec ? ` (${spec})` : ''}.`,
+      phone: 'Teléfono', view: att => `Ver perfil del ${att ? 'abogado' : 'médico'} →`,
+      closing: att => `Toque <b>Ver perfil</b> en cualquiera para ver su página completa. Estos anuncios son pagados por los profesionales y yo no puedo dar consejos ${att ? 'legales' : 'médicos'}, así que confirme los detalles directamente con su oficina. ¿Le puedo ayudar con algo más?`,
+      startOver: 'Empezar de nuevo', whySay: 'Por qué lo recomiendo: ',
+      stateMissed: x => `¡Gracias! Todavía necesito el <b>estado</b> de “${x}”. Elija su estado en la lista de abajo o escríbalo (por ejemplo “Florida” o “FL”).`,
+      send: 'Enviar', foot: 'Rachel le ayuda a buscar entre los anuncios de profesionales. No da consejos médicos ni legales. Emergencias: llame al 911.',
+      langSet: '¡Listo! A partir de ahora le escribo y le hablo en español.',
+      listen: '🔊 Escuchar', stop: '⏹ Detener', voiceOn: 'Voz activada', voiceOff: 'Voz apagada', langLabel: 'Idioma',
+      pick: ['Especialidades: ', 'Ejerce desde hace {n} años', 'Oficina en '],
+      ph: { start: 'Escriba lo que necesita…', type: 'Escriba “médico” o “abogado”…', specD: 'Escriba la especialidad o su problema…', specA: 'Escriba la especialidad o su caso…', state: 'Escriba su estado (ej. Florida)…', city: 'Escriba su ciudad o código postal…', need: 'Cuénteme lo que necesita…', q: 'Escriba su respuesta o elija una opción…', done: 'Escriba una nueva búsqueda…' }
+    },
+    pt: {
+      greet: 'Oi! Eu sou a <b>Rachel WebSwan</b>, da WebSwan Media Network. 👋 Como posso te ajudar hoje?<br><span class="rw-sub">Me conta o que você está procurando, por exemplo: “Preciso de um quiropraxista perto de Orlando, FL” ou “advogado de divórcio em Houston, Texas”.</span>',
+      findDoc: 'Encontrar um médico', findAtt: 'Encontrar um advogado', doctorChip: 'Médico', attorneyChip: 'Advogado',
+      letsFind: w => `Ótimo! Vamos encontrar o ${w} certo pra você.`,
+      askType: 'Você está procurando um <b>médico</b> ou um <b>advogado</b>?',
+      askSpec: (w, att) => `De que tipo de ${w} você precisa? Me diga a especialidade ou explique o problema do seu jeito${att ? ' (por exemplo “acidente de carro” ou “divórcio”)' : ' (por exemplo “dor nas costas” ou “aparelho nos dentes do meu filho”)'}.`,
+      gotIt: x => `${x}. Anotado!`, inPlace: p => ` em ${p}`,
+      askState: 'Em qual estado você mora?', chooseState: 'Escolha o seu estado…',
+      askCity: st => `Perfeito! Em qual <b>cidade</b> ou <b>CEP (ZIP code)</b> de ${st} eu devo procurar? Você pode digitar a cidade, o CEP ou os dois (por exemplo “Fort Myers” ou “33901”).`,
+      anywhere: st => 'Em qualquer lugar de ' + st, zipIn: (z, st) => `CEP ${z}, ${st}. Anotado!`,
+      askNeed: 'Pra eu te ajudar melhor, me conta um pouco mais sobre o que você precisa. Quanto mais detalhes, melhor a indicação.',
+      skip: 'Pular',
+      specMissed: w => `Obrigada! Não consegui identificar a especialidade exata, então vou olhar todos os ${w} e buscar pelo que você me contou. Você também pode escolher uma especialidade aqui embaixo.`,
+      crisis: 'Sinto muito que você esteja passando por isso. Ligue ou mande mensagem para o <b>988</b> (linha de apoio em crises e prevenção do suicídio) agora mesmo, ou ligue para o <b>911</b> se estiver em perigo imediato. Você não está sozinho(a).',
+      emergency: 'Se for uma emergência médica, ligue para o <b>911</b> ou vá agora mesmo ao pronto-socorro mais próximo. Depois eu posso te ajudar a encontrar um médico para o acompanhamento.',
+      searching: (sp, pl) => `Perfeito, obrigada! Estou procurando no diretório da WebSwan Media Network: ${sp} em ${pl}…`,
+      trouble: 'Não estou conseguindo acessar o diretório agora. Tente de novo daqui a pouco ou ligue para (239) 667-0151.',
+      none: (sp, st) => `Poxa, ainda não tenho ${sp} cadastrado em ${st}. Novos profissionais entram no diretório toda semana, então volte a conferir em breve.`,
+      broadened: sp => `Não encontrei um resultado exato para ${sp}, então incluí especialistas da mesma área. `,
+      reviewed: (n, k) => `Analisei <b>${n}</b> ${n === 1 ? 'profissional' : 'profissionais'} e ${k === 1 ? 'esta é a minha melhor indicação' : `estas são as minhas ${k} melhores indicações`} pra você:`,
+      thisIs: (nm, spec) => `Conheça ${nm}${spec ? ` (${spec})` : ''}.`,
+      phone: 'Telefone', view: att => `Ver perfil do ${att ? 'advogado' : 'médico'} →`,
+      closing: att => `Toque em <b>Ver perfil</b> para ver a página completa. Esses anúncios são pagos pelos próprios profissionais e eu não posso dar orientação ${att ? 'jurídica' : 'médica'}, então confirme os detalhes direto com o consultório ou escritório. Posso te ajudar com mais alguma coisa?`,
+      startOver: 'Começar de novo', whySay: 'Por que indiquei: ',
+      stateMissed: x => `Obrigada! Ainda preciso do <b>estado</b> de “${x}”. Escolha o seu estado na lista abaixo ou digite (por exemplo “Flórida” ou “FL”).`,
+      send: 'Enviar', foot: 'A Rachel ajuda você a buscar entre os anúncios dos profissionais. Ela não dá orientação médica nem jurídica. Emergências: ligue 911.',
+      langSet: 'Combinado! A partir de agora eu escrevo e falo em português.',
+      listen: '🔊 Ouvir', stop: '⏹ Parar', voiceOn: 'Voz ligada', voiceOff: 'Voz desligada', langLabel: 'Idioma',
+      pick: ['Especialidades: ', 'Atua há {n} anos', 'Atende em '],
+      ph: { start: 'Digite o que você precisa…', type: 'Digite “médico” ou “advogado”…', specD: 'Digite a especialidade ou o problema…', specA: 'Digite a especialidade ou o seu caso…', state: 'Digite o seu estado (ex.: Flórida)…', city: 'Digite a sua cidade ou CEP…', need: 'Me conta o que você precisa…', q: 'Digite a resposta ou escolha uma opção…', done: 'Digite uma nova busca…' }
+    },
+    ht: {
+      greet: 'Bonjou! Mwen rele <b>Rachel WebSwan</b>, mwen travay ak WebSwan Media Network. 👋 Kouman m ka ede w jodi a?<br><span class="rw-sub">Di m sa w ap chèche, pa egzanp: “Mwen bezwen yon kiwopraktè bò Orlando, FL” oswa “yon avoka pou divòs nan Houston, Texas”.</span>',
+      findDoc: 'Chèche yon doktè', findAtt: 'Chèche yon avoka', doctorChip: 'Doktè', attorneyChip: 'Avoka',
+      letsFind: w => `Oke, ann chèche bon ${w} ki fèt pou ou a.`,
+      askType: 'Èske se yon <b>doktè</b> oswa yon <b>avoka</b> w ap chèche?',
+      askSpec: (w, att) => `Ki kalite ${w} ou bezwen? Di m espesyalite a, oswa esplike m pwoblèm nan jan w konprann li${att ? ' (pa egzanp “aksidan machin” oswa “divòs”)' : ' (pa egzanp “doulè nan do” oswa “aparèy dan pou pitit gason m”)'}.`,
+      gotIt: x => `${x}. Oke, m note sa!`, inPlace: p => ` nan ${p}`,
+      askState: 'Nan ki eta ou rete?', chooseState: 'Chwazi eta w…',
+      askCity: st => `Bon! Nan ki <b>vil</b> oswa ki <b>zip kòd</b> nan ${st} pou m chèche? Ou ka ekri vil la, zip kòd la, oswa toulède (pa egzanp “Fort Myers” oswa “33901”).`,
+      anywhere: st => 'Nenpòt kote nan ' + st, zipIn: (z, st) => `Zip kòd ${z}, ${st}. Oke, m note sa!`,
+      askNeed: 'Pou m ka ede w pi byen, pale m plis sou sa w bezwen. Plis ou ban m detay, se plis m ap ka jwenn moun ki bon pou ou.',
+      skip: 'Pase',
+      specMissed: w => `Mèsi. M pa t byen konprann ki espesyalite a, donk m ap gade tout ${w} yo epi m ap chèche selon sa w di m nan. Ou ka chwazi yon espesyalite anba a tou.`,
+      crisis: 'Mwen regrèt anpil pou sa w ap pase a. Tanpri rele oswa voye mesaj bay <b>988</b> kounye a (liy èd pou moun ki nan kriz), oswa rele <b>911</b> si lavi w an danje. Ou pa poukont ou.',
+      emergency: 'Si se yon ijans, rele <b>911</b> oswa ale nan sal ijans ki pi pre w la touswit. Apre sa, m ka ede w jwenn yon doktè pou swiv ou.',
+      searching: (sp, pl) => `Pafè, mèsi! Kite m chèche nan anyè WebSwan Media Network la pou ${sp} nan ${pl}…`,
+      trouble: 'M gen yon ti pwoblèm pou m antre nan anyè a kounye a. Eseye ankò nan yon ti moman, oswa rele (239) 667-0151.',
+      none: (sp, st) => `Mwen regrèt, m poko gen ${sp} nan ${st}. Chak semèn gen nouvo pwofesyonèl k ap antre nan anyè a, donk tounen gade ankò talè.`,
+      broadened: sp => `M pa t jwenn egzakteman ${sp}, donk m mete kèk espesyalis ki nan menm domèn nan. `,
+      reviewed: (n, k) => `Mwen gade <b>${n}</b> pwofesyonèl, epi men ${k === 1 ? 'sa ki pi bon pou ou a' : `${k} ki pi bon pou ou yo`}:`,
+      thisIs: (nm, spec) => `Men ${nm}${spec ? ` (${spec})` : ''}.`,
+      phone: 'Telefòn', view: att => `Gade pwofil ${att ? 'avoka a' : 'doktè a'} →`,
+      closing: att => `Klike sou <b>Gade pwofil</b> pou w wè tout enfòmasyon yo. Se pwofesyonèl yo ki peye pou yo parèt nan anyè a, epi m pa ka ba w konsèy ${att ? 'legal' : 'medikal'}, donk tanpri konfime tout detay yo dirèkteman ak biwo yo. Èske gen lòt bagay m ka fè pou ou?`,
+      startOver: 'Rekòmanse', whySay: 'Poukisa m chwazi l: ',
+      stateMissed: x => `Mèsi! M toujou bezwen <b>eta</b> a pou “${x}”. Chwazi eta w nan lis anba a oswa ekri l (pa egzanp “Florid” oswa “FL”).`,
+      send: 'Voye', foot: 'Rachel ede w chèche pami pwofesyonèl ki nan anyè a. Li pa bay konsèy medikal ni legal. Ijans: rele 911.',
+      langSet: 'Oke! Depi kounye a, m ap ekri epi pale an kreyòl.',
+      listen: '🔊 Koute', stop: '⏹ Rete', voiceOn: 'Vwa limen', voiceOff: 'Vwa fèmen', langLabel: 'Lang',
+      pick: ['Espesyalite: ', 'Ap pratike depi {n} an', 'Biwo a nan '],
+      ph: { start: 'Ekri sa w bezwen…', type: 'Ekri “doktè” oswa “avoka”…', specD: 'Ekri espesyalite a oswa pwoblèm ou…', specA: 'Ekri espesyalite a oswa ka w la…', state: 'Ekri eta w (egz. Florid)…', city: 'Ekri vil ou oswa zip kòd ou…', need: 'Pale m sou sa w bezwen…', q: 'Ekri repons ou oswa chwazi youn…', done: 'Ekri yon lòt rechèch…' }
+    }
+  };
+  const t = k => (TX[LANG] && TX[LANG][k] != null ? TX[LANG][k] : TX.en[k]);
+  const whoW = plural => (W[LANG] || W.en)[(S && S.type === 'attorney' ? 'attorney' : 'doctor') + (plural ? 's' : '')];
+  // question labels per language (values stay English so matching/scoring is unchanged)
+  const QTX = {
+    fr: {
+      visit: ['S’agit-il d’un nouveau problème, d’un suivi, ou souhaitez-vous un deuxième avis ?', ['Nouveau problème', 'Suivi', 'Deuxième avis', 'Passer']],
+      insurance: ['Avez-vous une assurance santé ? Écrivez le nom de votre assurance ou choisissez une option.', ['Sans assurance / je paie moi-même', 'Medicare', 'Medicaid', 'Passer']],
+      mode: ['Préférez-vous une consultation au cabinet ou une téléconsultation ?', ['Au cabinet', 'Téléconsultation', 'Peu importe']],
+      lang: ['Dans quelle langue aimeriez-vous que votre {w} vous parle ?', ['Anglais', 'Espagnol', 'Créole haïtien', 'Français', 'Peu importe']],
+      hours: ['Avez-vous besoin de rendez-vous en soirée ou le week-end ?', ['Oui, s’il vous plaît', 'Non, en semaine, ça me va']],
+      gender: ['Dernière question : préférez-vous une femme ou un homme ?', ['Une femme', 'Un homme', 'Pas de préférence']],
+      stage: ['Une procédure est-elle déjà en cours, ou avez-vous une date d’audience au tribunal ?', ['Oui, j’ai une date d’audience', 'Procédure en cours, pas encore de date', 'Pas encore', 'Je ne sais pas']],
+      consult: ['Souhaitez-vous un avocat qui propose une première consultation gratuite ?', ['Oui, consultation gratuite', 'Peu importe']],
+      fee: ['Comment préférez-vous payer ?', ['Honoraires seulement si je gagne', 'Forfait', 'À l’heure', 'Paiement échelonné', 'Je ne sais pas']],
+      hoursA: ['Avez-vous besoin de rendez-vous en soirée, le week-end ou en visio ?', ['Soirée / week-end', 'En visio', 'Les deux', 'Non, en semaine, ça me va']]
+    },
+    es: {
+      visit: ['¿Es un problema nuevo, un tratamiento que ya está siguiendo o quiere una segunda opinión?', ['Problema nuevo', 'Tratamiento continuo', 'Segunda opinión', 'Omitir']],
+      insurance: ['¿Tiene seguro médico? Escriba el nombre de su plan o elija una opción.', ['Sin seguro / pago yo', 'Medicare', 'Medicaid', 'Omitir']],
+      mode: ['¿Prefiere una consulta en persona o por video (telemedicina)?', ['En persona', 'Por video', 'Cualquiera']],
+      lang: ['¿En qué idioma le gustaría que le hable su {w}?', ['Inglés', 'Español', 'Criollo haitiano', 'Francés', 'Cualquier idioma']],
+      hours: ['¿Necesita citas en la noche o los fines de semana?', ['Sí, por favor', 'No, entre semana está bien']],
+      gender: ['Última pregunta: ¿prefiere que sea mujer u hombre?', ['Mujer', 'Hombre', 'Me da igual']],
+      stage: ['¿Ya tiene un caso abierto o una audiencia en la corte próximamente?', ['Sí, tengo una audiencia', 'Caso abierto, sin fecha todavía', 'Todavía no', 'No estoy seguro(a)']],
+      consult: ['¿Quiere un abogado que ofrezca la primera consulta gratis?', ['Sí, consulta gratis', 'Me da igual']],
+      fee: ['¿Cómo prefiere pagar?', ['No pago si no gano (contingencia)', 'Tarifa fija', 'Por hora', 'Plan de pagos', 'No estoy seguro(a)']],
+      hoursA: ['¿Necesita reuniones en la noche, los fines de semana o por video?', ['Noches / fines de semana', 'Por video', 'Las dos', 'No, entre semana está bien']]
+    },
+    pt: {
+      visit: ['É um problema novo, um acompanhamento ou você quer uma segunda opinião?', ['Problema novo', 'Acompanhamento', 'Segunda opinião', 'Pular']],
+      insurance: ['Você tem plano de saúde? Digite o nome do plano ou escolha uma opção.', ['Particular / sem plano', 'Medicare', 'Medicaid', 'Pular']],
+      mode: ['Você prefere consulta presencial ou por vídeo (telemedicina)?', ['Presencial', 'Por vídeo', 'Tanto faz']],
+      lang: ['Em qual idioma você gostaria que o seu {w} falasse?', ['Inglês', 'Espanhol', 'Crioulo haitiano', 'Francês', 'Qualquer idioma']],
+      hours: ['Você precisa de horário à noite ou no fim de semana?', ['Sim, por favor', 'Não, durante a semana está bom']],
+      gender: ['Última pergunta: você prefere mulher ou homem?', ['Mulher', 'Homem', 'Tanto faz']],
+      stage: ['Já tem um processo aberto ou uma audiência marcada?', ['Sim, tenho audiência marcada', 'Processo aberto, ainda sem data', 'Ainda não', 'Não sei']],
+      consult: ['Você quer um advogado que ofereça a primeira consulta grátis?', ['Sim, consulta grátis', 'Tanto faz']],
+      fee: ['Como você prefere pagar?', ['Só pago se ganhar (êxito)', 'Valor fechado', 'Por hora', 'Parcelado', 'Não sei']],
+      hoursA: ['Você precisa de atendimento à noite, no fim de semana ou por vídeo?', ['Noite / fim de semana', 'Por vídeo', 'Os dois', 'Não, durante a semana está bom']]
+    },
+    ht: {
+      visit: ['Èske se yon nouvo pwoblèm, yon swivi, oswa ou vle yon dezyèm opinyon?', ['Nouvo pwoblèm', 'Swivi', 'Dezyèm opinyon', 'Pase']],
+      insurance: ['Èske w gen asirans sante? Ekri non asirans ou, oswa chwazi youn anba a.', ['M peye pou kont mwen / m pa gen asirans', 'Medicare', 'Medicaid', 'Pase']],
+      mode: ['Èske w pito wè doktè a an pèsòn, oswa pa videyo?', ['An pèsòn', 'Pa videyo', 'Nenpòt']],
+      lang: ['Ki lang ou ta renmen {w} a pale avè w?', ['Anglè', 'Panyòl', 'Kreyòl', 'Franse', 'Nenpòt lang']],
+      hours: ['Èske w bezwen randevou nan aswè oswa nan wikenn?', ['Wi, tanpri', 'Non, nan semèn nan bon']],
+      gender: ['Dènye kesyon: èske w pito yon fanm oswa yon gason?', ['Fanm', 'Gason', 'Nenpòt']],
+      stage: ['Èske ka a deja nan tribinal, oswa ou gen yon dat pou w parèt devan jij?', ['Wi, m gen yon dat tribinal', 'Ka a ouvri, men poko gen dat', 'Poko', 'M pa konnen']],
+      consult: ['Èske w ta renmen yon avoka ki bay premye konsiltasyon an gratis?', ['Wi, konsiltasyon gratis', 'Sa pa fè m anyen']],
+      fee: ['Kijan ou ta pito peye?', ['M peye sèlman si m genyen ka a', 'Yon sèl pri fiks', 'Pa lè', 'Plan peman', 'M pa konnen']],
+      hoursA: ['Èske w bezwen randevou nan aswè, nan wikenn, oswa pa videyo?', ['Aswè / wikenn', 'Pa videyo', 'Toulède', 'Non, nan semèn nan bon']]
+    }
+  };
+  function qText(Q) {
+    const L = QTX[LANG]; if (!L) return { q: Q.q, opts: Q.opts };
+    const k = Q.key === 'hours' && S.type === 'attorney' ? 'hoursA' : Q.key;
+    const tr = L[k]; if (!tr || tr[1].length !== Q.opts.length) return { q: Q.q, opts: Q.opts };
+    return { q: tr[0].replace('{w}', whoW()), opts: Q.opts.map((v, i) => ({ label: tr[1][i], value: v })) };
+  }
+  const WHY = {
+    fr: [[/^in your ZIP code$/, 'dans votre code postal'], [/^in (.+)$/, 'à $1'], [/^near you$/, 'près de chez vous'], [/^treats what you described$/, 'traite ce que vous avez décrit'], [/^handles what you described$/, 's’occupe de votre situation'], [/^accepts (.+)$/, 'accepte $1'], [/^offers telehealth$/, 'offre la téléconsultation'], [/^speaks (.+)$/, 'parle $1'], [/^evening\/weekend hours$/, 'horaires soir/week-end'], [/^virtual meetings$/, 'rendez-vous en ligne'], [/^free consultation$/, 'consultation gratuite'], [/^female (doctor|attorney)$/, 'femme'], [/^male (doctor|attorney)$/, 'homme']],
+    es: [[/^in your ZIP code$/, 'en su código postal'], [/^in (.+)$/, 'en $1'], [/^near you$/, 'cerca de usted'], [/^treats what you described$/, 'trata lo que describió'], [/^handles what you described$/, 'maneja su caso'], [/^accepts (.+)$/, 'acepta $1'], [/^offers telehealth$/, 'ofrece telemedicina'], [/^speaks (.+)$/, 'habla $1'], [/^evening\/weekend hours$/, 'horario de tarde/fin de semana'], [/^virtual meetings$/, 'reuniones virtuales'], [/^free consultation$/, 'consulta gratis'], [/^female (doctor|attorney)$/, 'mujer'], [/^male (doctor|attorney)$/, 'hombre']],
+    pt: [[/^in your ZIP code$/, 'no seu CEP'], [/^in (.+)$/, 'em $1'], [/^near you$/, 'perto de você'], [/^treats what you described$/, 'trata o que você descreveu'], [/^handles what you described$/, 'atende o seu caso'], [/^accepts (.+)$/, 'aceita $1'], [/^offers telehealth$/, 'oferece telemedicina'], [/^speaks (.+)$/, 'fala $1'], [/^evening\/weekend hours$/, 'horário noturno/fim de semana'], [/^virtual meetings$/, 'reuniões online'], [/^free consultation$/, 'consulta gratuita'], [/^female (doctor|attorney)$/, 'mulher'], [/^male (doctor|attorney)$/, 'homem']],
+    ht: [[/^in your ZIP code$/, 'nan kòd postal ou'], [/^in (.+)$/, 'nan $1'], [/^near you$/, 'toupre w'], [/^treats what you described$/, 'trete sa w di m'], [/^handles what you described$/, 'okipe ka tankou pa w'], [/^accepts (.+)$/, 'aksepte $1'], [/^offers telehealth$/, 'fè konsiltasyon pa videyo'], [/^speaks (.+)$/, 'pale $1'], [/^evening\/weekend hours$/, 'lè aswè/wikenn'], [/^virtual meetings$/, 'randevou pa videyo'], [/^free consultation$/, 'konsiltasyon gratis'], [/^female (doctor|attorney)$/, 'fanm'], [/^male (doctor|attorney)$/, 'gason']]
+  };
+  const whyT = w => { const L = WHY[LANG]; if (!L) return w; for (const [re, r] of L) if (re.test(w)) return w.replace(re, r); return w; };
+  // extra words so visitors can type in their language
+  const TYPE_WORDS = { attorney: /avocat|abogad|advogad|avoka|juriste|tribunal|corte/i, doctor: /m[ée]decin|m[ée]dico|dokt[eè]|clinique|cl[ií]nica|dentist|dantis|m[ée]dic/i };
+  const SYN_I18N = [
+    [/chiropract|quiropr|kiwoprak/i, 'Chiropractor'], [/dentist|dantis|(^|\s)dents?\b|dientes|(^|\s)dente\b/i, 'General Dentistry'],
+    [/p[ée]diatr|pedyat/i, 'Pediatrics'], [/divorc|div[oò]s|div[oó]rcio/i, 'Divorce'],
+    [/accident|acidente|aksidan/i, 'Personal Injury (All)'], [/immigra|imigra|inmigra/i, 'Immigration (All)'],
+    [/dermato|(^|\s)peau\b|(^|\s)piel\b|(^|\s)pele\b/i, 'Dermatology'], [/c(œ|oe)ur|coraz[oó]n|cora[cç][aã]o|cardi/i, 'Cardiology'],
+    [/crimin|kriminèl|arr[eê]t|arrest/i, 'Criminal Defense (All)'], [/succession|testament|herencia|heran[çc]a|eritaj/i, 'Estate Planning']
+  ];
+
   // ---------- RACHEL VOICE: browser speechSynthesis only (no AI voice service, no API key, no cost) ----------
   const VOICE = (() => {
     const synth = window.speechSynthesis;
     const ok = !!(synth && window.SpeechSynthesisUtterance);
-    // voice is OFF by default: visitors type as usual and tap 🔊 Listen on a reply to hear it.
-    // The speaker button at the top turns on auto-read for visitors who want every reply spoken.
-    let on = false, voice = null, current = null;
-    try { if (localStorage.getItem('rw_voice') === 'on') on = true; } catch (e) {}
-    const PREFER = [/samantha/i, /google us english/i, /aria/i, /jenny/i, /zira/i, /female/i, /karen/i, /moira/i, /tessa/i, /victoria/i];
-    function pickVoice() {
-      if (!ok) return;
-      const vs = synth.getVoices().filter(v => /^en(-|_|$)/i.test(v.lang));
-      if (!vs.length) return;
-      for (const re of PREFER) { const v = vs.find(x => re.test(x.name)); if (v) { voice = v; return; } }
-      voice = vs.find(v => /en-us/i.test(v.lang)) || vs[0];
+    // Voice is ON by default: the visitor types, the text appears, then Rachel reads it out loud.
+    // Visitors who can't have sound tap "Voice on" to mute her; they can still tap Listen on any reply.
+    let on = true, current = null;
+    try { if (localStorage.getItem('rw_voice2') === 'off') on = false; } catch (e) {}
+    // ---- Rachel's voice rules: female only, native accent only. If a device has no acceptable voice, Rachel stays text-only in that language (never a wrong accent). ----
+    // Each language lists the accents allowed (in order) and the female voices known on iPhone/Mac, Windows/Edge, Chrome/Android.
+    const VOICE_RULES = {
+      en: { locales: ['en-US'], female: /samantha|ava|allison|susan|nicky|zoe|google us english|aria|jenny|michelle|emma|ana\b|ashley|cora|elizabeth|jane|nancy|sara|amber|monica|zira|joanna|salli|kendra|kimberly|ivy/i },
+      es: { locales: ['es-MX', 'es-US', 'es-419', 'es-PR', 'es-DO', 'es-CU', 'es-CO', 'es-VE', 'es-PA', 'es-CR', 'es-GT', 'es-HN', 'es-NI', 'es-SV', 'es-PE', 'es-EC', 'es-AR', 'es-CL', 'es-BO', 'es-PY', 'es-UY'],
+            female: /paulina|angelica|ang[eé]lica|dalia|beatriz|candela|carlota|larissa|marina|nuria|renata|paloma|sabina|salom[eé]|karina|ramona|belkys|mar[ií]a|ximena|elena|camila|ramona|valentina|lupe|paola|google espa[nñ]ol de estados unidos|mia|isabella/i },
+      pt: { locales: ['pt-BR'], female: /luciana|fernanda|francisca|thalita|leila|maria|yara|brenda|elza|giovanna|leticia|let[ií]cia|manuela|camila|vit[oó]ria|google portugu[eê]s do brasil|joana/i },
+      fr: { locales: ['fr-FR', 'fr-CA'], female: /am[eé]lie|audrey|aurelie|marie|julie|denise|hortense|virginie|elsa|chantal|sylvie|brigitte|ariane|coralie|eloise|jacqueline|yvette|celeste|google fran[cç]ais|sylvie|vivienne|josephine/i },
+      ht: { locales: ['ht-HT', 'ht'], female: /./ } // only a real Haitian Creole voice; never French
+    };
+    const MALE = /\b(alex|daniel|fred|tom|thomas|oliver|arthur|aaron|gordon|rishi|david|mark|guy|george|james|ryan|eric|andrew|brian|christopher|roger|steffan|jorge|diego|juan|carlos|pablo|alvaro|[aá]lvaro|ra[uú]l|jos[eé]|antonio|felipe|henri|nicolas|claude|paul|jacques|remy|r[eé]my|gerard|luciano|reed|rocko|grandpa|eddy|jorge|gerardo|liberto|luciano|cecilio|emilio|federico|gonzalo|lorenzo|nil|pelayo|saul|teo|valerio|yago|arnau|donato|fabio|humberto|julio|nicolau|valerio|male|homme|hombre|homem)\b/i;
+    const FEMALE = new RegExp(Object.values(VOICE_RULES).map(r => r.female.source).join('|'), 'i');
+    const norm_ = l => String(l || '').replace('_', '-').toLowerCase();
+    function pickVoice(lang) {
+      if (!ok) return null;
+      const rule = VOICE_RULES[lang] || VOICE_RULES.en;
+      const all = synth.getVoices().filter(v => !MALE.test(v.name));
+      for (const loc of rule.locales) {
+        const vs = all.filter(v => norm_(v.lang) === loc.toLowerCase() && rule.female.test(v.name));
+        if (!vs.length) continue;
+        // most natural first: Edge "Online (Natural)" / Apple "Enhanced/Premium" / Google voices
+        return vs.find(v => /natural|online/i.test(v.name)) || vs.find(v => /premium|enhanced|siri/i.test(v.name)) || vs.find(v => /google/i.test(v.name)) || vs[0];
+      }
+      return null;
     }
-    if (ok) { pickVoice(); if (synth.addEventListener) synth.addEventListener('voiceschanged', pickVoice); else synth.onvoiceschanged = pickVoice; }
+    const hasVoice = lang => !!pickVoice(lang);
+    if (ok && synth.addEventListener) synth.addEventListener('voiceschanged', () => {});
     function textOf(el) {
       const c = el.cloneNode(true);
       c.querySelectorAll('button, .rw-listen').forEach(b => b.remove());
       c.querySelectorAll('br').forEach(br => br.replaceWith('\n'));
-      c.querySelectorAll('.rw-why').forEach(w => w.prepend('Why I picked them: '));
+      c.querySelectorAll('.rw-why').forEach(w => w.prepend(t('whySay')));
       return (c.textContent || '').replace(/([^.!?:,\s])\s*\n\s*/g, '$1. ').replace(/\n/g, ' ')
-        .replace(/📞\s*Phone:/g, 'Phone:').replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu, '')
-        .replace(/→|✓/g, '').replace(/\s*·\s*/g, ', ').replace(/\bDr\./g, 'Doctor').replace(/\bEsq\.?/g, 'Esquire')
+        .replace(/📞\s*/g, '').replace(/[\u{1F300}-\u{1FAFF}☀-➿]/gu, '')
+        .replace(/→|✓/g, '').replace(/\s*·\s*/g, ', ').replace(/\bDr\./g, LANG === 'en' ? 'Doctor' : 'Dr').replace(/\bEsq\.?/g, 'Esquire')
         .replace(/\s+/g, ' ').trim();
     }
-    function mark(btn, playing) { if (!btn) return; btn.classList.toggle('on', playing); btn.innerHTML = playing ? '⏹ Stop' : '🔊 Listen'; btn.setAttribute('aria-label', playing ? 'Stop reading' : 'Listen to this reply'); }
+    function mark(btn, playing) { if (!btn) return; btn.classList.toggle('on', playing); btn.innerHTML = playing ? t('stop') : t('listen'); btn.setAttribute('aria-label', playing ? t('stop').replace(/^\S+\s/, '') : t('listen').replace(/^\S+\s/, '')); }
     function speak(el, btn, queue) {
       if (!ok) return;
-      const t = textOf(el); if (!t) return;
-      if (!queue) { synth.cancel(); }
-      const u = new SpeechSynthesisUtterance(t);
-      if (voice) u.voice = voice; u.lang = voice ? voice.lang : 'en-US'; u.rate = 1; u.pitch = 1.05;
+      const words = textOf(el); if (!words) return;
+      if (!queue) synth.cancel();
+      if (synth.paused) synth.resume();
+      const u = new SpeechSynthesisUtterance(words);
+      // Only English is spoken for now. Other languages are written in the chat; tapping Listen explains the voice is coming soon.
+      if (LANG !== 'en') { if (!queue) soonModal(); return; }
+      const v = pickVoice(LANG);
+      if (!v) { if (!queue) soonModal(); return; } // never use a male voice or the wrong accent
+      u.voice = v; u.lang = v.lang;
+      u.rate = 1; u.pitch = 1; // natural voice, no pitch tricks
       u.onstart = () => { if (current && current !== btn) mark(current, false); current = btn; mark(btn, true); };
       u.onend = u.onerror = () => { mark(btn, false); if (current === btn) current = null; };
       synth.speak(u);
@@ -1196,19 +1489,41 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'rw-listen'; mark(btn, false);
       btn.addEventListener('click', () => { if (btn.classList.contains('on')) { synth.cancel(); mark(btn, false); } else speak(d, btn, false); });
       const wrap = document.createElement('div'); wrap.appendChild(btn); d.appendChild(wrap);
-      if (on) setTimeout(() => speak(d, btn, true), 0); // text appears first, then Rachel speaks
+      if (on) speak(d, btn, true); // text is on screen, then Rachel speaks (called right away so phones allow the sound)
+    }
+    function unlock() { if (!ok || unlock.done) return; unlock.done = true; try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; synth.speak(u); } catch (e) {} } // iPhone/iPad need the first speech inside a tap
+    const SOON = {
+      en: ['Voice not available yet', 'Rachel’s voice isn’t available on this device yet. You can keep chatting with her in writing.', 'OK'],
+      es: ['Voz disponible muy pronto', 'La voz de Rachel en español todavía no está disponible. Mientras tanto, puede seguir conversando con ella por escrito en español.', 'Entendido'],
+      pt: ['Voz disponível em breve', 'A voz da Rachel em português ainda não está disponível. Enquanto isso, você pode continuar conversando com ela por escrito em português.', 'Entendi'],
+      fr: ['Voix bientôt disponible', 'La voix de Rachel en français n’est pas encore disponible. En attendant, vous pouvez continuer à lui écrire en français.', 'D’accord'],
+      ht: ['Vwa a ap vini byento', 'Vwa Rachel an kreyòl poko disponib. Pandan tan sa a, ou ka kontinye pale avè l alekri an kreyòl.', 'Oke']
+    };
+    function soonModal() {
+      const m = document.getElementById('rw-soon'); if (!m) return;
+      const [h, p, ok] = SOON[LANG] || SOON.en;
+      m.querySelector('h3').textContent = '🔊 ' + h; m.querySelector('p').textContent = p; m.querySelector('button').textContent = ok;
+      m.hidden = false; m.querySelector('button').focus();
     }
     function stop() { if (ok) synth.cancel(); if (current) mark(current, false); current = null; }
-    function setOn(v) {
-      on = v; try { localStorage.setItem('rw_voice', v ? 'on' : 'off'); } catch (e) {}
+    function paint() {
       const b = document.getElementById('rw-voice'); if (!b) return;
-      b.setAttribute('aria-pressed', String(v)); b.textContent = v ? '🔊' : '🔇';
-      b.setAttribute('aria-label', 'Read every reply out loud: ' + (v ? 'on' : 'off'));
-      b.title = v ? 'Rachel reads every reply out loud (tap to turn off)' : 'Tap to have Rachel read every reply out loud';
-      if (!v) stop();
+      b.setAttribute('aria-pressed', String(on)); b.classList.toggle('off', !on);
+      b.innerHTML = (on ? '🔊 ' : '🔇 ') + (on ? t('voiceOn') : t('voiceOff'));
+      const l = document.getElementById('rw-lang-lbl'); if (l) l.textContent = t('langLabel');
+      const sb = document.querySelector('#rw-form button[type=submit]'); if (sb) sb.textContent = t('send');
+      const ft = document.querySelector('.rw-foot'); if (ft) ft.textContent = t('foot');
     }
-    if (ok) { const b = document.getElementById('rw-voice'); if (b) { b.hidden = false; b.addEventListener('click', () => setOn(!on)); setOn(on); } }
-    return { attach, stop, ok };
+    function setOn(v) { on = v; try { localStorage.setItem('rw_voice2', v ? 'on' : 'off'); } catch (e) {} if (!v) stop(); paint(); }
+    const bar = document.getElementById('rw-bar');
+    if (bar) {
+      const b = document.getElementById('rw-voice');
+      if (ok) b.addEventListener('click', () => setOn(!on)); else b.hidden = true;
+      const sel = document.getElementById('rw-lang');
+      sel.innerHTML = RW_LANGS.map(([c, n]) => `<option value="${c}">${n}</option>`).join(''); sel.value = LANG;
+      paint();
+    }
+    return { attach, stop, ok, paint, unlock };
   })();
 
   let S = null;
@@ -1222,13 +1537,13 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   function rwChips(list, opts) {
     R.chips.innerHTML = '';
     (list || []).forEach(c => {
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'rw-chip'; b.textContent = c.label || c;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'rw-chip'; b.textContent = c.label || c; b.dataset.v = c.value != null ? c.value : (c.label || c);
       b.addEventListener('click', () => handle(c.value != null ? c.value : (c.label || c), c.label || c));
       R.chips.appendChild(b);
     });
     if (opts && opts.state) {
       const sel = document.createElement('select'); sel.className = 'rw-select'; sel.setAttribute('aria-label', 'Choose your state');
-      sel.innerHTML = '<option value="">Choose your state…</option>' + DIR_STATES.map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
+      sel.innerHTML = '<option value="">' + t('chooseState') + '</option>' + DIR_STATES.map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
       sel.addEventListener('change', () => { if (sel.value) handle(stateName(sel.value), stateName(sel.value)); });
       R.chips.prepend(sel);
     }
@@ -1255,33 +1570,24 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   let qIndex = 0;
   // input box hint changes with each step so visitors always know what to type next
   function setPH() {
-    const st = S ? stateName(S.state) : '';
-    const PH = {
-      start: 'Type what you need (e.g. dentist in Miami, FL)…',
-      type: 'Type doctor or attorney…',
-      specialty: S && S.type === 'attorney' ? 'Type the specialty or your case (e.g. divorce)…' : 'Type the specialty or your problem (e.g. back pain)…',
-      state: 'Type your state (e.g. Florida)…',
-      city: 'Type your city or ZIP code…',
-      need: 'Tell me more about your need…',
-      q: 'Type your answer or tap an option…',
-      done: 'Type a new search…'
-    };
-    R.input.placeholder = PH[S && S.step] || 'Type your message…';
+    const P = t('ph');
+    const k = S && S.step === 'specialty' ? (S.type === 'attorney' ? 'specA' : 'specD') : (S && S.step);
+    R.input.placeholder = P[k] || P.start;
     R.input.setAttribute('aria-label', R.input.placeholder.replace(/…$/, ''));
   }
   function next() {
-    if (!S.type) { S.step = 'type'; say('Are you looking for a <b>doctor</b> or an <b>attorney</b>?'); rwChips(['Doctor', 'Attorney']); return; }
+    if (!S.type) { S.step = 'type'; say(t('askType')); rwChips([{ label: t('doctorChip'), value: 'Doctor' }, { label: t('attorneyChip'), value: 'Attorney' }]); return; }
     if (!S.specialty) {
       S.step = 'specialty';
-      say(`What type of ${who()} do you need? Tell me the specialty, or describe the problem in your own words${S.type === 'attorney' ? ' (for example “car accident” or “divorce”)' : ' (for example “back pain” or “braces for my son”)'}.`);
+      say(t('askSpec')(whoW(), S.type === 'attorney'));
       const pop = S.type === 'attorney' ? ['Car Accidents', 'Divorce', 'Criminal Defense (All)', 'Immigration (All)', 'Estate Planning', 'Workers\' Compensation'] : ['Family Medicine', 'General Dentistry', 'Chiropractor', 'Dermatology', 'Pediatrics', 'Orthopedic Surgery'];
       rwChips(pop.map(p => ({ label: p.replace(/ \(All\)$/, ''), value: p }))); return;
     }
-    if (!S.state) { S.step = 'state'; say('What state are you in?'); rwChips([], { state: true }); return; }
-    if (!S.city && !S.zip && !S.askedCity) { S.askedCity = true; S.step = 'city'; say(`Great! What <b>city</b> or <b>ZIP code</b> in ${esc(stateName(S.state))} should I search? You can type your city, your ZIP code, or both (for example “Fort Myers” or “33901” or “Fort Myers 33901”).`); rwChips(['Anywhere in ' + stateName(S.state)]); return; }
-    if (!S.askedNeed) { S.askedNeed = true; S.step = 'need'; say('In order to better assist you, tell me more about your need. The more you share, the better I can match you.'); rwChips(['Skip']); return; }
+    if (!S.state) { S.step = 'state'; say(t('askState')); rwChips([], { state: true }); return; }
+    if (!S.city && !S.zip && !S.askedCity) { S.askedCity = true; S.step = 'city'; say(t('askCity')(esc(stateL(S.state)))); rwChips([{ label: t('anywhere')(stateL(S.state)), value: 'Anywhere in ' + stateName(S.state) }]); return; }
+    if (!S.askedNeed) { S.askedNeed = true; S.step = 'need'; say(t('askNeed')); rwChips([{ label: t('skip'), value: 'Skip' }]); return; }
     const qs = QUESTIONS[S.type];
-    if (qIndex < qs.length) { const Q = qs[qIndex]; S.step = 'q'; say(Q.q); rwChips(Q.opts); return; }
+    if (qIndex < qs.length) { const Q = qText(qs[qIndex]); S.step = 'q'; say(Q.q); rwChips(Q.opts); return; }
     finish();
   }
   function handle(val, label) {
@@ -1291,15 +1597,20 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     if (S.step === 'done' && !/^(start over|restart|reset)$/i.test(txt)) { reset(); qIndex = 0; }
     const hadSpec = !!S.specialty;
     if (/^(start over|restart|reset)$/i.test(txt)) { start(true); return; }
-    if (isCrisis(txt)) { say('I’m really sorry you’re going through this. Please call or text <b>988</b> (Suicide &amp; Crisis Lifeline) right now, or call <b>911</b> if you’re in immediate danger. You don’t have to go through this alone.'); rwChips(['Start over']); return; }
-    if (isEmergency(txt)) { say('If this is a medical emergency, please call <b>911</b> or go to the nearest emergency room right away. I can help you find a doctor for follow-up care afterward.'); }
+    if (isCrisis(txt)) { say(t('crisis')); rwChips([{ label: t('startOver'), value: 'Start over' }]); return; }
+    if (isEmergency(txt)) { say(t('emergency')); }
     // pick up anything useful the person typed, at any step
     if (S.step !== 'q' && S.step !== 'need') {
       if (!S.type) S.type = /^attorney$/i.test(txt) ? 'attorney' : /^doctor$/i.test(txt) ? 'doctor' : detectType(txt);
       if (!S.specialty) { const sp = SPEC_TYPE[txt] ? txt : detectSpecialty(txt, S.type); if (sp && (!S.type || SPEC_TYPE[sp] === S.type)) { S.specialty = sp; S.type = SPEC_TYPE[sp]; } }
       const pl = detectPlace(txt);
       if (!S.state && pl.state) S.state = pl.state;
-      if (S.step === 'state' && !S.state) { const hit = DIR_STATES.find(([c, n]) => n.toLowerCase() === txt.toLowerCase() || c === txt.toUpperCase()); if (hit) S.state = hit[0]; }
+      if (S.step === 'state' && !S.state) { const tt = txt.replace(/[.,!]+/g, '').trim(); const hit = DIR_STATES.find(([c, n]) => n.toLowerCase() === tt.toLowerCase() || c === tt.toUpperCase()); if (hit) S.state = hit[0]; }
+      if (!S.state) { // state names in French, Spanish, Portuguese, Creole
+        const k = txt.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[-']/g, ' ');
+        const ALT = [[/florid/, 'FL'], [/californ/, 'CA'], [/georgi/, 'GA'], [/(nouveau|nueva|nova|nouvo)\s*(york|yok)/, 'NY'], [/(nouveau|nuevo|novo)\s*(mexique|mexico)/, 'NM'], [/(nouveau|nueva|nova)\s*jersey/, 'NJ'], [/(caroline du nord|carolina del norte|carolina do norte|karolin di no)/, 'NC'], [/(caroline du sud|carolina del sur|carolina do sul|karolin di sid)/, 'SC'], [/pen(n)?s(y|i)lvan/, 'PA'], [/louisian|luisian/, 'LA'], [/ha(w|v)a(i|ii)/, 'HI'], [/massachuset/, 'MA'], [/virginie occidentale|virginia occidental|virginia ocidental/, 'WV'], [/virgin(ie)?\b/, 'VA'], [/porto rico|puerto rico|pòtoriko|potoriko/, 'PR'], [/teksas|tejas/, 'TX'], [/illino/, 'IL'], [/michig/, 'MI'], [/arizon/, 'AZ'], [/nevad/, 'NV']];
+        for (const [re, c] of ALT) if (re.test(k)) { S.state = c; break; }
+      }
       if (!S.city && pl.city) S.city = pl.city;
       if (!S.zip && pl.zip) S.zip = pl.zip;
       if (S.step === 'city' && !/^anywhere/i.test(txt)) {
@@ -1310,11 +1621,11 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
           if (c && !/^\d+$/.test(c)) S.city = c.replace(/\b\w/g, m => m.toUpperCase());
         }
         const where = [S.city, S.zip].filter(Boolean).join(' ');
-        if (where) S.cityConfirm = S.city ? `${esc(S.city + ', ' + S.state)}${S.zip ? ' ' + esc(S.zip) : ''}. Got it!` : `ZIP code ${esc(S.zip)} in ${esc(stateName(S.state))}. Got it!`;
+        if (where) S.cityConfirm = S.city ? t('gotIt')(`${esc(S.city + ', ' + S.state)}${S.zip ? ' ' + esc(S.zip) : ''}`) : t('zipIn')(esc(S.zip), esc(stateL(S.state)));
       }
       if (S.step === 'specialty' && !S.specialty) {
         if (/not sure|don'?t know|idk/i.test(txt)) { S.specialty = '*'; }
-        else { S.need = (S.need + ' ' + txt).trim(); say(`Thank you. I didn’t catch the exact specialty, so I’ll look at all ${who()}s and match on what you described. You can also tap a specialty below.`); S.specialty = '*'; }
+        else { S.need = (S.need + ' ' + txt).trim(); say(t('specMissed')(whoW(true))); S.specialty = '*'; }
       }
     } else if (S.step === 'need') {
       if (!/^skip$/i.test(txt)) { S.need = (S.need + ' ' + txt).trim(); if (S.specialty === '*') { const sp = detectSpecialty(txt, S.type); if (sp) S.specialty = sp; } }
@@ -1322,9 +1633,13 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       const Q = QUESTIONS[S.type][qIndex]; if (!/^skip$/i.test(txt)) S.prefs[Q.key] = txt; qIndex++;
     }
     if (S.cityConfirm) { say(S.cityConfirm); S.cityConfirm = ''; }
-    if (!hadSpec && S.specialty && S.specialty !== '*' && S.step === 'specialty') say(`${esc(S.specialty.replace(/ \(All\)$/, ''))}. Got it!`);
-    if (S.step === 'start' && S.type && !S.specialty && !S.state) say(`Great, let’s find you the right ${who()}.`);
-    else if (S.step === 'start' && S.specialty) say(`${esc(S.specialty.replace(/ \(All\)$/, ''))}${S.state ? ' in ' + esc((S.city ? S.city + ', ' : '') + stateName(S.state)) : ''}. Got it!`);
+    if (!hadSpec && S.specialty && S.specialty !== '*' && S.step === 'specialty') say(t('gotIt')(esc(S.specialty.replace(/ \(All\)$/, ''))));
+    if (S.step === 'start' && S.type && !S.specialty && !S.state) say(t('letsFind')(whoW()));
+    else if (S.step === 'start' && S.specialty) say(t('gotIt')(`${esc(S.specialty.replace(/ \(All\)$/, ''))}${S.state ? t('inPlace')(esc((S.city ? S.city + ', ' : '') + stateL(S.state))) : ''}`));
+    if (S.step === 'state' && !S.state && S.type && S.specialty) {
+      if (!S.city && !/\d/.test(txt) && txt.length > 1 && txt.length < 40) S.city = txt.replace(/[,.]+$/, '').trim().replace(/\b\w/g, m => m.toUpperCase());
+      say(t('stateMissed')(esc(txt))); rwChips([], { state: true }); setPH(); return;
+    }
     next(); setPH();
   }
   function score(p) {
@@ -1353,8 +1668,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   }
   async function finish() {
     S.step = 'done'; setPH();
-    const spLabel = S.specialty && S.specialty !== '*' ? S.specialty.replace(/ \(All\)$/, '') : who() + 's';
-    say(`Perfect, thank you! Let me search the WebSwan Media Network Directory for ${esc(spLabel)} in ${esc((S.city ? S.city + ', ' : '') + stateName(S.state))}…`);
+    const spLabel = S.specialty && S.specialty !== '*' ? S.specialty.replace(/ \(All\)$/, '') : whoW(true);
+    say(t('searching')(esc(spLabel), esc((S.city ? S.city + ', ' : '') + stateL(S.state))));
     const typing = document.createElement('div'); typing.className = 'rw-msg bot rw-typing'; typing.innerHTML = '<span></span><span></span><span></span>'; R.log.appendChild(typing); R.log.scrollTop = R.log.scrollHeight;
     let rows = [], broadened = false;
     const today = new Date().toISOString().slice(0, 10);
@@ -1372,15 +1687,15 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         const all = await pull('*'); rows = grp ? all.filter(p => (p.specialties || []).some(x => grp.includes(x))) : [];
         broadened = rows.length > 0;
       }
-    } catch (e) { typing.remove(); say('I’m having trouble reaching the directory right now. Please try again in a moment, or call (239) 667-0151.'); rwChips(['Start over']); return; }
+    } catch (e) { typing.remove(); say(t('trouble')); rwChips([{ label: t('startOver'), value: 'Start over' }]); return; }
     typing.remove();
     if (!rows.length) {
-      say(`I’m sorry, I don’t have ${esc(spLabel)} listed in ${esc(stateName(S.state))} yet. New professionals join the WebSwan Media Network Directory every week, so please check back soon.`);
-      rwChips(['Start over']); return;
+      say(t('none')(esc(spLabel), esc(stateL(S.state))));
+      rwChips([{ label: t('startOver'), value: 'Start over' }]); return;
     }
     const ranked = rows.map(p => Object.assign(p, score(p))).sort((a, b) => b.s - a.s || String(a.name).localeCompare(String(b.name))).slice(0, 5);
     const total = rows.length;
-    say(`${broadened ? `I didn’t find an exact match for ${esc(spLabel)}, so I included closely related specialists. ` : ''}I reviewed <b>${total}</b> ${total === 1 ? 'listing' : 'listings'} and here ${ranked.length === 1 ? 'is my top match' : `are my top ${ranked.length} matches`} for you:`);
+    say(`${broadened ? t('broadened')(esc(spLabel)) : ''}${t('reviewed')(total, ranked.length)}`);
     ranked.forEach((p, i) => {
       const nm = esc(p.name) + (p.credentials ? ', ' + esc(p.credentials) : '');
       const spec = (p.specialties || []).slice(0, 3).map(esc).join(', ');
@@ -1392,21 +1707,37 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         p.yearsLicensed ? `${pro === 'They' ? 'have' : 'has'} been licensed for ${esc(p.yearsLicensed)} years` : '',
         place ? `${pro === 'They' ? 'are' : 'is'} located in ${place}` : ''
       ].filter(Boolean);
-      const sentence = bits.length ? pro + ' ' + (bits.length > 1 ? bits.slice(0, -1).join(', ') + ', and ' + bits[bits.length - 1] : bits[0]) + '.' : '';
+      let sentence = bits.length ? pro + ' ' + (bits.length > 1 ? bits.slice(0, -1).join(', ') + ', and ' + bits[bits.length - 1] : bits[0]) + '.' : '';
+      if (LANG !== 'en') {
+        const PL = t('pick');
+        sentence = [focus.length ? PL[0] + focus.map(esc).join(', ') : '', p.yearsLicensed ? PL[1].replace('{n}', esc(p.yearsLicensed)) : '', place ? PL[2] + place : ''].filter(Boolean).join('. ') + (focus.length || p.yearsLicensed || place ? '.' : '');
+      }
       const tel = String(p.phone || '').replace(/[^\d+]/g, '');
-      say(`<div class="rw-pick"><b>${i + 1}. ${nm}</b>${p.practice ? ` <span class="rw-sub">· ${esc(p.practice)}</span>` : ''}<br>This is ${nm}${spec ? ` (${spec})` : ''}. ${sentence}${p.why.length ? `<br><span class="rw-why">✓ ${esc(p.why.slice(0, 3).join(' · '))}</span>` : ''}${tel ? `<br>📞 Phone: <a href="tel:${esc(tel)}">${esc(p.phone)}</a>` : ''}<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">View ${p.type === 'attorney' ? 'attorney' : 'doctor'}’s profile →</button></div>`);
+      say(`<div class="rw-pick"><b>${i + 1}. ${nm}</b>${p.practice ? ` <span class="rw-sub">· ${esc(p.practice)}</span>` : ''}<br>${t('thisIs')(nm, spec)} ${sentence}${p.why.length ? `<br><span class="rw-why">✓ ${esc(p.why.slice(0, 3).map(whyT).join(' · '))}</span>` : ''}${tel ? `<br>📞 ${t('phone')}: <a href="tel:${esc(tel)}">${esc(p.phone)}</a>` : ''}<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">${t('view')(p.type === 'attorney')}</button></div>`);
     });
-    say(`Click <b>View profile</b> on any of them to see their full page. Listings are sponsored by the professionals, and I can’t give ${S.type === 'attorney' ? 'legal' : 'medical'} advice, so please confirm details directly with their office. Anything else I can help you with?`);
-    rwChips(['Start over']);
+    say(t('closing')(S.type === 'attorney'));
+    rwChips([{ label: t('startOver'), value: 'Start over' }]);
   }
   function start(again) {
     reset(); qIndex = 0;
     if (!again) R.log.innerHTML = '';
-    say('Hi, I’m <b>Rachel WebSwan</b> with WebSwan Media Network. 👋 How can I assist you today?<br><span class="rw-sub">Tell me what you’re looking for, like “I need a chiropractor near Orlando, FL” or “divorce attorney in Houston, Texas.”</span>');
-    rwChips(['Find a doctor', 'Find an attorney']); setPH();
+    say(t('greet'));
+    rwChips([{ label: t('findDoc'), value: 'Find a doctor' }, { label: t('findAtt'), value: 'Find an attorney' }]); setPH();
   }
+  $('rw-lang').addEventListener('change', e => {
+    LANG = e.target.value; try { localStorage.setItem('rw_lang', LANG); } catch (err) {}
+    VOICE.stop(); VOICE.paint();
+    R.log.querySelectorAll('.rw-listen').forEach(b => { if (!b.classList.contains('on')) b.innerHTML = t('listen'); });
+    if (!started) return;
+    if (!S || S.step === 'start' || S.step === 'done') { start(); return; }
+    if (S.step === 'city') S.askedCity = false; if (S.step === 'need') S.askedNeed = false;
+    say(t('langSet')); R.chips.innerHTML = ''; next(); setPH();
+  });
+  $('rw-soon-ok').addEventListener('click', () => { $('rw-soon').hidden = true; });
+  $('rw-soon').addEventListener('click', e => { if (e.target.id === 'rw-soon') e.target.hidden = true; });
   let started = false;
   function openRachel() {
+    VOICE.unlock();
     R.box.hidden = false; $('rw-launch').setAttribute('aria-expanded', 'true');
     if (!started) { started = true; start(); }
     setTimeout(() => R.input.focus(), 50);
@@ -1420,7 +1751,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     if (S.step === 'start') { if (/^find a doctor$/i.test(v)) S.type = 'doctor'; else if (/^find an attorney$/i.test(v)) S.type = 'attorney'; }
     handle(v);
   });
-  R.chips.addEventListener('click', e => { const b = e.target.closest('.rw-chip'); if (b && S && S.step === 'start') { if (/doctor/i.test(b.textContent)) S.type = 'doctor'; if (/attorney/i.test(b.textContent)) S.type = 'attorney'; } }, true);
+  R.chips.addEventListener('click', e => { const b = e.target.closest('.rw-chip'); if (b && S && S.step === 'start') { if (/doctor/i.test(b.dataset.v || '')) S.type = 'doctor'; if (/attorney/i.test(b.dataset.v || '')) S.type = 'attorney'; } }, true);
   R.box.addEventListener('keydown', e => { if (e.key === 'Escape') closeRachel(); });
   function rwLift() {
     const cb = document.getElementById('cookie-banner-lp');
