@@ -1196,7 +1196,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       rwChips(pop.map(p => ({ label: p.replace(/ \(All\)$/, ''), value: p }))); return;
     }
     if (!S.state) { S.step = 'state'; say('What state are you in?'); rwChips([], { state: true }); return; }
-    if (!S.city && !S.zip && !S.askedCity) { S.askedCity = true; S.step = 'city'; say(`What city or ZIP code in ${esc(stateName(S.state))}?`); rwChips(['Anywhere in ' + stateName(S.state)]); return; }
+    if (!S.city && !S.zip && !S.askedCity) { S.askedCity = true; S.step = 'city'; say(`Great! What <b>city</b> or <b>ZIP code</b> in ${esc(stateName(S.state))} should I search? You can type your city, your ZIP code, or both (for example “Fort Myers” or “33901” or “Fort Myers 33901”).`); rwChips(['Anywhere in ' + stateName(S.state)]); return; }
     if (!S.askedNeed) { S.askedNeed = true; S.step = 'need'; say('In order to better assist you, tell me more about your need. The more you share, the better I can match you.'); rwChips(['Skip']); return; }
     const qs = QUESTIONS[S.type];
     if (qIndex < qs.length) { const Q = qs[qIndex]; S.step = 'q'; say(Q.q); rwChips(Q.opts); return; }
@@ -1219,7 +1219,16 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       if (S.step === 'state' && !S.state) { const hit = DIR_STATES.find(([c, n]) => n.toLowerCase() === txt.toLowerCase() || c === txt.toUpperCase()); if (hit) S.state = hit[0]; }
       if (!S.city && pl.city) S.city = pl.city;
       if (!S.zip && pl.zip) S.zip = pl.zip;
-      if (S.step === 'city' && !pl.city && !pl.zip && !/^anywhere/i.test(txt)) S.city = txt.replace(/,.*$/, '').trim();
+      if (S.step === 'city' && !/^anywhere/i.test(txt)) {
+        // accept city only, ZIP only, or both ("Fort Myers 33901", "Fort Myers, FL 33901")
+        if (!S.city) {
+          const DROP = new RegExp('\\b(' + DIR_STATES.map(([c, n]) => c + '|' + n.replace(/ /g, '\\s+')).join('|') + ')\\b', 'gi');
+          const c = txt.replace(/\b\d{5}(?:-\d{4})?\b/g, ' ').replace(/^(?:i(?:'| a)?m |it'?s |in |near |around )+/i, '').replace(DROP, ' ').replace(/[,.]+/g, ' ').replace(/\s+/g, ' ').trim();
+          if (c && !/^\d+$/.test(c)) S.city = c.replace(/\b\w/g, m => m.toUpperCase());
+        }
+        const where = [S.city, S.zip].filter(Boolean).join(' ');
+        if (where) S.cityConfirm = S.city ? `${esc(S.city + ', ' + S.state)}${S.zip ? ' ' + esc(S.zip) : ''}. Got it!` : `ZIP code ${esc(S.zip)} in ${esc(stateName(S.state))}. Got it!`;
+      }
       if (S.step === 'specialty' && !S.specialty) {
         if (/not sure|don'?t know|idk/i.test(txt)) { S.specialty = '*'; }
         else { S.need = (S.need + ' ' + txt).trim(); say(`Thank you. I didn’t catch the exact specialty, so I’ll look at all ${who()}s and match on what you described. You can also tap a specialty below.`); S.specialty = '*'; }
@@ -1229,6 +1238,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     } else if (S.step === 'q') {
       const Q = QUESTIONS[S.type][qIndex]; if (!/^skip$/i.test(txt)) S.prefs[Q.key] = txt; qIndex++;
     }
+    if (S.cityConfirm) { say(S.cityConfirm); S.cityConfirm = ''; }
     if (!hadSpec && S.specialty && S.specialty !== '*' && S.step === 'specialty') say(`${esc(S.specialty.replace(/ \(All\)$/, ''))}. Got it!`);
     if (S.step === 'start' && S.type && !S.specialty && !S.state) say(`Great, let’s find you the right ${who()}.`);
     else if (S.step === 'start' && S.specialty) say(`${esc(S.specialty.replace(/ \(All\)$/, ''))}${S.state ? ' in ' + esc((S.city ? S.city + ', ' : '') + stateName(S.state)) : ''}. Got it!`);
