@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ads.webswanmedianetwork.com/sitemap.xml
