@@ -295,6 +295,48 @@
     .adm-scroll{overflow-x:auto}
     @media(max-width:1000px){.dir-form{grid-template-columns:1fr 1fr}.dir-form .btn{grid-column:1/-1}.dir-why{grid-template-columns:1fr}.dir-pop{grid-template-columns:1fr}.adm-grid{grid-template-columns:1fr 1fr}}
     @media(max-width:600px){.dir-form{grid-template-columns:1fr}.dir-card{padding:20px 16px}.dir-hero{padding:46px 0 44px}.adm-grid{grid-template-columns:1fr}.adm-field.two{grid-column:auto}.dir-pros{padding:26px 20px}.hero-h{font-size:40px}.dir-card h2{font-size:19px!important;line-height:1.3}}
+        /* Rachel WebSwan + profile */
+    .rw-invite{display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap;margin-top:18px;padding:16px 18px;border-radius:18px;background:linear-gradient(105deg,#e8f6fc,#f7fbfd);border:1.5px solid #b9dbe8}
+    .rw-invite p{margin:0;color:#0b4164;font-size:14.5px}.rw-invite b{color:var(--navy)}
+    .rw-face{width:46px;height:46px;border-radius:50%;flex:none;background:linear-gradient(145deg,#79c6ed,#1b70c2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:19px;box-shadow:0 6px 16px rgba(27,112,194,.35)}
+    #rw-launch{position:fixed;left:20px;bottom:20px;z-index:99997;display:flex;align-items:center;gap:10px;border:none;cursor:pointer;background:#1b70c2;color:#fff;border-radius:999px;padding:8px 18px 8px 8px;font:inherit;font-weight:800;font-size:14px;box-shadow:0 12px 30px rgba(8,42,72,.35)}
+    #rw-launch .rw-face{width:38px;height:38px;font-size:16px;background:#fff;color:#1b70c2;box-shadow:none}
+    #rw-panel{position:fixed;left:20px;bottom:84px;z-index:99998;width:380px;max-width:calc(100vw - 32px);height:min(600px,calc(100vh - 110px));background:#fff;border-radius:22px;box-shadow:0 30px 70px rgba(8,42,72,.35);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line)}
+    #rw-panel[hidden]{display:none}
+    .rw-top{display:flex;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(120deg,#062743,#1b70c2);color:#fff}
+    .rw-top .rw-face{width:40px;height:40px;background:#fff;color:#1b70c2;box-shadow:none}
+    .rw-top b{display:block;font-size:15.5px}.rw-top small{color:#c4e8f3;font-size:12px}
+    .rw-top button{margin-left:auto;background:rgba(255,255,255,.15);border:none;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:20px;line-height:1}
+    #rw-log{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;background:#f7fbfd}
+    .rw-msg{max-width:88%;padding:10px 13px;border-radius:16px;font-size:14px;line-height:1.5;color:#18364a;background:#fff;border:1px solid #e1eef4;align-self:flex-start;border-bottom-left-radius:5px}
+    .rw-msg.me{align-self:flex-end;background:#1b70c2;color:#fff;border-color:#1b70c2;border-bottom-left-radius:16px;border-bottom-right-radius:5px}
+    .rw-msg a{color:#1b70c2;font-weight:700}
+    .rw-sub{color:#5c7180;font-size:12.5px}.rw-why{color:#155724;font-size:12.5px;font-weight:700}
+    .rw-pick{line-height:1.55}
+    .rw-link{margin-top:6px;border:none;background:#1b70c2;color:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer}
+    .rw-typing{display:flex;gap:4px}.rw-typing span{width:7px;height:7px;border-radius:50%;background:#79c6ed;animation:rwb 1s infinite}.rw-typing span:nth-child(2){animation-delay:.15s}.rw-typing span:nth-child(3){animation-delay:.3s}
+    @keyframes rwb{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+    #rw-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px 0;background:#fff}
+    .rw-chip{border:1.5px solid #b9dbe8;background:#fff;color:#0b4164;border-radius:999px;padding:6px 12px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+    .rw-chip:hover{background:#e8f6fc;border-color:#3bb9f7}
+    .rw-select{width:100%;height:40px;border:1.5px solid #cfe2ea;border-radius:12px;padding:0 10px;font:inherit;font-size:14px}
+    #rw-form{display:flex;gap:8px;padding:10px 12px 12px;background:#fff}
+    #rw-input{flex:1;height:42px;border:1.5px solid #cfe2ea;border-radius:999px;padding:0 14px;font:inherit;font-size:14px}
+    #rw-form button{border:none;background:#1b70c2;color:#fff;border-radius:999px;padding:0 16px;font-weight:800;cursor:pointer}
+    .rw-foot{font-size:10.5px;color:#5c7180;text-align:center;padding:0 12px 8px;background:#fff}
+    #pro-modal{position:fixed;inset:0;z-index:99999;background:rgba(6,39,67,.6);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+    #pro-modal[hidden]{display:none}
+    .pro-card{position:relative;background:#fff;border-radius:24px;max-width:760px;width:100%;padding:30px;box-shadow:0 40px 90px rgba(0,0,0,.35)}
+    .pro-card h2{color:var(--navy);margin:4px 0 2px;font-size:clamp(24px,3vw,32px);letter-spacing:-.03em}
+    .pro-card h3{color:var(--navy);font-size:16px;margin:20px 0 8px}
+    #pro-close{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:1.5px solid #cfe2ea;background:#f7fbfd;font-size:22px;cursor:pointer;color:var(--navy)}
+    .pro-head{display:flex;gap:18px;align-items:center;padding-right:40px}
+    .dir-avatar.pro-big{width:96px;height:96px;font-size:32px}
+    .pro-bio{font-size:15.5px;color:#3d5566;margin-top:18px}
+    .pro-facts{list-style:none;padding:0;margin:16px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .pro-facts li{background:#f7fbfd;border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:14px;font-weight:600;color:#18364a}
+    .dir-pro .dir-actions button{display:inline-flex;align-items:center;border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;font-weight:800;border:1.5px solid #1b70c2;color:#1b70c2;background:#fff;cursor:pointer}
+    @media(max-width:600px){#rw-panel{left:8px;right:8px;width:auto;bottom:76px;height:calc(100vh - 96px)}#rw-launch{left:12px;bottom:12px}#rw-launch span.rw-lbl{display:none}#rw-launch{padding:8px}.pro-facts{grid-template-columns:1fr}.pro-head{flex-direction:column;align-items:flex-start}.pro-card{padding:22px 18px}}
     </style>
 
     <section class="dir-hero" id="find" aria-labelledby="dir-h1"><div class="wrap">
@@ -327,6 +369,7 @@
           <button class="btn" type="submit" id="dir-submit">Search <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
         </form>
         <p class="dir-hint">Tip: type a city, a ZIP code, or both (for example “Fort Myers 33901”). Leave it blank to see everyone in the state.</p>
+        <div class="rw-invite"><div style="display:flex;gap:12px;align-items:center"><div class="rw-face" aria-hidden="true">R</div><p><b>Not sure who to choose?</b> Chat with <b>Rachel WebSwan</b>. Answer a few quick questions and she will narrow the directory down to your best matches.</p></div><button class="btn" type="button" data-open-rachel>Talk to Rachel <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
         <div id="dir-out" aria-live="polite"></div>
         <p class="dir-note">Listings in the WebSwan Media Network Directory are paid advertisements (sponsored listings) from independent professionals. WebSwan Media Network does not provide medical or legal advice, does not endorse or refer any professional, and does not guarantee results. Please verify licenses with your state medical board or state bar before hiring. In a medical emergency, call 911.</p>
       </div>
@@ -471,6 +514,17 @@
     </div>
   </div>
 </section>
+<!-- ===== RACHEL WEBSWAN (guided directory assistant) ===== -->
+<button id="rw-launch" type="button" aria-expanded="false" aria-controls="rw-panel"><span class="rw-face" aria-hidden="true">R</span><span class="rw-lbl">Chat with Rachel WebSwan</span></button>
+<div id="rw-panel" role="dialog" aria-label="Chat with Rachel WebSwan" hidden>
+  <div class="rw-top"><span class="rw-face" aria-hidden="true">R</span><div><b>Rachel WebSwan</b><small>WebSwan Media Network · Directory assistant</small></div><button type="button" id="rw-close" aria-label="Close chat">×</button></div>
+  <div id="rw-log" role="log" aria-live="polite"></div>
+  <div id="rw-chips"></div>
+  <form id="rw-form" autocomplete="off"><label for="rw-input" class="hp" style="position:absolute;left:-9999px">Message Rachel</label><input id="rw-input" placeholder="Type your message…" maxlength="400"><button type="submit">Send</button></form>
+  <div class="rw-foot">Rachel helps you search sponsored listings. She can’t give medical or legal advice. Emergencies: call 911.</div>
+</div>
+<div id="pro-modal" hidden><div class="pro-card" role="dialog" aria-modal="true" aria-labelledby="pro-title"><button type="button" id="pro-close" aria-label="Close profile">×</button><div id="pro-body"></div></div></div>
+
 <!-- ===== DIRECTORY ADMIN (owner only; open with #admin) ===== -->
 <section id="ws-admin" aria-labelledby="adm-h"><div class="wrap">
   <div class="adm-box">
@@ -500,6 +554,10 @@
         <div class="adm-field"><label for="adm-state">State *</label><select id="adm-state" required><option value="">Choose</option></select></div>
         <div class="adm-field"><label for="adm-zip">ZIP code *</label><input id="adm-zip" required inputmode="numeric" maxlength="10"></div>
         <div class="adm-field"><label for="adm-lang">Languages</label><input id="adm-lang" placeholder="English, Spanish, Haitian Creole"></div>
+        <div class="adm-field"><label for="adm-years">Years licensed</label><input id="adm-years" type="number" min="0" max="70" placeholder="e.g. 20"></div>
+        <div class="adm-field"><label for="adm-gender">Gender (for patient/client preference)</label><select id="adm-gender"><option value="">Not specified</option><option>Female</option><option>Male</option></select></div>
+        <div class="adm-field"><label for="adm-ins">Insurance accepted (doctors, comma separated)</label><input id="adm-ins" placeholder="Aetna, Blue Cross, Medicare…"></div>
+        <div class="adm-field full"><label for="adm-cond">Conditions treated / case types handled (comma separated; Rachel matches on these)</label><input id="adm-cond" placeholder="e.g. back pain, sciatica, sports injuries  |  car accidents, slip and fall"></div>
         <div class="adm-field full"><label for="adm-areas">Other cities / ZIP codes served (comma separated)</label><input id="adm-areas" placeholder="Naples, Cape Coral, 33904, 34102"></div>
         <div class="adm-field full"><label for="adm-bio">Short description (shows on the listing)</label><textarea id="adm-bio" maxlength="600"></textarea></div>
         <div class="adm-field two"><label for="adm-photo">Photo or logo URL (https)</label><input id="adm-photo" placeholder="https://…"></div>
@@ -508,6 +566,15 @@
           <label><input type="checkbox" id="adm-active" checked> Live on the directory (uncheck to pause)</label>
           <label><input type="checkbox" id="adm-featured"> Featured (shows first)</label>
           <label><input type="checkbox" id="adm-accepting" checked> Accepting new patients / clients</label>
+          <label><input type="checkbox" id="adm-tele"> Telehealth / virtual meetings</label>
+          <label><input type="checkbox" id="adm-free"> Free consultation</label>
+          <label><input type="checkbox" id="adm-eve"> Evening / weekend hours</label>
+        </div>
+        <div class="adm-field full adm-checks"><span style="font-weight:800;font-size:12.5px;color:var(--navy)">Attorney fee types:</span>
+          <label><input type="checkbox" class="adm-fee" value="Contingency"> Contingency</label>
+          <label><input type="checkbox" class="adm-fee" value="Flat fee"> Flat fee</label>
+          <label><input type="checkbox" class="adm-fee" value="Hourly"> Hourly</label>
+          <label><input type="checkbox" class="adm-fee" value="Payment plan"> Payment plan</label>
         </div>
       </div>
       <div class="adm-row" style="margin-top:16px"><button class="adm-btn blue" type="submit" id="adm-save">Save listing</button><button class="adm-btn" type="button" id="adm-reset">Clear form / add new</button></div>
@@ -825,6 +892,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       </div>
       <div class="dir-actions">
         ${tel ? `<a class="primary" href="tel:${esc(tel)}">📞 ${esc(p.phone)}</a>` : ''}
+        ${p.id ? `<button type="button" data-pro="${esc(p.id)}">View profile</button>` : ''}
         ${web ? `<a href="${esc(web)}" target="_blank" rel="noopener sponsored">Website</a>` : ''}
         ${p.email ? `<a href="mailto:${esc(p.email)}">Email</a>` : ''}
         ${addr ? `<a href="${esc(maps)}" target="_blank" rel="noopener">Directions</a>` : ''}
@@ -892,6 +960,362 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       if (stateSel.value) runSearch();
     }
   } catch (e) {}
+
+  // ---------- PROFILE PAGE (opens from search results or Rachel; shareable ?pro=ID link) ----------
+  const listOf = s => String(s || '').split(',').map(x => x.trim()).filter(Boolean);
+  function yesNo(v, yes) { return v ? yes : ''; }
+  function profileHTML(p) {
+    const initials = (p.name || '?').replace(/^(dr\.?|attorney)\s+/i, '').split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    const photo = /^https:\/\//i.test(p.photoUrl || '') ? `<img class="dir-avatar pro-big" src="${esc(p.photoUrl)}" alt="${esc(p.name)}">` : `<div class="dir-avatar pro-big" aria-hidden="true">${esc(initials)}</div>`;
+    const web = p.website ? (/^https?:\/\//i.test(p.website) ? p.website : 'https://' + p.website) : '';
+    const addr = [p.address, p.city, p.state + ' ' + (p.zip || '')].filter(x => String(x || '').trim()).join(', ');
+    const maps = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([p.practice || p.name, addr].join(' '));
+    const tel = String(p.phone || '').replace(/[^\d+]/g, '');
+    const who = p.type === 'attorney' ? 'clients' : 'patients';
+    const facts = [
+      p.yearsLicensed ? `🎓 Licensed ${esc(p.yearsLicensed)} years` : '',
+      p.accepting ? `✅ Accepting new ${who}` : '',
+      p.telehealth ? (p.type === 'attorney' ? '💻 Virtual consultations' : '💻 Telehealth visits') : '',
+      p.freeConsult ? '🤝 Free consultation' : '',
+      p.eveningWeekend ? '🌙 Evening / weekend hours' : '',
+      p.languages ? `🗣️ ${esc(p.languages)}` : '',
+      (p.feeTypes || []).length ? `💵 ${esc(p.feeTypes.join(', '))}` : ''
+    ].filter(Boolean).map(f => `<li>${f}</li>`).join('');
+    const tags = (arr) => arr.map(s => `<span class="dir-tag">${esc(s)}</span>`).join('');
+    return `<div class="pro-head">${photo}<div><span class="dir-sponsor" style="position:static">Sponsored listing · WebSwan Media Network</span>
+        <h2 id="pro-title">${esc(p.name)}${p.credentials ? ', ' + esc(p.credentials) : ''}</h2>${p.practice ? `<p class="dir-practice">${esc(p.practice)}</p>` : ''}
+        <div class="dir-tags" style="margin-top:8px">${tags(p.specialties || [])}</div></div></div>
+      ${p.bio ? `<p class="pro-bio">${esc(p.bio)}</p>` : ''}
+      ${facts ? `<ul class="pro-facts">${facts}</ul>` : ''}
+      ${listOf(p.conditions).length ? `<h3>${p.type === 'attorney' ? 'Case types handled' : 'Conditions & treatments'}</h3><div class="dir-tags">${tags(listOf(p.conditions))}</div>` : ''}
+      ${listOf(p.insurance).length ? `<h3>Insurance accepted</h3><div class="dir-tags">${tags(listOf(p.insurance))}</div>` : ''}
+      ${addr ? `<h3>Location</h3><p>📍 ${esc(addr)}</p>` : ''}
+      ${p.serviceAreas ? `<p style="color:var(--muted);font-size:14px">Also serves: ${esc(p.serviceAreas)}</p>` : ''}
+      <div class="dir-actions" style="margin-top:14px">
+        ${tel ? `<a class="primary" href="tel:${esc(tel)}">📞 Call ${esc(p.phone)}</a>` : ''}
+        ${web ? `<a href="${esc(web)}" target="_blank" rel="noopener sponsored">Visit website</a>` : ''}
+        ${p.email ? `<a href="mailto:${esc(p.email)}">Email</a>` : ''}
+        ${addr ? `<a href="${esc(maps)}" target="_blank" rel="noopener">Directions</a>` : ''}
+      </div>
+      <p class="dir-note">This is a paid (sponsored) listing. WebSwan Media Network does not provide medical or legal advice and does not endorse any professional. Please verify licenses with your state medical board or state bar.</p>`;
+  }
+  const proModal = $('pro-modal'), proBody = $('pro-body');
+  let proReturnFocus = null;
+  async function openProfile(id) {
+    proReturnFocus = document.activeElement;
+    proBody.innerHTML = '<p class="dir-status">Loading profile…</p>';
+    proModal.hidden = false; document.body.style.overflow = 'hidden';
+    $('pro-close').focus();
+    try { const u = new URL(location.href); u.searchParams.set('pro', id); history.replaceState(null, '', u); } catch (e) {}
+    try {
+      const d = await db.collection('providers').doc(id).get();
+      const p = d.exists ? d.data() : null;
+      const today = new Date().toISOString().slice(0, 10);
+      if (!p || !p.active || (p.expires && p.expires < today)) throw new Error('gone');
+      proBody.innerHTML = profileHTML(p);
+      document.title = (p.name || 'Profile') + ' | WebSwan Media Network';
+    } catch (e) {
+      proBody.innerHTML = '<h2 id="pro-title">This listing is not available</h2><p>This professional is not currently listed in the WebSwan Media Network Directory. Please search again to find someone available.</p>';
+    }
+  }
+  function closeProfile() {
+    proModal.hidden = true; document.body.style.overflow = '';
+    document.title = 'Find Doctors & Attorneys Near You | WebSwan Media Network';
+    try { const u = new URL(location.href); u.searchParams.delete('pro'); history.replaceState(null, '', u); } catch (e) {}
+    if (proReturnFocus && proReturnFocus.focus) proReturnFocus.focus();
+  }
+  $('pro-close').addEventListener('click', closeProfile);
+  proModal.addEventListener('click', e => { if (e.target === proModal) closeProfile(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !proModal.hidden) closeProfile(); });
+  document.addEventListener('click', e => { const b = e.target.closest('[data-pro]'); if (b) { e.preventDefault(); openProfile(b.dataset.pro); } });
+  try { const pid = new URLSearchParams(location.search).get('pro'); if (pid) openProfile(pid); } catch (e) {}
+
+  // ---------- RACHEL WEBSWAN (guided assistant, searches the live database) ----------
+  const R = { box: $('rw-panel'), log: $('rw-log'), form: $('rw-form'), input: $('rw-input'), chips: $('rw-chips') };
+  const SPEC_TYPE = {}; Object.entries(DIR_LISTS).forEach(([t, groups]) => Object.values(groups).flat().forEach(s => { SPEC_TYPE[s] = t; }));
+  const SYN = [
+    [/chiropract|adjustment/, 'Chiropractor'], [/root canal/, 'Endodontics (Root Canals)'], [/implant/, 'Dental Implants'],
+    [/braces|invisalign|aligner|orthodont/, 'Orthodontics (Braces & Aligners)'], [/gum disease|periodont/, 'Periodontics (Gums)'],
+    [/denture|crown|bridge/, 'Prosthodontics (Crowns, Bridges, Dentures)'], [/wisdom teeth|oral surg/, 'Oral & Maxillofacial Surgery'],
+    [/kids? dentist|pediatric dentist|children'?s dentist/, 'Pediatric Dentistry'], [/cosmetic dent|veneer|whitening/, 'Cosmetic Dentistry'],
+    [/emergency dent|toothache/, 'Emergency Dentist'], [/dentist|dental|teeth|tooth|cleaning/, 'General Dentistry'],
+    [/cosmetic derm/, 'Cosmetic Dermatology'], [/skin|derm|acne|rash|eczema|psoriasis|mole/, 'Dermatology'],
+    [/cardio|heart/, 'Cardiology'], [/pregnan|ob ?gyn|obgyn|gyneco|prenatal/, 'Obstetrics & Gynecology (OB/GYN)'],
+    [/fertility|ivf|infertil/, 'Fertility / Reproductive Endocrinology'], [/pediatrician|my (kid|child|son|daughter|baby)/, 'Pediatrics'],
+    [/spine surg/, 'Spine Surgery'], [/knee|hip|shoulder|fracture|broken bone|orthoped|sports injur/, 'Orthopedic Surgery'],
+    [/eye|vision|cataract|ophthalm/, 'Ophthalmology'], [/glasses|contacts|optometr/, 'Optometry'],
+    [/\bent\b|\bears?\b|ear (pain|infection)|throat|sinus|tonsil/, 'Otolaryngology (ENT)'], [/allerg/, 'Allergy & Immunology'],
+    [/diabet|thyroid|endocrin|hormone imbalance/, 'Endocrinology & Diabetes'], [/stomach|colonoscopy|gastro|acid reflux|\bgi\b/, 'Gastroenterology'],
+    [/kidney|nephro/, 'Nephrology (Kidney)'], [/neuro|migraine|seizure|headache/, 'Neurology'],
+    [/psychiatr|depress|anxiety|bipolar|adhd|mental health/, 'Psychiatry'], [/\btherapist\b|counsel(ing|or)|psycholog|talk therapy/, 'Psychology (PhD / PsyD)'],
+    [/cancer|oncolog|tumor|chemo/, 'Medical Oncology'], [/weight loss|obesity|semaglutide|ozempic/, 'Obesity Medicine / Weight Loss'],
+    [/tummy tuck|breast augment|liposuction|plastic surg|bbl|facelift/, 'Plastic & Reconstructive Surgery'],
+    [/urolog|prostate|bladder/, 'Urology'], [/foot|ankle|podiat|bunion/, 'Podiatry (Foot & Ankle)'], [/sleep apnea|insomnia|sleep/, 'Sleep Medicine'],
+    [/lung|asthma|copd|pulmon/, 'Pulmonology'], [/arthritis|lupus|rheumat/, 'Rheumatology'], [/chronic pain|pain manag|back pain/, 'Pain Management'],
+    [/primary care|family doctor|check ?up|physical exam|general doctor/, 'Family Medicine'], [/internist|internal med/, 'Internal Medicine'],
+    [/urgent care/, 'Urgent Care'], [/telehealth|virtual doctor|online doctor/, 'Telehealth / Virtual Care'],
+    [/child custody|custody|visitation/, 'Child Custody & Visitation'], [/child support/, 'Child Support'], [/alimony|spousal/, 'Alimony / Spousal Support'],
+    [/divorce|separation/, 'Divorce'], [/adopt/, 'Adoption'], [/prenup/, 'Prenuptial & Postnuptial Agreements'],
+    [/truck (accident|crash)|18 wheeler|semi truck/, 'Truck Accidents'], [/motorcycle/, 'Motorcycle Accidents'],
+    [/\buber\b|\blyft\b|rideshare/, 'Rideshare (Uber/Lyft) Accidents'], [/car (accident|crash|wreck)|auto accident|rear.?ended|hit by a car/, 'Car Accidents'],
+    [/slip|fell|fall (at|in)|premises/, 'Slip & Fall / Premises Liability'], [/dog bite|bitten/, 'Dog Bites'], [/wrongful death/, 'Wrongful Death'],
+    [/medical malpractice|misdiagnos|surgical error/, 'Medical Malpractice'], [/nursing home/, 'Nursing Home Abuse & Neglect'],
+    [/work(er'?s)? comp|hurt at work|injured at work|on the job injur/, 'Workers\' Compensation'], [/injur|accident/, 'Personal Injury (All)'],
+    [/\bdui\b|\bdwi\b|drunk driv/, 'DUI / DWI'], [/drug (charge|possession|crime)/, 'Drug Crimes'], [/expunge|seal my record/, 'Expungement & Record Sealing'],
+    [/traffic ticket|speeding|license suspen/, 'Traffic Tickets & License Suspension'], [/criminal|arrest|charged|felony|misdemeanor/, 'Criminal Defense (All)'],
+    [/green card/, 'Green Cards'], [/deport|removal|ice detain/, 'Deportation & Removal Defense'], [/asylum|refugee/, 'Asylum & Refugee'],
+    [/citizenship|naturaliz/, 'Citizenship & Naturalization'], [/\bdaca\b/, 'DACA'], [/h-?1b|work visa/, 'Employment Visas (H-1B, L-1, O-1)'],
+    [/immigra|visa/, 'Immigration (All)'], [/probate/, 'Probate & Estate Administration'], [/\bwill\b|\bwills\b/, 'Wills'],
+    [/\btrusts?\b/, 'Trusts'], [/estate plan/, 'Estate Planning'], [/elder|medicaid/, 'Elder Law'], [/power of attorney/, 'Power of Attorney & Health Care Directives'],
+    [/chapter 13/, 'Bankruptcy - Chapter 13'], [/chapter 11/, 'Business Bankruptcy - Chapter 11'], [/bankrupt/, 'Bankruptcy - Chapter 7'],
+    [/foreclos/, 'Foreclosure Defense'], [/evict|landlord|tenant/, 'Landlord & Tenant'], [/closing|buying a (house|home)|selling (my|a) (house|home)/, 'Real Estate Closings'],
+    [/hoa|condo association/, 'HOA & Condominium Law'], [/real estate/, 'Real Estate - Residential'],
+    [/\bllc\b|incorporat|start(ing)? a business|form a (company|business)/, 'Business Formation (LLC, Corporation)'], [/contract/, 'Contracts'],
+    [/fired|wrongful termination|let go/, 'Wrongful Termination'], [/discriminat/, 'Workplace Discrimination'], [/harass/, 'Sexual Harassment'],
+    [/overtime|unpaid wage|wage theft/, 'Wage & Hour / Unpaid Overtime'], [/social security|ssdi|\bssi\b|disability benefit/, 'Social Security Disability (SSDI/SSI)'],
+    [/veteran|va benefit/, 'Veterans Benefits'], [/police (brutality|misconduct)|civil rights/, 'Civil Rights'],
+    [/trademark/, 'Trademarks'], [/patent/, 'Patents'], [/copyright/, 'Copyrights'], [/\birs\b|back taxes|tax debt|audit/, 'IRS Tax Debt & Audits'],
+    [/lemon/, 'Lemon Law'], [/insurance (claim|denied)|bad faith/, 'Insurance Claims & Bad Faith']
+  ];
+  const LANGS = ['English', 'Spanish', 'Haitian Creole', 'French', 'Portuguese', 'Creole', 'Vietnamese', 'Chinese', 'Arabic', 'Russian', 'Korean', 'Tagalog'];
+  const STATE_RE = DIR_STATES.map(s => s).sort((a, b) => b[1].length - a[1].length);
+
+  function detectSpecialty(txt, type) {
+    const n = ' ' + norm(txt) + ' ';
+    const ok = s => !type || SPEC_TYPE[s] === type;
+    const names = Object.keys(SPEC_TYPE).sort((a, b) => b.length - a.length);
+    for (const s of names) { const k = norm(s.replace(/\(.*?\)/g, '')); if (k.length > 4 && ok(s) && n.includes(' ' + k + ' ')) return s; }
+    const low = txt.toLowerCase();
+    for (const [re, s] of SYN) if (ok(s) && re.test(low)) return s;
+    return '';
+  }
+  function detectType(txt) {
+    const low = txt.toLowerCase();
+    if (/lawyer|attorney|law firm|legal|\bsue\b|\bcourt\b/.test(low)) return 'attorney';
+    if (/doctor|\bdr\b|physician|dentist|clinic|specialist|surgeon|chiropract|medical/.test(low)) return 'doctor';
+    return '';
+  }
+  function detectPlace(txt) {
+    const out = { state: '', city: '', zip: '' };
+    const z = txt.match(/\b(\d{5})(?:-\d{4})?\b/); if (z) out.zip = z[1];
+    let idx = -1;
+    const codes = new Set(DIR_STATES.map(s => s[0]));
+    const cm = /,\s*([A-Za-z]{2})\b(?![a-z])/.exec(txt);
+    if (cm && codes.has(cm[1].toUpperCase())) { out.state = cm[1].toUpperCase(); idx = cm.index; }
+    if (!out.state) for (const [code, name] of STATE_RE) {
+      const m = new RegExp('\\b' + name.replace(/ /g, '\\s+') + '\\b', 'i').exec(txt);
+      if (m) { out.state = code; idx = m.index; break; }
+    }
+    if (!out.state) {
+      const re = /(^|\s)([A-Z]{2})(?=$|[\s.!?]|\d)/g; let m;
+      while ((m = re.exec(txt))) { if (codes.has(m[2]) && m[2] !== 'OK') { out.state = m[2]; idx = m.index + m[1].length; } }
+    }
+    if (idx > 0) {
+      const pre = txt.slice(0, idx).replace(/[,\s]+$/, '');
+      const m = pre.match(/\b(?:in|near|around|by|from|at|close to)\s+([A-Za-z .'-]{2,40})$/i) || pre.match(/([A-Z][a-zA-Z.'-]+(?:\s+[A-Z][a-zA-Z.'-]+){0,2})$/);
+      if (m) out.city = m[1].trim().replace(/^(the|a)\s+/i, '');
+    } else {
+      const m = txt.match(/\b(?:in|near|around)\s+([A-Z][a-zA-Z.'-]+(?:\s+[A-Z][a-zA-Z.'-]+){0,2})/);
+      if (m) out.city = m[1].trim();
+    }
+    return out;
+  }
+  function isEmergency(txt) { return /(chest pain|can'?t breathe|cannot breathe|overdose|stroke|heart attack|bleeding a lot|unconscious|emergency(?! dent))/i.test(txt); }
+  function isCrisis(txt) { return /(suicid|kill myself|end my life|hurt myself|self.?harm)/i.test(txt); }
+
+  let S = null;
+  function reset() { S = { step: 'start', type: '', specialty: '', state: '', city: '', zip: '', need: '', prefs: {} }; }
+  function say(html, who) {
+    const d = document.createElement('div'); d.className = 'rw-msg ' + (who === 'me' ? 'me' : 'bot');
+    d.innerHTML = who === 'me' ? esc(html) : html;
+    R.log.appendChild(d); R.log.scrollTop = R.log.scrollHeight;
+  }
+  function rwChips(list, opts) {
+    R.chips.innerHTML = '';
+    (list || []).forEach(c => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'rw-chip'; b.textContent = c.label || c;
+      b.addEventListener('click', () => handle(c.value != null ? c.value : (c.label || c), c.label || c));
+      R.chips.appendChild(b);
+    });
+    if (opts && opts.state) {
+      const sel = document.createElement('select'); sel.className = 'rw-select'; sel.setAttribute('aria-label', 'Choose your state');
+      sel.innerHTML = '<option value="">Choose your state…</option>' + DIR_STATES.map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
+      sel.addEventListener('change', () => { if (sel.value) handle(stateName(sel.value), stateName(sel.value)); });
+      R.chips.prepend(sel);
+    }
+  }
+  const who = () => S.type === 'attorney' ? 'attorney' : 'doctor';
+  const QUESTIONS = {
+    doctor: [
+      { key: 'visit', q: 'Is this a new concern, ongoing care, or a second opinion?', opts: ['New concern', 'Ongoing care', 'Second opinion', 'Skip'] },
+      { key: 'insurance', q: 'Do you have health insurance? Type the name of your plan, or tap an option.', opts: ['Self-pay / no insurance', 'Medicare', 'Medicaid', 'Skip'], free: true },
+      { key: 'mode', q: 'Would you prefer an in-person visit or telehealth?', opts: ['In person', 'Telehealth', 'Either is fine'] },
+      { key: 'lang', q: 'What language would you like your doctor to speak?', opts: ['English', 'Spanish', 'Haitian Creole', 'French', 'Any language'], free: true },
+      { key: 'hours', q: 'Do you need evening or weekend appointments?', opts: ['Yes, please', 'No, weekdays are fine'] },
+      { key: 'gender', q: 'Last one: do you prefer a female or male doctor?', opts: ['Female', 'Male', 'No preference'] }
+    ],
+    attorney: [
+      { key: 'stage', q: 'Has a case already been filed, or do you have a court date coming up?', opts: ['Yes, I have a court date', 'Case filed, no date yet', 'Not yet', 'Not sure'] },
+      { key: 'consult', q: 'Would you like an attorney who offers a free consultation?', opts: ['Yes, free consultation', 'Doesn\'t matter'] },
+      { key: 'fee', q: 'How would you prefer to pay?', opts: ['No fee unless I win (contingency)', 'Flat fee', 'Hourly', 'Payment plan', 'Not sure'] },
+      { key: 'lang', q: 'What language would you like your attorney to speak?', opts: ['English', 'Spanish', 'Haitian Creole', 'French', 'Any language'], free: true },
+      { key: 'hours', q: 'Do you need evening or weekend meetings, or virtual meetings?', opts: ['Evenings / weekends', 'Virtual meetings', 'Both', 'No, weekdays are fine'] },
+      { key: 'gender', q: 'Last one: do you prefer a female or male attorney?', opts: ['Female', 'Male', 'No preference'] }
+    ]
+  };
+  let qIndex = 0;
+  function next() {
+    if (!S.type) { S.step = 'type'; say('Are you looking for a <b>doctor</b> or an <b>attorney</b>?'); rwChips(['Doctor', 'Attorney']); return; }
+    if (!S.specialty) {
+      S.step = 'specialty';
+      say(`What type of ${who()} do you need? Tell me the specialty, or describe the problem in your own words${S.type === 'attorney' ? ' (for example “car accident” or “divorce”)' : ' (for example “back pain” or “braces for my son”)'}.`);
+      const pop = S.type === 'attorney' ? ['Car Accidents', 'Divorce', 'Criminal Defense (All)', 'Immigration (All)', 'Estate Planning', 'Workers\' Compensation'] : ['Family Medicine', 'General Dentistry', 'Chiropractor', 'Dermatology', 'Pediatrics', 'Orthopedic Surgery'];
+      rwChips(pop.map(p => ({ label: p.replace(/ \(All\)$/, ''), value: p }))); return;
+    }
+    if (!S.state) { S.step = 'state'; say('What state are you in?'); rwChips([], { state: true }); return; }
+    if (!S.city && !S.zip && !S.askedCity) { S.askedCity = true; S.step = 'city'; say(`What city or ZIP code in ${esc(stateName(S.state))}?`); rwChips(['Anywhere in ' + stateName(S.state)]); return; }
+    if (!S.askedNeed) { S.askedNeed = true; S.step = 'need'; say('In order to better assist you, tell me more about your need. The more you share, the better I can match you.'); rwChips(['Skip']); return; }
+    const qs = QUESTIONS[S.type];
+    if (qIndex < qs.length) { const Q = qs[qIndex]; S.step = 'q'; say(Q.q); rwChips(Q.opts); return; }
+    finish();
+  }
+  function handle(val, label) {
+    const txt = String(val || '').trim(); if (!txt) return;
+    say(label || txt, 'me'); R.chips.innerHTML = '';
+    if (S.step === 'done' && !/^(start over|restart|reset)$/i.test(txt)) { reset(); qIndex = 0; }
+    const hadSpec = !!S.specialty;
+    if (/^(start over|restart|reset)$/i.test(txt)) { start(true); return; }
+    if (isCrisis(txt)) { say('I’m really sorry you’re going through this. Please call or text <b>988</b> (Suicide &amp; Crisis Lifeline) right now, or call <b>911</b> if you’re in immediate danger. You don’t have to go through this alone.'); rwChips(['Start over']); return; }
+    if (isEmergency(txt)) { say('If this is a medical emergency, please call <b>911</b> or go to the nearest emergency room right away. I can help you find a doctor for follow-up care afterward.'); }
+    // pick up anything useful the person typed, at any step
+    if (S.step !== 'q' && S.step !== 'need') {
+      if (!S.type) S.type = /^attorney$/i.test(txt) ? 'attorney' : /^doctor$/i.test(txt) ? 'doctor' : detectType(txt);
+      if (!S.specialty) { const sp = SPEC_TYPE[txt] ? txt : detectSpecialty(txt, S.type); if (sp && (!S.type || SPEC_TYPE[sp] === S.type)) { S.specialty = sp; S.type = SPEC_TYPE[sp]; } }
+      const pl = detectPlace(txt);
+      if (!S.state && pl.state) S.state = pl.state;
+      if (S.step === 'state' && !S.state) { const hit = DIR_STATES.find(([c, n]) => n.toLowerCase() === txt.toLowerCase() || c === txt.toUpperCase()); if (hit) S.state = hit[0]; }
+      if (!S.city && pl.city) S.city = pl.city;
+      if (!S.zip && pl.zip) S.zip = pl.zip;
+      if (S.step === 'city' && !pl.city && !pl.zip && !/^anywhere/i.test(txt)) S.city = txt.replace(/,.*$/, '').trim();
+      if (S.step === 'specialty' && !S.specialty) {
+        if (/not sure|don'?t know|idk/i.test(txt)) { S.specialty = '*'; }
+        else { S.need = (S.need + ' ' + txt).trim(); say(`Thank you. I didn’t catch the exact specialty, so I’ll look at all ${who()}s and match on what you described. You can also tap a specialty below.`); S.specialty = '*'; }
+      }
+    } else if (S.step === 'need') {
+      if (!/^skip$/i.test(txt)) { S.need = (S.need + ' ' + txt).trim(); if (S.specialty === '*') { const sp = detectSpecialty(txt, S.type); if (sp) S.specialty = sp; } }
+    } else if (S.step === 'q') {
+      const Q = QUESTIONS[S.type][qIndex]; if (!/^skip$/i.test(txt)) S.prefs[Q.key] = txt; qIndex++;
+    }
+    if (!hadSpec && S.specialty && S.specialty !== '*' && S.step === 'specialty') say(`${esc(S.specialty.replace(/ \(All\)$/, ''))}. Got it!`);
+    if (S.step === 'start' && S.type && !S.specialty && !S.state) say(`Great, let’s find you the right ${who()}.`);
+    else if (S.step === 'start' && S.specialty) say(`${esc(S.specialty.replace(/ \(All\)$/, ''))}${S.state ? ' in ' + esc((S.city ? S.city + ', ' : '') + stateName(S.state)) : ''}. Got it!`);
+    next();
+  }
+  function score(p) {
+    let s = 0; const why = [];
+    const areas = p.areasLower || [], city = norm(S.city);
+    if (S.zip && (p.zip === S.zip || areas.includes(S.zip))) { s += 40; why.push('in your ZIP code'); }
+    else if (city && (norm(p.city) === city || areas.includes(city))) { s += 35; why.push('in ' + S.city); }
+    else if (S.zip && String(p.zip || '').slice(0, 3) === S.zip.slice(0, 3)) { s += 15; why.push('near you'); }
+    const kw = norm(S.need).split(' ').filter(w => w.length > 3);
+    const hay = ' ' + norm([(p.conditions || ''), (p.bio || ''), (p.specialties || []).join(' ')].join(' ')) + ' ';
+    const hits = [...new Set(kw.filter(w => hay.includes(' ' + w)))]; if (hits.length) { s += Math.min(hits.length * 6, 24); why.push('treats what you described'.replace('treats', p.type === 'attorney' ? 'handles' : 'treats')); }
+    if (S.specialty && S.specialty !== '*' && (p.specialties || []).includes(S.specialty)) s += 20;
+    const P = S.prefs;
+    if (P.insurance && !/self|skip/i.test(P.insurance)) { const ins = norm(P.insurance); if ((p.insuranceLower || []).some(i => i.includes(ins) || ins.includes(i))) { s += 18; why.push('accepts ' + P.insurance); } }
+    if (P.mode === 'Telehealth' && p.telehealth) { s += 12; why.push('offers telehealth'); }
+    if (P.lang && !/any/i.test(P.lang) && !/^english$/i.test(P.lang)) { if (norm(p.languages).includes(norm(P.lang))) { s += 18; why.push('speaks ' + P.lang); } }
+    if (/yes|evening|both/i.test(P.hours || '') && p.eveningWeekend) { s += 10; why.push('evening/weekend hours'); }
+    if (/virtual|both/i.test(P.hours || '') && p.telehealth) { s += 8; why.push('virtual meetings'); }
+    if (/female|male/i.test(P.gender || '') && !/no pref/i.test(P.gender) && p.gender && p.gender.toLowerCase() === P.gender.toLowerCase()) { s += 8; why.push(P.gender.toLowerCase() + ' ' + who()); }
+    if (/free/i.test(P.consult || '') && p.freeConsult) { s += 12; why.push('free consultation'); }
+    if (P.fee && !/not sure/i.test(P.fee)) { const f = /contingency/i.test(P.fee) ? 'Contingency' : P.fee; if ((p.feeTypes || []).includes(f)) { s += 12; why.push(f.toLowerCase() + ' fees'); } }
+    if (p.accepting) s += 6;
+    if (p.featured) s += 8;
+    if (p.yearsLicensed) s += Math.min(+p.yearsLicensed || 0, 30) / 5;
+    return { s, why };
+  }
+  async function finish() {
+    S.step = 'done';
+    const spLabel = S.specialty && S.specialty !== '*' ? S.specialty.replace(/ \(All\)$/, '') : who() + 's';
+    say(`Perfect, thank you! Let me search the WebSwan Media Network Directory for ${esc(spLabel)} in ${esc((S.city ? S.city + ', ' : '') + stateName(S.state))}…`);
+    const typing = document.createElement('div'); typing.className = 'rw-msg bot rw-typing'; typing.innerHTML = '<span></span><span></span><span></span>'; R.log.appendChild(typing); R.log.scrollTop = R.log.scrollHeight;
+    let rows = [], broadened = false;
+    const today = new Date().toISOString().slice(0, 10);
+    async function pull(spec) {
+      let q = db.collection('providers').where('active', '==', true).where('type', '==', S.type).where('state', '==', S.state);
+      if (spec && spec !== '*' && !/\(All\)$/.test(spec)) q = q.where('specialties', 'array-contains', spec);
+      const snap = await q.get(); const out = []; snap.forEach(d => out.push(Object.assign({ id: d.id }, d.data())));
+      return out.filter(p => !p.expires || p.expires >= today);
+    }
+    try {
+      rows = await pull(S.specialty);
+      if (S.specialty && /\(All\)$/.test(S.specialty)) { const grp = Object.values(DIR_LISTS[S.type]).find(items => items.includes(S.specialty)); if (grp) rows = rows.filter(p => (p.specialties || []).some(x => grp.includes(x))); }
+      if (!rows.length && S.specialty && S.specialty !== '*') {
+        const grp = Object.values(DIR_LISTS[S.type]).find(items => items.includes(S.specialty));
+        const all = await pull('*'); rows = grp ? all.filter(p => (p.specialties || []).some(x => grp.includes(x))) : [];
+        broadened = rows.length > 0;
+      }
+    } catch (e) { typing.remove(); say('I’m having trouble reaching the directory right now. Please try again in a moment, or call (239) 667-0151.'); rwChips(['Start over']); return; }
+    typing.remove();
+    if (!rows.length) {
+      say(`I’m sorry, I don’t have ${esc(spLabel)} listed in ${esc(stateName(S.state))} yet. New professionals join the WebSwan Media Network Directory every week, so please check back soon.`);
+      rwChips(['Start over']); return;
+    }
+    const ranked = rows.map(p => Object.assign(p, score(p))).sort((a, b) => b.s - a.s || String(a.name).localeCompare(String(b.name))).slice(0, 5);
+    const total = rows.length;
+    say(`${broadened ? `I didn’t find an exact match for ${esc(spLabel)}, so I included closely related specialists. ` : ''}I reviewed <b>${total}</b> ${total === 1 ? 'listing' : 'listings'} and here ${ranked.length === 1 ? 'is my top match' : `are my top ${ranked.length} matches`} for you:`);
+    ranked.forEach((p, i) => {
+      const nm = esc(p.name) + (p.credentials ? ', ' + esc(p.credentials) : '');
+      const spec = (p.specialties || []).slice(0, 3).map(esc).join(', ');
+      const place = [p.city, p.state].filter(Boolean).map(esc).join(', ');
+      const pro = p.gender === 'Female' ? 'She' : p.gender === 'Male' ? 'He' : 'They';
+      const focus = listOf(p.conditions).slice(0, 3);
+      const bits = [
+        focus.length ? `${pro === 'They' ? 'specialize' : 'specializes'} in ${focus.map(esc).join(', ')}` : '',
+        p.yearsLicensed ? `${pro === 'They' ? 'have' : 'has'} been licensed for ${esc(p.yearsLicensed)} years` : '',
+        place ? `${pro === 'They' ? 'are' : 'is'} located in ${place}` : ''
+      ].filter(Boolean);
+      const sentence = bits.length ? pro + ' ' + (bits.length > 1 ? bits.slice(0, -1).join(', ') + ', and ' + bits[bits.length - 1] : bits[0]) + '.' : '';
+      const tel = String(p.phone || '').replace(/[^\d+]/g, '');
+      say(`<div class="rw-pick"><b>${i + 1}. ${nm}</b>${p.practice ? ` <span class="rw-sub">· ${esc(p.practice)}</span>` : ''}<br>This is ${nm}${spec ? ` (${spec})` : ''}. ${sentence}${p.why.length ? `<br><span class="rw-why">✓ ${esc(p.why.slice(0, 3).join(' · '))}</span>` : ''}${tel ? `<br>📞 Phone: <a href="tel:${esc(tel)}">${esc(p.phone)}</a>` : ''}<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">View ${p.type === 'attorney' ? 'attorney' : 'doctor'}’s profile →</button></div>`);
+    });
+    say(`Click <b>View profile</b> on any of them to see their full page. Listings are sponsored by the professionals, and I can’t give ${S.type === 'attorney' ? 'legal' : 'medical'} advice, so please confirm details directly with their office. Anything else I can help you with?`);
+    rwChips(['Start over']);
+  }
+  function start(again) {
+    reset(); qIndex = 0;
+    if (!again) R.log.innerHTML = '';
+    say('Hi, I’m <b>Rachel WebSwan</b> with WebSwan Media Network. 👋 How can I assist you today?<br><span class="rw-sub">Tell me what you’re looking for, like “I need a chiropractor near Orlando, FL” or “divorce attorney in Houston, Texas.”</span>');
+    rwChips(['Find a doctor', 'Find an attorney']);
+  }
+  let started = false;
+  function openRachel() {
+    R.box.hidden = false; $('rw-launch').setAttribute('aria-expanded', 'true');
+    if (!started) { started = true; start(); }
+    setTimeout(() => R.input.focus(), 50);
+  }
+  function closeRachel() { R.box.hidden = true; $('rw-launch').setAttribute('aria-expanded', 'false'); $('rw-launch').focus(); }
+  $('rw-launch').addEventListener('click', () => R.box.hidden ? openRachel() : closeRachel());
+  $('rw-close').addEventListener('click', closeRachel);
+  document.querySelectorAll('[data-open-rachel]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); openRachel(); }));
+  R.form.addEventListener('submit', e => {
+    e.preventDefault(); const v = R.input.value.trim(); if (!v) return; R.input.value = '';
+    if (S.step === 'start') { if (/^find a doctor$/i.test(v)) S.type = 'doctor'; else if (/^find an attorney$/i.test(v)) S.type = 'attorney'; }
+    handle(v);
+  });
+  R.chips.addEventListener('click', e => { const b = e.target.closest('.rw-chip'); if (b && S && S.step === 'start') { if (/doctor/i.test(b.textContent)) S.type = 'doctor'; if (/attorney/i.test(b.textContent)) S.type = 'attorney'; } }, true);
+  R.box.addEventListener('keydown', e => { if (e.key === 'Escape') closeRachel(); });
+  function rwLift() {
+    const cb = document.getElementById('cookie-banner-lp');
+    const h = cb && getComputedStyle(cb).display !== 'none' ? cb.offsetHeight : 0;
+    const lb = h ? h + 12 : (innerWidth <= 600 ? 12 : 20);
+    $('rw-launch').style.bottom = lb + 'px';
+    if (innerWidth > 600) { R.box.style.bottom = (lb + 64) + 'px'; R.box.style.height = 'min(600px, calc(100vh - ' + (lb + 90) + 'px))'; } else { R.box.style.bottom = ''; R.box.style.height = ''; }
+  }
+  window.addEventListener('load', rwLift); window.addEventListener('resize', rwLift);
+  document.addEventListener('click', () => setTimeout(rwLift, 50)); setTimeout(rwLift, 300);
+
 
   // ---------- ADMIN (owner only; open with #admin) ----------
   const adm = $('ws-admin');
@@ -967,13 +1391,15 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       catch (err) { alertMsg('Could not update: ' + err.message, true); tg.disabled = false; }
     }
   });
-  const F = ['name','cred:credentials','practice','phone','email','web:website','addr:address','city','zip','lang:languages','areas:serviceAreas','bio','photo:photoUrl','exp:expires'];
+  const F = ['name','cred:credentials','practice','phone','email','web:website','addr:address','city','zip','lang:languages','areas:serviceAreas','bio','photo:photoUrl','exp:expires','years:yearsLicensed','gender:gender','ins:insurance','cond:conditions'];
   function editRow(p) {
     $('adm-id').value = p.id; $('adm-type').value = p.type || ''; $('adm-type').dispatchEvent(new Event('change'));
     chips = (p.specialties || []).slice(); drawChips();
     F.forEach(k => { const [el, key] = k.includes(':') ? k.split(':') : [k, k]; $('adm-' + el).value = p[key] || ''; });
     $('adm-state').value = p.state || '';
     $('adm-active').checked = !!p.active; $('adm-featured').checked = !!p.featured; $('adm-accepting').checked = p.accepting !== false;
+    $('adm-tele').checked = !!p.telehealth; $('adm-free').checked = !!p.freeConsult; $('adm-eve').checked = !!p.eveningWeekend;
+    document.querySelectorAll('.adm-fee').forEach(c => { c.checked = (p.feeTypes || []).includes(c.value); });
     $('adm-form-title').textContent = 'Edit listing: ' + (p.name || ''); $('adm-save').textContent = 'Save changes';
     $('adm-form').scrollIntoView({behavior: 'smooth'});
   }
@@ -991,6 +1417,9 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     F.forEach(k => { const [el, key] = k.includes(':') ? k.split(':') : [k, k]; data[key] = $('adm-' + el).value.trim(); });
     data.type = $('adm-type').value; data.state = $('adm-state').value; data.specialties = chips.slice();
     data.active = $('adm-active').checked; data.featured = $('adm-featured').checked; data.accepting = $('adm-accepting').checked;
+    data.telehealth = $('adm-tele').checked; data.freeConsult = $('adm-free').checked; data.eveningWeekend = $('adm-eve').checked;
+    data.feeTypes = [...document.querySelectorAll('.adm-fee:checked')].map(c => c.value);
+    data.insuranceLower = data.insurance.split(',').map(norm).filter(Boolean).slice(0, 40);
     data.zip = (data.zip.match(/\d{5}/) || [data.zip])[0];
     data.areasLower = data.serviceAreas.split(',').map(norm).filter(Boolean).slice(0, 60);
     data.cityLower = norm(data.city);
