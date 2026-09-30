@@ -505,12 +505,12 @@
         <div class="adm-field two"><label for="adm-photo">Photo or logo URL (https)</label><input id="adm-photo" placeholder="https://…"></div>
         <div class="adm-field"><label for="adm-exp">Listing paid through</label><input id="adm-exp" type="date"></div>
         <div class="adm-field full adm-checks">
-          <label><input type="checkbox" id="adm-active" checked> Show on the directory</label>
+          <label><input type="checkbox" id="adm-active" checked> Live on the directory (uncheck to pause)</label>
           <label><input type="checkbox" id="adm-featured"> Featured (shows first)</label>
           <label><input type="checkbox" id="adm-accepting" checked> Accepting new patients / clients</label>
         </div>
       </div>
-      <div class="adm-row" style="margin-top:16px"><button class="adm-btn blue" type="submit" id="adm-save">Save listing</button><button class="adm-btn" type="button" id="adm-reset">Clear form</button></div>
+      <div class="adm-row" style="margin-top:16px"><button class="adm-btn blue" type="submit" id="adm-save">Save listing</button><button class="adm-btn" type="button" id="adm-reset">Clear form / add new</button></div>
       <p class="adm-msg" id="adm-msg" role="status"></p>
     </form>
     <div class="adm-box">
@@ -842,7 +842,9 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     if (!db) { out.innerHTML = '<p class="dir-status">The directory is temporarily unavailable. Please call (239) 667-0151.</p>'; return; }
     let rows = [];
     try {
-      const snap = await db.collection('providers').where('active', '==', true).where('type', '==', t).where('state', '==', st).get();
+      let qry = db.collection('providers').where('active', '==', true).where('type', '==', t).where('state', '==', st);
+      if (s && !/\(All\)$/.test(s)) qry = qry.where('specialties', 'array-contains', s); // only pull matching listings (fast + fewer reads)
+      const snap = await qry.get();
       snap.forEach(d => rows.push(Object.assign({ id: d.id }, d.data())));
     } catch (e) {
       console.error(e);
@@ -936,24 +938,32 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   function drawList() {
     const f = norm($('adm-filter').value);
     const rows = allRows.filter(p => !f || norm([p.name, p.practice, p.city, p.state, p.zip, (p.specialties || []).join(' ')].join(' ')).includes(f));
-    $('adm-count').textContent = `(${allRows.filter(p => p.active).length} showing · ${allRows.length} total)`;
+    $('adm-count').textContent = `(${allRows.filter(p => p.active).length} live · ${allRows.filter(p => !p.active).length} paused · ${allRows.length} total)`;
     const today = new Date().toISOString().slice(0, 10);
     $('adm-list').innerHTML = rows.map(p => `<tr>
       <td><b>${esc(p.name)}</b>${p.practice ? '<br><span style="color:var(--muted)">' + esc(p.practice) + '</span>' : ''}</td>
       <td>${p.type === 'attorney' ? 'Attorney' : 'Doctor'}<br><span style="color:var(--muted)">${esc((p.specialties || []).join(', '))}</span></td>
       <td>${esc(p.city)}, ${esc(p.state)} ${esc(p.zip)}</td>
-      <td>${p.active ? '<span class="adm-pill on">Showing</span>' : '<span class="adm-pill off">Hidden</span>'} ${p.featured ? '<span class="adm-pill feat">Featured</span>' : ''}</td>
+      <td>${p.active ? '<span class="adm-pill on">Live</span>' : '<span class="adm-pill off">Paused</span>'} ${p.featured ? '<span class="adm-pill feat">Featured</span>' : ''}</td>
       <td>${p.expires ? esc(p.expires) + (p.expires < today ? ' <span class="adm-pill off">Expired</span>' : '') : '—'}</td>
-      <td style="white-space:nowrap"><button class="adm-btn" data-edit="${esc(p.id)}">Edit</button> <button class="adm-btn" data-toggle="${esc(p.id)}">${p.active ? 'Hide' : 'Show'}</button></td></tr>`).join('') || '<tr><td colspan="6">No listings yet. Add your first doctor or attorney above.</td></tr>';
+      <td style="white-space:nowrap"><button class="adm-btn" data-edit="${esc(p.id)}">Edit</button> <button class="adm-btn" data-toggle="${esc(p.id)}">${p.active ? 'Pause' : 'Resume'}</button> <button class="adm-btn" style="color:#911e1a;border-color:#e8b4b2" data-del="${esc(p.id)}">Delete</button></td></tr>`).join('') || '<tr><td colspan="6">No listings yet. Add your first doctor or attorney above.</td></tr>';
   }
   $('adm-filter').addEventListener('input', drawList);
   $('adm-list').addEventListener('click', async e => {
-    const ed = e.target.closest('[data-edit]'), tg = e.target.closest('[data-toggle]');
+    const ed = e.target.closest('[data-edit]'), tg = e.target.closest('[data-toggle]'), dl = e.target.closest('[data-del]');
+    if (dl) {
+      const p = allRows.find(r => r.id === dl.dataset.del); if (!p) return;
+      if (!confirm('Permanently delete ' + (p.name || 'this listing') + '? This cannot be undone.\n\nTip: use Pause instead if they might come back.')) return;
+      dl.disabled = true;
+      try { await db.collection('providers').doc(p.id).delete(); allRows = allRows.filter(r => r.id !== p.id); if ($('adm-id').value === p.id) resetForm(); drawList(); alertMsg('Deleted ' + (p.name || 'listing') + '.'); }
+      catch (err) { alertMsg('Could not delete: ' + err.message, true); dl.disabled = false; }
+      return;
+    }
     if (ed) { const p = allRows.find(r => r.id === ed.dataset.edit); if (p) editRow(p); }
     if (tg) {
       const p = allRows.find(r => r.id === tg.dataset.toggle); if (!p) return;
       tg.disabled = true;
-      try { await db.collection('providers').doc(p.id).update({ active: !p.active, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }); p.active = !p.active; drawList(); }
+      try { await db.collection('providers').doc(p.id).update({ active: !p.active, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }); p.active = !p.active; drawList(); alertMsg((p.active ? 'Resumed ' : 'Paused ') + (p.name || 'listing') + (p.active ? '. It shows in the directory again.' : '. It is hidden from the directory until you resume it.')); }
       catch (err) { alertMsg('Could not update: ' + err.message, true); tg.disabled = false; }
     }
   });
@@ -996,7 +1006,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       const id = $('adm-id').value;
       if (id) await db.collection('providers').doc(id).set(data, { merge: true });
       else { data.createdAt = firebase.firestore.FieldValue.serverTimestamp(); await db.collection('providers').add(data); }
-      alertMsg((id ? 'Saved changes for ' : 'Added ') + data.name + '. ' + (data.active ? 'It now shows in the directory.' : 'It is hidden from the directory.'));
+      alertMsg((id ? 'Saved changes for ' : 'Added ') + data.name + '. ' + (data.active ? 'It is live in the directory.' : 'It is paused (hidden from the directory).'));
       resetForm(); loadAll();
     } catch (err) { alertMsg('Could not save: ' + err.message, true); }
     finally { $('adm-save').disabled = false; }
