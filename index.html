@@ -2004,7 +2004,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     const today = new Date().toISOString().slice(0, 10);
     const pull = spec => pullNear(spec);
     try {
-      rows = await pull(S.specialty);
+      rows = (S.rows && S.pref === 'done') ? S.rows.slice() : await pull(S.specialty);   // reuse what Rachel already looked up (half the database reads)
       if (S.specialty && /\(All\)$/.test(S.specialty)) { const grp = Object.values(DIR_LISTS[S.type]).find(items => items.includes(S.specialty)); if (grp) rows = rows.filter(p => (p.specialties || []).some(x => grp.includes(x))); }
       if (!rows.length && S.specialty && S.specialty !== '*') {
         const grp = Object.values(DIR_LISTS[S.type]).find(items => items.includes(S.specialty));
