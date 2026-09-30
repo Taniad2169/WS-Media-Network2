@@ -58,6 +58,13 @@
     .powered{display:inline-block;margin-left:6px}.powered a{color:#fff;font-weight:800;text-decoration:underline;text-underline-offset:3px}
     .top-admin{display:inline-flex;align-items:center;gap:4px;margin-left:12px;padding:2px 10px;border:1px solid rgba(216,244,251,.45);border-radius:999px;font-size:12px;font-weight:700;color:#d8f4fb}.top-admin:hover{background:rgba(255,255,255,.12)}
     footer .foot{padding-right:70px;padding-left:0}@media(max-width:600px){footer .foot{padding:0 0 70px}.top-admin{margin:4px 0 0}}
+    /* Rachel voice (browser speech, no API) */
+    .rw-top #rw-close{margin-left:6px}
+    .rw-top #rw-voice{font-size:16px}
+    .rw-top #rw-voice[aria-pressed="false"]{opacity:.55}
+    .rw-listen{display:inline-flex;align-items:center;gap:4px;margin-top:6px;border:1.5px solid #cfe2ea;background:#f7fbfd;color:#0b4164;border-radius:999px;padding:3px 10px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+    .rw-listen:hover{background:#eaf5fb}
+    .rw-listen.on{background:#1b70c2;border-color:#1b70c2;color:#fff}
 </style>
 
 <script type="application/ld+json">
@@ -540,7 +547,7 @@
 <!-- ===== RACHEL WEBSWAN (guided directory assistant) ===== -->
 <button id="rw-launch" type="button" aria-expanded="false" aria-controls="rw-panel"><span class="rw-face" aria-hidden="true">R</span><span class="rw-lbl">Chat with Rachel WebSwan</span></button>
 <div id="rw-panel" role="dialog" aria-label="Chat with Rachel WebSwan" hidden>
-  <div class="rw-top"><span class="rw-face" aria-hidden="true">R</span><div><b>Rachel WebSwan</b><small>WebSwan Media Network · Directory assistant</small></div><button type="button" id="rw-close" aria-label="Close chat">×</button></div>
+  <div class="rw-top"><span class="rw-face" aria-hidden="true">R</span><div><b>Rachel WebSwan</b><small>WebSwan Media Network · Directory assistant</small></div><button type="button" id="rw-voice" aria-pressed="false" aria-label="Read every reply out loud: off" title="Tap to have Rachel read every reply out loud" hidden>🔇</button><button type="button" id="rw-close" aria-label="Close chat">×</button></div>
   <div id="rw-log" role="log" aria-live="polite"></div>
   <div id="rw-chips"></div>
   <form id="rw-form" autocomplete="off"><label for="rw-input" class="hp" style="position:absolute;left:-9999px">Message Rachel</label><input id="rw-input" placeholder="Type your message…" maxlength="400"><button type="submit">Send</button></form>
@@ -1146,11 +1153,70 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   function isEmergency(txt) { return /(chest pain|can'?t breathe|cannot breathe|overdose|stroke|heart attack|bleeding a lot|unconscious|emergency(?! dent))/i.test(txt); }
   function isCrisis(txt) { return /(suicid|kill myself|end my life|hurt myself|self.?harm)/i.test(txt); }
 
+  // ---------- RACHEL VOICE: browser speechSynthesis only (no AI voice service, no API key, no cost) ----------
+  const VOICE = (() => {
+    const synth = window.speechSynthesis;
+    const ok = !!(synth && window.SpeechSynthesisUtterance);
+    // voice is OFF by default: visitors type as usual and tap 🔊 Listen on a reply to hear it.
+    // The speaker button at the top turns on auto-read for visitors who want every reply spoken.
+    let on = false, voice = null, current = null;
+    try { if (localStorage.getItem('rw_voice') === 'on') on = true; } catch (e) {}
+    const PREFER = [/samantha/i, /google us english/i, /aria/i, /jenny/i, /zira/i, /female/i, /karen/i, /moira/i, /tessa/i, /victoria/i];
+    function pickVoice() {
+      if (!ok) return;
+      const vs = synth.getVoices().filter(v => /^en(-|_|$)/i.test(v.lang));
+      if (!vs.length) return;
+      for (const re of PREFER) { const v = vs.find(x => re.test(x.name)); if (v) { voice = v; return; } }
+      voice = vs.find(v => /en-us/i.test(v.lang)) || vs[0];
+    }
+    if (ok) { pickVoice(); if (synth.addEventListener) synth.addEventListener('voiceschanged', pickVoice); else synth.onvoiceschanged = pickVoice; }
+    function textOf(el) {
+      const c = el.cloneNode(true);
+      c.querySelectorAll('button, .rw-listen').forEach(b => b.remove());
+      c.querySelectorAll('br').forEach(br => br.replaceWith('\n'));
+      c.querySelectorAll('.rw-why').forEach(w => w.prepend('Why I picked them: '));
+      return (c.textContent || '').replace(/([^.!?:,\s])\s*\n\s*/g, '$1. ').replace(/\n/g, ' ')
+        .replace(/📞\s*Phone:/g, 'Phone:').replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu, '')
+        .replace(/→|✓/g, '').replace(/\s*·\s*/g, ', ').replace(/\bDr\./g, 'Doctor').replace(/\bEsq\.?/g, 'Esquire')
+        .replace(/\s+/g, ' ').trim();
+    }
+    function mark(btn, playing) { if (!btn) return; btn.classList.toggle('on', playing); btn.innerHTML = playing ? '⏹ Stop' : '🔊 Listen'; btn.setAttribute('aria-label', playing ? 'Stop reading' : 'Listen to this reply'); }
+    function speak(el, btn, queue) {
+      if (!ok) return;
+      const t = textOf(el); if (!t) return;
+      if (!queue) { synth.cancel(); }
+      const u = new SpeechSynthesisUtterance(t);
+      if (voice) u.voice = voice; u.lang = voice ? voice.lang : 'en-US'; u.rate = 1; u.pitch = 1.05;
+      u.onstart = () => { if (current && current !== btn) mark(current, false); current = btn; mark(btn, true); };
+      u.onend = u.onerror = () => { mark(btn, false); if (current === btn) current = null; };
+      synth.speak(u);
+    }
+    function attach(d) {
+      if (!ok || d.classList.contains('rw-typing')) return;
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'rw-listen'; mark(btn, false);
+      btn.addEventListener('click', () => { if (btn.classList.contains('on')) { synth.cancel(); mark(btn, false); } else speak(d, btn, false); });
+      const wrap = document.createElement('div'); wrap.appendChild(btn); d.appendChild(wrap);
+      if (on) setTimeout(() => speak(d, btn, true), 0); // text appears first, then Rachel speaks
+    }
+    function stop() { if (ok) synth.cancel(); if (current) mark(current, false); current = null; }
+    function setOn(v) {
+      on = v; try { localStorage.setItem('rw_voice', v ? 'on' : 'off'); } catch (e) {}
+      const b = document.getElementById('rw-voice'); if (!b) return;
+      b.setAttribute('aria-pressed', String(v)); b.textContent = v ? '🔊' : '🔇';
+      b.setAttribute('aria-label', 'Read every reply out loud: ' + (v ? 'on' : 'off'));
+      b.title = v ? 'Rachel reads every reply out loud (tap to turn off)' : 'Tap to have Rachel read every reply out loud';
+      if (!v) stop();
+    }
+    if (ok) { const b = document.getElementById('rw-voice'); if (b) { b.hidden = false; b.addEventListener('click', () => setOn(!on)); setOn(on); } }
+    return { attach, stop, ok };
+  })();
+
   let S = null;
   function reset() { S = { step: 'start', type: '', specialty: '', state: '', city: '', zip: '', need: '', prefs: {} }; }
   function say(html, who) {
     const d = document.createElement('div'); d.className = 'rw-msg ' + (who === 'me' ? 'me' : 'bot');
     d.innerHTML = who === 'me' ? esc(html) : html;
+    if (who !== 'me') VOICE.attach(d);
     R.log.appendChild(d); R.log.scrollTop = R.log.scrollHeight;
   }
   function rwChips(list, opts) {
@@ -1220,6 +1286,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   }
   function handle(val, label) {
     const txt = String(val || '').trim(); if (!txt) return;
+    VOICE.stop();
     say(label || txt, 'me'); R.chips.innerHTML = '';
     if (S.step === 'done' && !/^(start over|restart|reset)$/i.test(txt)) { reset(); qIndex = 0; }
     const hadSpec = !!S.specialty;
@@ -1344,7 +1411,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     if (!started) { started = true; start(); }
     setTimeout(() => R.input.focus(), 50);
   }
-  function closeRachel() { R.box.hidden = true; $('rw-launch').setAttribute('aria-expanded', 'false'); $('rw-launch').focus(); }
+  function closeRachel() { VOICE.stop(); R.box.hidden = true; $('rw-launch').setAttribute('aria-expanded', 'false'); $('rw-launch').focus(); }
   $('rw-launch').addEventListener('click', () => R.box.hidden ? openRachel() : closeRachel());
   $('rw-close').addEventListener('click', closeRachel);
   document.querySelectorAll('[data-open-rachel]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); openRachel(); }));
