@@ -1765,10 +1765,17 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
 
   let S = null;
   function reset() { S = { step: 'start', type: '', specialty: '', state: '', city: '', zip: '', need: '', prefs: {} }; }
+  function rwToAnchor() {
+    const a = R.anchor; if (!a || !a.isConnected) { R.log.scrollTop = R.log.scrollHeight; return; }
+    R.log.scrollTop += a.getBoundingClientRect().top - R.log.getBoundingClientRect().top - 8;
+  }
   function say(html, who) {
     const d = document.createElement('div'); d.className = 'rw-msg ' + (who === 'me' ? 'me' : 'bot');
     d.innerHTML = who === 'me' ? esc(html) : html;
-    R.log.appendChild(d); R.log.scrollTop = R.log.scrollHeight;   // the written answer always appears first
+    R.log.appendChild(d);   // the written answer always appears first
+    // show each new answer from its first line: the first reply after the visitor's message sits at the top of the chat
+    if (who === 'me') { R.anchor = null; R.log.scrollTop = R.log.scrollHeight; }
+    else { if (!R.anchor) R.anchor = d; rwToAnchor(); }
     if (who !== 'me') { try { VOICE.attach(d); } catch (e) { console.warn('Rachel voice skipped', e); } }
   }
   const CHIPS_TXT = { en: ['▾ More questions', '✕ Close questions'], fr: ['▾ Autres questions', '✕ Fermer les questions'], es: ['▾ Más preguntas', '✕ Cerrar preguntas'], pt: ['▾ Mais perguntas', '✕ Fechar perguntas'], ht: ['▾ Plis kesyon', '✕ Fèmen kesyon yo'] };
@@ -1776,7 +1783,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     const tg = $('rw-chips-toggle'), L = CHIPS_TXT[LANG] || CHIPS_TXT.en;
     R.chips.classList.toggle('collapsed', !open);
     tg.textContent = open ? L[1] : L[0]; tg.setAttribute('aria-expanded', String(open));
-    if (open) setTimeout(() => { R.chips.scrollTop = 0; }, 0); else R.log.scrollTop = R.log.scrollHeight;
+    if (open) setTimeout(() => { R.chips.scrollTop = 0; }, 0); else setTimeout(rwToAnchor, 320);   // after the slide, keep the answer's first line in view
   }
   function rwChips(list, opts) {
     R.chips.innerHTML = '';
