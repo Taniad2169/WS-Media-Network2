@@ -1187,6 +1187,22 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     ]
   };
   let qIndex = 0;
+  // input box hint changes with each step so visitors always know what to type next
+  function setPH() {
+    const st = S ? stateName(S.state) : '';
+    const PH = {
+      start: 'Type what you need (e.g. dentist in Miami, FL)…',
+      type: 'Type doctor or attorney…',
+      specialty: S && S.type === 'attorney' ? 'Type the specialty or your case (e.g. divorce)…' : 'Type the specialty or your problem (e.g. back pain)…',
+      state: 'Type your state (e.g. Florida)…',
+      city: 'Type your city or ZIP code…',
+      need: 'Tell me more about your need…',
+      q: 'Type your answer or tap an option…',
+      done: 'Type a new search…'
+    };
+    R.input.placeholder = PH[S && S.step] || 'Type your message…';
+    R.input.setAttribute('aria-label', R.input.placeholder.replace(/…$/, ''));
+  }
   function next() {
     if (!S.type) { S.step = 'type'; say('Are you looking for a <b>doctor</b> or an <b>attorney</b>?'); rwChips(['Doctor', 'Attorney']); return; }
     if (!S.specialty) {
@@ -1242,7 +1258,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     if (!hadSpec && S.specialty && S.specialty !== '*' && S.step === 'specialty') say(`${esc(S.specialty.replace(/ \(All\)$/, ''))}. Got it!`);
     if (S.step === 'start' && S.type && !S.specialty && !S.state) say(`Great, let’s find you the right ${who()}.`);
     else if (S.step === 'start' && S.specialty) say(`${esc(S.specialty.replace(/ \(All\)$/, ''))}${S.state ? ' in ' + esc((S.city ? S.city + ', ' : '') + stateName(S.state)) : ''}. Got it!`);
-    next();
+    next(); setPH();
   }
   function score(p) {
     let s = 0; const why = [];
@@ -1269,7 +1285,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     return { s, why };
   }
   async function finish() {
-    S.step = 'done';
+    S.step = 'done'; setPH();
     const spLabel = S.specialty && S.specialty !== '*' ? S.specialty.replace(/ \(All\)$/, '') : who() + 's';
     say(`Perfect, thank you! Let me search the WebSwan Media Network Directory for ${esc(spLabel)} in ${esc((S.city ? S.city + ', ' : '') + stateName(S.state))}…`);
     const typing = document.createElement('div'); typing.className = 'rw-msg bot rw-typing'; typing.innerHTML = '<span></span><span></span><span></span>'; R.log.appendChild(typing); R.log.scrollTop = R.log.scrollHeight;
@@ -1320,7 +1336,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     reset(); qIndex = 0;
     if (!again) R.log.innerHTML = '';
     say('Hi, I’m <b>Rachel WebSwan</b> with WebSwan Media Network. 👋 How can I assist you today?<br><span class="rw-sub">Tell me what you’re looking for, like “I need a chiropractor near Orlando, FL” or “divorce attorney in Houston, Texas.”</span>');
-    rwChips(['Find a doctor', 'Find an attorney']);
+    rwChips(['Find a doctor', 'Find an attorney']); setPH();
   }
   let started = false;
   function openRachel() {
