@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -2106,7 +2107,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
 })();
 </script>
 <script>
-/* Talk to Rachel: smooth scroll to the Rachel call/chat block and focus the chat button */
+/* Talk to Rachel: smooth scroll to the Rachel call/chat block, then open Rachel's chat box */
 (function () {
   function goRachel() {
     if (location.hash !== "#rachel-chat") return;
@@ -2114,7 +2115,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     if (!box) return;
     box.scrollIntoView({ behavior: "smooth", block: "start" });
     var btn = box.querySelector(".rc-chat");
-    if (btn) setTimeout(function () { btn.focus({ preventScroll: true }); }, 800);
+    var panel = document.getElementById("rw-panel");
+    if (btn && (!panel || panel.hidden)) setTimeout(function () { btn.click(); }, 900);
   }
   window.addEventListener("hashchange", goRachel);
   window.addEventListener("load", function () { setTimeout(goRachel, 300); });
