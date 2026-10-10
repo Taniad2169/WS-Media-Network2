@@ -402,7 +402,7 @@
           <div class="form-field full conditional" id="years-other-wrap" hidden><label for="years-other">Tell us about your time in business <span class="optional">(up to 50 words)</span></label><textarea id="years-other" name="years_in_business_other" rows="3" data-word-limit="50" placeholder="Add a short note"></textarea><small class="word-count" aria-live="polite">0 / 50 words</small></div>
           <div class="form-field full conditional" id="industry-other-wrap" hidden><label for="industry-other">Tell us about your industry <span class="optional">(up to 50 words)</span></label><textarea id="industry-other" name="industry_other" rows="3" data-word-limit="50" placeholder="Add a short note"></textarea><small class="word-count" aria-live="polite">0 / 50 words</small></div>
         </div>
-        <button class="btn form-submit" id="lead-submit" type="submit">Send my request <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6-6-6 6"/></svg></button>
+        <button class="btn form-submit" id="lead-submit" type="submit">Submit and continue to payment <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6-6-6 6"/></svg></button>
         <p class="form-status" id="form-status" role="status" aria-live="polite" hidden></p>
         <p class="form-privacy">Your information is used to respond to your request.</p>
       </form>
@@ -572,15 +572,13 @@
         headers: {Accept: 'application/json'}
       });
       if (!response.ok) throw new Error('Form submission failed');
-      form.hidden = true;
-      thanks.hidden = false;
-      thanks.focus();
+      window.WSMNPay.open(new FormData(form));
     } catch (error) {
       status.textContent = 'We could not send your request just now. Please try again or call (239) 667-0151.';
       status.hidden = false;
     } finally {
       submit.disabled = false;
-      submit.innerHTML = 'Send my request <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6-6-6 6"/></svg>';
+      submit.innerHTML = 'Submit and continue to payment <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6-6-6 6"/></svg>';
     }
   });
 })();
@@ -2120,6 +2118,95 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   }
   window.addEventListener("hashchange", goRachel);
   window.addEventListener("load", function () { setTimeout(goRachel, 300); });
+})();
+</script>
+
+<!-- ===================== WSMN JOIN: Stripe payment + welcome + WhatsApp alert ===================== -->
+<style>
+#wsmn-pay{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:16px;background:rgba(4,22,40,.66);overflow-y:auto}
+#wsmn-pay[hidden]{display:none}
+#wsmn-pay .wp-card{width:min(460px,100%);background:#fff;color:#082a48;border-radius:20px;padding:26px 22px 22px;box-shadow:0 24px 70px rgba(0,0,0,.35);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-align:center}
+#wsmn-pay h3{margin:0 0 6px;font-size:22px;line-height:1.25}
+#wsmn-pay p{margin:0 0 14px;color:#3f5868;font-size:15px;line-height:1.5}
+#wsmn-pay .wp-sum{text-align:left;background:#f2f8fb;border:1px solid #d7e7ed;border-radius:14px;padding:12px 14px;margin:0 0 16px;font-size:14px}
+#wsmn-pay .wp-sum div{display:flex;justify-content:space-between;gap:10px;padding:4px 0}
+#wsmn-pay .wp-sum .wp-tot{border-top:1px solid #d7e7ed;margin-top:4px;padding-top:8px;font-weight:800;color:#082a48}
+#wsmn-pay .wp-go{display:block;width:100%;border:0;border-radius:14px;padding:15px 16px;font:800 16px/1 Inter,ui-sans-serif,system-ui,sans-serif;background:#0d6efd;color:#fff;cursor:pointer;text-decoration:none}
+#wsmn-pay .wp-go:hover,#wsmn-pay .wp-go:focus-visible{background:#0a58ca;outline:none}
+#wsmn-pay .wp-x{margin-top:10px;background:none;border:0;color:#5c7180;font:600 14px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;cursor:pointer;padding:8px}
+#wsmn-pay .wp-lock{font-size:12px;color:#5c7180;margin:10px 0 0}
+#wsmn-pay .wp-swan{font-size:44px;line-height:1;margin-bottom:8px}
+</style>
+<div id="wsmn-pay" role="dialog" aria-modal="true" aria-labelledby="wsmn-pay-title" hidden><div class="wp-card"></div></div>
+<script>
+(function () {
+  /* ---- Settings ---- */
+  var STRIPE_LINK = 'https://buy.stripe.com/5kQ28rgWs0m9fIO3hY5ZC04';
+  var WHATSAPP_PHONE = '14158770687';
+  /* Paste your free CallMeBot key between the quotes to turn on WhatsApp alerts: */
+  var CALLMEBOT_KEY = '';
+
+  var box = document.getElementById('wsmn-pay'), card = box.querySelector('.wp-card');
+  function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function close(){box.hidden=true;}
+  function kind(industry){return /lawyer|attorney|law/i.test(industry||'')?'Lawyer':'Doctor';}
+
+  function open(fd) {
+    var d = {
+      name: fd.get('name') || '', business: fd.get('company_name') || '', phone: fd.get('phone') || '',
+      email: fd.get('email') || '', industry: fd.get('industry') || '', other: fd.get('industry_other') || ''
+    };
+    var id = 'wsmn-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+    try { localStorage.setItem('wsmnPending', JSON.stringify({ id: id, d: d, t: Date.now() })); } catch (e) {}
+    var url = STRIPE_LINK + '?client_reference_id=' + encodeURIComponent(id) + (d.email ? '&prefilled_email=' + encodeURIComponent(d.email) : '');
+    card.innerHTML =
+      '<div class="wp-swan" aria-hidden="true">🦢</div>' +
+      '<h3 id="wsmn-pay-title">Last step: secure payment</h3>' +
+      '<p>Thank you, ' + esc(d.name.split(' ')[0] || 'doctor') + '! Complete your payment to join WebSwan Media Network.</p>' +
+      '<div class="wp-sum"><div><span>Setup fee</span><span>$400.00</span></div><div><span>Annual membership (first year)</span><span>$289.00</span></div>' +
+      '<div class="wp-tot"><span>Due today</span><span>$689.00</span></div><div><span>Monthly maintenance, starting in 30 days</span><span>$29.00/mo</span></div></div>' +
+      '<a class="wp-go" href="' + url + '">Continue to secure payment</a>' +
+      '<p class="wp-lock">🔒 Payments are processed securely by Stripe. No contract. Setup and annual membership are non-refundable.</p>' +
+      '<button type="button" class="wp-x">Not now</button>';
+    card.querySelector('.wp-x').addEventListener('click', close);
+    box.hidden = false;
+    card.querySelector('.wp-go').focus();
+  }
+
+  function notify(p) {
+    if (!CALLMEBOT_KEY) return;
+    try {
+      var sent = JSON.parse(localStorage.getItem('wsmnAlerted') || '[]');
+      if (sent.indexOf(p.id) !== -1) return;
+      var d = p.d || {};
+      var text = '🦢 New WebSwan Media Network member (paid)\nBusiness: ' + (d.business || '-') + '\nPhone: ' + (d.phone || '-') + '\nType: ' + kind(d.industry) + (d.industry ? ' (' + d.industry + (d.other ? ': ' + d.other : '') + ')' : '');
+      var img = new Image();
+      img.src = 'https://api.callmebot.com/whatsapp.php?phone=' + WHATSAPP_PHONE + '&text=' + encodeURIComponent(text) + '&apikey=' + encodeURIComponent(CALLMEBOT_KEY);
+      sent.push(p.id); localStorage.setItem('wsmnAlerted', JSON.stringify(sent.slice(-20)));
+    } catch (e) {}
+  }
+
+  function welcome() {
+    var q = new URLSearchParams(location.search);
+    if (!q.get('wsmn_paid')) return;
+    var p = null; try { p = JSON.parse(localStorage.getItem('wsmnPending') || 'null'); } catch (e) {}
+    if (p) { notify(p); try { localStorage.removeItem('wsmnPending'); } catch (e) {} }
+    q.delete('wsmn_paid');
+    history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '') + location.hash);
+    card.innerHTML =
+      '<div class="wp-swan" aria-hidden="true">🦢</div>' +
+      '<h3 id="wsmn-pay-title">Welcome to your WebSwan Media Network journey!</h3>' +
+      '<p>Thank you for choosing us' + (p && p.d && p.d.business ? ', ' + esc(p.d.business) : '') + '. Your payment went through and our team will reach out shortly to get you set up.</p>' +
+      '<p style="font-size:14px">Questions? Call Rachel, our 24/7 receptionist, at <a href="tel:2396670151">(239) 667-0151</a>.</p>' +
+      '<button type="button" class="wp-go">Continue</button>';
+    card.querySelector('.wp-go').addEventListener('click', close);
+    box.hidden = false;
+  }
+
+  box.addEventListener('click', function (e) { if (e.target === box) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden) close(); });
+  window.WSMNPay = { open: open, close: close };
+  welcome();
 })();
 </script>
 </body>
