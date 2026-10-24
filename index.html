@@ -85,6 +85,13 @@
     .presence-note h3{margin:0 0 6px;color:var(--navy);font-size:17px}
     .presence-note p{margin:0;color:#3d5566;font-size:14.5px;line-height:1.6;max-width:none}
 .dir-rev{display:inline-flex;align-items:center;gap:4px;font-weight:800;color:#8a5a00;text-decoration:none}a.dir-rev:hover{text-decoration:underline}
+.ph-btn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:800;border:1.5px dashed #cfe2ea;color:#7b8f99;background:#fbfdfe;cursor:not-allowed}
+.pro-gal{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 4px}.pro-gal button{padding:0;border:0;background:none;cursor:zoom-in;border-radius:14px;overflow:hidden;aspect-ratio:4/3}.pro-gal img{width:100%;height:100%;object-fit:cover;display:block;border-radius:14px;border:1px solid #e3eef3}
+.pro-gal-big{position:fixed;inset:0;background:rgba(5,25,40,.85);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;cursor:zoom-out}.pro-gal-big img{max-width:100%;max-height:90vh;border-radius:14px}
+.pro-revs{border:1px solid #e3eef3;border-radius:16px;padding:14px 16px;margin-top:14px;background:#fbfdfe}.pro-rev-links{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}.pro-rev-links a{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:800;text-decoration:none;border:1.5px solid #cfe2ea;color:var(--navy);background:#fff}
+.pro-rev{border-top:1px solid #e3eef3;padding:8px 0}.pro-rev b{color:var(--navy)}.pro-rev .st{color:#c98a00;letter-spacing:1px}
+.pro-rev-form{display:grid;gap:8px;margin-top:10px}.pro-rev-form input,.pro-rev-form select,.pro-rev-form textarea{width:100%;border:1.5px solid #cfe2ea;border-radius:12px;padding:9px 12px;font:inherit;font-size:14px;background:#fff}.pro-rev-form textarea{min-height:80px}.pro-rev-form button{justify-self:start;border:0;border-radius:999px;padding:9px 18px;font-weight:800;background:#1b70c2;color:#fff;cursor:pointer}
+.adm-gal{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0}.adm-gal figure{margin:0;position:relative;width:110px;height:82px}.adm-gal img{width:110px;height:82px;object-fit:cover;border-radius:10px;border:1px solid #cfe2ea}.adm-gal button{position:absolute;top:-8px;right:-8px;width:24px;height:24px;border-radius:50%;border:0;background:#911e1a;color:#fff;font-weight:800;cursor:pointer}
 .dir-actions .pro-copy{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;font-weight:800;border:1.5px solid #cfe2ea;color:var(--navy);background:#f7fbfd;cursor:pointer}.dir-actions .pro-copy:hover{background:#eaf5fb}
     /* question buttons slide away so the full answer has room; a toggle brings them back */
     #rw-panel > *{flex-shrink:0}
@@ -504,6 +511,14 @@
         <div class="adm-field full"><label for="adm-areas">Other cities / ZIP codes served (comma separated)</label><input id="adm-areas" placeholder="Naples, Cape Coral, 33904, 34102"></div>
         <div class="adm-field full"><label for="adm-bio">Short description (shows on the listing)</label><textarea id="adm-bio" maxlength="600"></textarea></div>
         <div class="adm-field two"><label for="adm-photo">Photo or logo URL (https)</label><input id="adm-photo" placeholder="https://…"></div>
+        <div class="adm-field"><label for="adm-social-plat">Social media where they are most active</label><select id="adm-social-plat"><option value="">Choose</option><option>Facebook</option><option>Instagram</option><option>LinkedIn</option><option>TikTok</option><option>YouTube</option><option>X (Twitter)</option></select></div>
+        <div class="adm-field two"><label for="adm-social">Social media link (https)</label><input id="adm-social" placeholder="https://www.instagram.com/…"></div>
+        <div class="adm-field two"><label for="adm-greview">Google reviews link (https)</label><input id="adm-greview" placeholder="https://www.google.com/maps/place/…"></div>
+        <div class="adm-field"><label for="adm-yreview">Yelp reviews link (https)</label><input id="adm-yreview" placeholder="https://www.yelp.com/biz/…"></div>
+        <div class="adm-field full"><label for="adm-gal-file">Profile pictures (up to 3, shown permanently on their profile)</label>
+          <div class="adm-gal" id="adm-gal"></div>
+          <input type="file" id="adm-gal-file" accept="image/*" multiple style="height:auto;padding:10px">
+          <small style="color:var(--muted)">Choose up to 3 photos (office, team, the doctor or attorney). They are resized automatically before saving.</small></div>
         <div class="adm-field"><label for="adm-exp">Listing paid through</label><input id="adm-exp" type="date"></div>
         <div class="adm-field full adm-checks">
           <label><input type="checkbox" id="adm-active" checked> Live on the directory (uncheck to pause)</label>
@@ -523,6 +538,11 @@
       <div class="adm-row" style="margin-top:16px"><button class="adm-btn blue" type="submit" id="adm-save">Save listing</button><button class="adm-btn" type="button" id="adm-reset">Clear form / add new</button></div>
       <p class="adm-msg" id="adm-msg" role="status"></p>
     </form>
+    <div class="adm-box">
+      <h3 style="margin:0 0 6px">Reviews waiting for approval <span id="adm-rev-count" style="color:var(--muted);font-size:14px"></span></h3>
+      <p style="margin:0 0 10px;color:var(--muted);font-size:14px">Reviews that visitors leave on a profile show up here first. Approve them to make them public.</p>
+      <div id="adm-revs"></div>
+    </div>
     <div class="adm-box">
       <div class="adm-row" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">All listings <span id="adm-count" style="color:var(--muted);font-size:14px"></span></h3><input id="adm-filter" placeholder="Filter by name, city, specialty…" style="height:40px;border:1.5px solid #cfe2ea;border-radius:12px;padding:0 12px;min-width:240px"></div>
       <div class="adm-scroll"><table class="adm-table"><thead><tr><th>Name</th><th>Type / specialties</th><th>Location</th><th>Status</th><th>Paid through</th><th></th></tr></thead><tbody id="adm-list"></tbody></table></div>
@@ -916,6 +936,61 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   // ---------- PROFILE PAGE (opens from search results or Rachel; shareable ?pro=ID link) ----------
   const listOf = s => String(s || '').split(',').map(x => x.trim()).filter(Boolean);
   function yesNo(v, yes) { return v ? yes : ''; }
+  const socialOk = p => /^https:\/\//i.test(p.socialUrl || '');
+  const imgOk = g => /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(g) || /^https:\/\/[^"'<>\s]+$/.test(g);
+  function galleryHTML(p) {
+    const g = (p.gallery || []).filter(imgOk).slice(0, 3);
+    if (!g.length) return '';
+    return `<div class="pro-gal">${g.map((src, i) => `<button type="button" data-gal-big="${i}" aria-label="Enlarge picture ${i + 1}"><img src="${src}" alt="${esc(p.name)}, picture ${i + 1}" loading="lazy"></button>`).join('')}</div>`;
+  }
+  function reviewsBoxHTML(p) {
+    const ok = u => /^https:\/\//i.test(u || '');
+    const gl = ok(p.googleReviewUrl) ? `<a href="${esc(p.googleReviewUrl)}" target="_blank" rel="noopener">⭐ See Google reviews</a>` : '<span class="ph-btn" aria-disabled="true">⭐ Google reviews · coming soon</span>';
+    const yl = ok(p.yelpReviewUrl) ? `<a href="${esc(p.yelpReviewUrl)}" target="_blank" rel="noopener">⭐ See Yelp reviews</a>` : '<span class="ph-btn" aria-disabled="true">⭐ Yelp reviews · coming soon</span>';
+    return `<div class="pro-revs"><h3 style="margin:0">Reviews</h3>
+      <div class="pro-rev-links">${gl}${yl}</div>
+      <div id="pro-rev-list"><p class="dir-status" style="margin:0">Loading reviews left on WebSwan Media Network…</p></div>
+      <details style="margin-top:8px"><summary style="cursor:pointer;font-weight:800;color:var(--navy)">✍️ Leave a review for ${esc(p.name)}</summary>
+        <form class="pro-rev-form" id="pro-rev-form" novalidate>
+          <input id="pro-rev-name" maxlength="40" placeholder="Your first name" required>
+          <select id="pro-rev-stars" required><option value="">How many stars?</option><option value="5">★★★★★ 5 · Excellent</option><option value="4">★★★★ 4 · Very good</option><option value="3">★★★ 3 · Good</option><option value="2">★★ 2 · Fair</option><option value="1">★ 1 · Poor</option></select>
+          <textarea id="pro-rev-text" maxlength="600" placeholder="Share your experience (please don't include medical, legal or personal details)" required></textarea>
+          <input id="pro-rev-hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+          <button type="submit">Send review</button>
+          <p id="pro-rev-msg" role="status" style="margin:0;font-size:14px"></p>
+        </form></details></div>`;
+  }
+  async function loadProReviews(id, name) {
+    const box = $('pro-rev-list'); if (!box) return;
+    try {
+      const snap = await db.collection('reviews').where('providerId', '==', id).where('approved', '==', true).limit(30).get();
+      const rows = []; snap.forEach(d => rows.push(d.data()));
+      rows.sort((a, b) => ((b.createdAt && b.createdAt.seconds) || 0) - ((a.createdAt && a.createdAt.seconds) || 0));
+      if (!rows.length) { box.innerHTML = '<p style="margin:0;color:var(--muted);font-size:14px">No reviews on WebSwan Media Network yet. Be the first to leave one!</p>'; return; }
+      const avg = rows.reduce((s, r) => s + (+r.stars || 0), 0) / rows.length;
+      box.innerHTML = `<p style="margin:0 0 4px;font-weight:800;color:#8a5a00">⭐ ${avg.toFixed(1)} · ${rows.length} review${rows.length === 1 ? '' : 's'} on WebSwan Media Network</p>` +
+        rows.map(r => `<div class="pro-rev"><b>${esc(r.name || 'Visitor')}</b> <span class="st">${'★'.repeat(+r.stars || 0)}${'☆'.repeat(5 - (+r.stars || 0))}</span><br>${esc(r.text || '')}</div>`).join('');
+    } catch (e) { box.innerHTML = '<p style="margin:0;color:var(--muted);font-size:14px">Reviews are not available right now.</p>'; }
+    const f = $('pro-rev-form'); if (!f) return;
+    f.addEventListener('submit', async ev => {
+      ev.preventDefault();
+      const msg = $('pro-rev-msg'), nm = $('pro-rev-name').value.trim(), st = +$('pro-rev-stars').value, tx = $('pro-rev-text').value.trim();
+      if ($('pro-rev-hp').value) return;
+      if (!nm || !st || tx.length < 10) { msg.style.color = '#911e1a'; msg.textContent = 'Please add your first name, the stars, and a few words about your experience.'; return; }
+      const btn = f.querySelector('button'); btn.disabled = true;
+      try {
+        await db.collection('reviews').add({ providerId: id, providerName: name || '', name: nm.slice(0, 40), stars: st, text: tx.slice(0, 600), approved: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+        f.reset(); msg.style.color = '#155724'; msg.textContent = 'Thank you! Your review was sent. It will appear here after a quick check.';
+      } catch (e) { msg.style.color = '#911e1a'; msg.textContent = 'Sorry, your review could not be sent right now. Please try again later.'; }
+      finally { btn.disabled = false; }
+    });
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-gal-big]'); if (!b) return;
+    const src = b.querySelector('img').src, ov = document.createElement('div');
+    ov.className = 'pro-gal-big'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', 'Enlarged picture');
+    ov.innerHTML = `<img src="${src}" alt="">`; ov.addEventListener('click', () => ov.remove()); document.body.appendChild(ov);
+  });
   function profileHTML(p) {
     const initials = (p.name || '?').replace(/^(dr\.?|attorney)\s+/i, '').split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
     const photo = /^https:\/\//i.test(p.photoUrl || '') ? `<img class="dir-avatar pro-big" src="${esc(p.photoUrl)}" alt="${esc(p.name)}">` : `<div class="dir-avatar pro-big" aria-hidden="true">${esc(initials)}</div>`;
@@ -938,6 +1013,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         <h2 id="pro-title">${esc(p.name)}${p.credentials ? ', ' + esc(p.credentials) : ''}</h2>${p.practice ? `<p class="dir-practice">${esc(p.practice)}</p>` : ''}
         <div class="dir-tags" style="margin-top:8px">${tags(p.specialties || [])}</div></div></div>
       ${reviewHTML(p) ? `<p style="margin:10px 0 0">${reviewHTML(p)}</p>` : ''}
+      ${galleryHTML(p)}
       ${p.bio ? `<p class="pro-bio">${esc(p.bio)}</p>` : ''}
       ${facts ? `<ul class="pro-facts">${facts}</ul>` : ''}
       ${listOf(p.conditions).length ? `<h3>${p.type === 'attorney' ? 'Areas of practice' : 'Services, conditions & treatments'}</h3><div class="dir-tags">${tags(listOf(p.conditions))}</div>` : ''}
@@ -946,12 +1022,14 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       ${p.serviceAreas ? `<p style="color:var(--muted);font-size:14px">Service area: ${esc(p.serviceAreas)}</p>` : ''}
       <div class="dir-actions" style="margin-top:14px">
         ${tel ? `<a class="primary" href="tel:${esc(tel)}">📞 Call ${esc(p.phone)}</a>` : ''}
-        ${web ? `<a href="${esc(web)}" target="_blank" rel="noopener sponsored">Visit website</a>` : ''}
-        ${portalOk(p) ? `<a href="${esc(p.portalUrl)}" target="_blank" rel="noopener">${portalLbl(p)}</a>` : ''}
+        ${web ? `<a href="${esc(web)}" target="_blank" rel="noopener sponsored">🌐 Visit website</a>` : '<span class="ph-btn" aria-disabled="true" title="Coming soon">🌐 Website · coming soon</span>'}
+        ${socialOk(p) ? `<a href="${esc(p.socialUrl)}" target="_blank" rel="noopener">📱 ${esc(p.socialPlatform || 'Social media')}</a>` : `<span class="ph-btn" aria-disabled="true" title="Coming soon">📱 ${esc(p.socialPlatform || 'Social media')} · coming soon</span>`}
+        ${portalOk(p) ? `<a href="${esc(p.portalUrl)}" target="_blank" rel="noopener">🔒 ${portalLbl(p)} (secure forms)</a>` : `<span class="ph-btn" aria-disabled="true" title="Coming soon">🔒 ${portalLbl(p)} · coming soon</span>`}
         ${p._id ? `<button type="button" class="pro-copy" data-link="${esc(wsmnLink(p._id))}">🔗 Copy WSMN profile link</button>` : ''}
         ${p.email ? `<a href="mailto:${esc(p.email)}">Email</a>` : ''}
         ${addr ? `<a href="${esc(maps)}" target="_blank" rel="noopener">Directions</a>` : ''}
       </div>
+      ${reviewsBoxHTML(p)}
       <p class="dir-note">This is a paid (sponsored) listing. WebSwan Media Network does not provide medical or legal advice and does not endorse any professional. Please verify licenses with your state medical board or state bar.</p>`;
   }
   const proModal = $('pro-modal'), proBody = $('pro-body');
@@ -967,7 +1045,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       const p = d.exists ? d.data() : null;
       const today = new Date().toISOString().slice(0, 10);
       if (!p || !p.active || (p.expires && p.expires < today)) throw new Error('gone');
-      p._id = id; proBody.innerHTML = profileHTML(p);
+      p._id = id; proBody.innerHTML = profileHTML(p); loadProReviews(id, p.name);
       const cp = proBody.querySelector('.pro-copy');
       if (cp) cp.addEventListener('click', () => {
         const link = cp.dataset.link, done = () => { cp.textContent = '✓ Link copied'; setTimeout(() => { cp.textContent = '🔗 Copy WSMN profile link'; }, 2000); };
@@ -1130,6 +1208,12 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       thisIs: (nm, spec) => `This is ${nm}${spec ? ` (${spec})` : ''}.`,
       phone: 'Phone', view: att => `View ${att ? 'attorney' : 'doctor'}’s profile →`,
       closing: att => `Click <b>View profile</b> on any of them to see their full page. Listings are sponsored by the professionals, and I can’t give ${att ? 'legal' : 'medical'} advice, so please confirm details directly with their office. Anything else I can help you with?`,
+      askZip: c => `Thanks! What is your <b>ZIP code</b> in ${c}? It helps me find the matches closest to you.`,
+      matchIntro: n => `I compared every listing with the <b>${n} thing${n === 1 ? '' : 's'}</b> you told me. They are ranked by how many of your needs they meet, then by how close they are to you, <b>not by ads or Google ranking</b>.`,
+      matchOf: (m, n) => `Matches ${m} of ${n}`, missing: 'Doesn’t have',
+      topWhy: x => `Picked because you said <b>${x}</b> matters most, and they have it.`,
+      closeWhy: 'Picked because they are close to you.',
+      yourMatches: 'Your matches (tap a name to open the profile; the others stay right here for you):',
       startOver: 'Start over', whySay: 'Why I picked them: ',
       cFree: 'Searching the WebSwan Media Network directory and chatting with me is <b>completely free</b> for you. Each doctor or attorney sets the fees for their own services, so please ask their office directly.', cAbout: 'WebSwan Media Network is a directory of <b>doctors and attorneys</b>. Tell me what you need and where you are, and I’ll find you about 3 to 5 good matches with their phone number and profile.', cWsmn: 'WSMN stands for <b>WebSwan Media Network</b>, our advertising platform.',
       fewQs: 'I’ll ask just a few quick questions to narrow it down, then I’ll give you about 3 to 5 good matches.',
@@ -1137,7 +1221,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       send: 'Send', foot: 'Rachel answers questions about joining WebSwan Media Network. She can’t give medical or legal advice.',
       langSet: 'Okay! I’ll write and speak in English from now on.',
       listen: '🔊 Listen', stop: '⏹ Stop', voiceOn: 'Voice on', voiceOff: 'Voice off', langLabel: 'Language',
-      ph: { pro: 'Type your question about advertising…', start: 'Type what you need (e.g. dentist in Miami, FL)…', type: 'Type doctor or attorney…', specD: 'Type the specialty or your problem (e.g. back pain)…', specA: 'Type the specialty or your case (e.g. divorce)…', state: 'Type your state (e.g. Florida)…', city: 'Type your city or ZIP code…', need: 'Tell me more about your need…', q: 'Type your answer or tap an option…', done: 'Type a new search…' }
+      ph: { zip: 'Type your 5-digit ZIP code…', pro: 'Type your question about advertising…', start: 'Type what you need (e.g. dentist in Miami, FL)…', type: 'Type doctor or attorney…', specD: 'Type the specialty or your problem (e.g. back pain)…', specA: 'Type the specialty or your case (e.g. divorce)…', state: 'Type your state (e.g. Florida)…', city: 'Type your city or ZIP code…', need: 'Tell me more about your need…', q: 'Type your answer or tap an option…', done: 'Type a new search…' }
     },
     fr: {
       greet: 'Bonjour ! Je m’appelle <b>Rachel WebSwan</b>, de WebSwan Media Network. 👋 Vous <b>cherchez un médecin ou un avocat</b>, ou vous êtes <b>médecin ou avocat</b> et souhaitez être référencé ? Choisissez ci-dessous.<br><span class="rw-sub">Vous pouvez aussi écrire directement ce que vous cherchez, par exemple « chiropracteur près d’Orlando, FL ».</span>',
@@ -1162,6 +1246,12 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       thisIs: (nm, spec) => `Je vous présente ${nm}${spec ? ` (${spec})` : ''}.`,
       phone: 'Téléphone', view: att => `Voir le profil ${att ? 'de l’avocat' : 'du médecin'} →`,
       closing: att => `Cliquez sur <b>Voir le profil</b> pour afficher la fiche complète. Ces annonces sont financées par les professionnels, et je ne peux pas donner d’avis ${att ? 'juridique' : 'médical'} : confirmez les détails directement auprès de leur cabinet. Puis-je vous aider pour autre chose ?`,
+      askZip: c => `Merci ! Quel est votre <b>code postal (ZIP)</b> à ${c} ? Cela m’aide à trouver les professionnels les plus proches de vous.`,
+      matchIntro: n => `J’ai comparé chaque fiche aux <b>${n} critère${n === 1 ? '' : 's'}</b> que vous m’avez donnés. Le classement se fait selon le nombre de critères remplis, puis la proximité, <b>pas selon la publicité ou Google</b>.`,
+      matchOf: (m, n) => `Remplit ${m} critère${m === 1 ? '' : 's'} sur ${n}`, missing: 'N’a pas',
+      topWhy: x => `Choisi parce que vous avez dit que <b>${x}</b> compte le plus, et ce professionnel l’offre.`,
+      closeWhy: 'Choisi parce que ce professionnel est proche de vous.',
+      yourMatches: 'Vos résultats (touchez un nom pour ouvrir le profil ; les autres restent ici) :',
       startOver: 'Recommencer', whySay: 'Pourquoi ce choix : ',
       cFree: 'Chercher dans l’annuaire WebSwan Media Network et discuter avec moi est <b>entièrement gratuit</b> pour vous. Chaque médecin ou avocat fixe ses propres honoraires : renseignez-vous directement auprès de son cabinet.', cAbout: 'WebSwan Media Network est un annuaire de <b>médecins et d’avocats</b>. Dites-moi ce dont vous avez besoin et où vous êtes, et je vous trouve environ 3 à 5 bons choix avec leur numéro et leur profil.', cWsmn: 'WSMN signifie <b>WebSwan Media Network</b>, notre plateforme publicitaire.',
       fewQs: 'Je vais vous poser quelques questions rapides pour affiner la recherche, puis je vous proposerai environ 3 à 5 bons choix.',
@@ -1195,6 +1285,12 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       thisIs: (nm, spec) => `Le presento a ${nm}${spec ? ` (${spec})` : ''}.`,
       phone: 'Teléfono', view: att => `Ver perfil del ${att ? 'abogado' : 'médico'} →`,
       closing: att => `Toque <b>Ver perfil</b> en cualquiera para ver su página completa. Estos anuncios son pagados por los profesionales y yo no puedo dar consejos ${att ? 'legales' : 'médicos'}, así que confirme los detalles directamente con su oficina. ¿Le puedo ayudar con algo más?`,
+      askZip: c => `¡Gracias! ¿Cuál es su <b>código postal (ZIP)</b> en ${c}? Me ayuda a encontrar las opciones más cercanas a usted.`,
+      matchIntro: n => `Comparé cada perfil con las <b>${n} cosa${n === 1 ? '' : 's'}</b> que me dijo. Están ordenados por cuántas de sus necesidades cumplen y luego por cercanía, <b>no por anuncios ni por Google</b>.`,
+      matchOf: (m, n) => `Cumple ${m} de ${n}`, missing: 'No tiene',
+      topWhy: x => `Elegido porque usted dijo que <b>${x}</b> es lo más importante, y lo tiene.`,
+      closeWhy: 'Elegido porque está cerca de usted.',
+      yourMatches: 'Sus resultados (toque un nombre para abrir el perfil; los demás siguen aquí):',
       startOver: 'Empezar de nuevo', whySay: 'Por qué lo recomiendo: ',
       cFree: 'Buscar en el directorio de WebSwan Media Network y conversar conmigo es <b>totalmente gratis</b> para usted. Cada médico o abogado pone el precio de sus propios servicios, así que pregúntele directamente a su oficina.', cAbout: 'WebSwan Media Network es un directorio de <b>médicos y abogados</b>. Dígame qué necesita y dónde está, y le encuentro entre 3 y 5 buenas opciones con su teléfono y su perfil.', cWsmn: 'WSMN significa <b>WebSwan Media Network</b>, nuestra plataforma de publicidad.',
       fewQs: 'Le voy a hacer unas preguntas rápidas para afinar la búsqueda y luego le doy entre 3 y 5 buenas opciones.',
@@ -1228,6 +1324,12 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       thisIs: (nm, spec) => `Conheça ${nm}${spec ? ` (${spec})` : ''}.`,
       phone: 'Telefone', view: att => `Ver perfil do ${att ? 'advogado' : 'médico'} →`,
       closing: att => `Toque em <b>Ver perfil</b> para ver a página completa. Esses anúncios são pagos pelos próprios profissionais e eu não posso dar orientação ${att ? 'jurídica' : 'médica'}, então confirme os detalhes direto com o consultório ou escritório. Posso te ajudar com mais alguma coisa?`,
+      askZip: c => `Obrigada! Qual é o seu <b>CEP (ZIP code)</b> em ${c}? Isso me ajuda a encontrar as opções mais perto de você.`,
+      matchIntro: n => `Comparei cada perfil com as <b>${n} coisa${n === 1 ? '' : 's'}</b> que você me disse. A ordem é pelo número de necessidades atendidas e depois pela distância, <b>não por anúncios nem pelo Google</b>.`,
+      matchOf: (m, n) => `Atende ${m} de ${n}`, missing: 'Não tem',
+      topWhy: x => `Escolhido porque você disse que <b>${x}</b> é o mais importante, e ele tem.`,
+      closeWhy: 'Escolhido porque fica perto de você.',
+      yourMatches: 'Seus resultados (toque num nome para abrir o perfil; os outros continuam aqui):',
       startOver: 'Começar de novo', whySay: 'Por que indiquei: ',
       cFree: 'Buscar no diretório da WebSwan Media Network e conversar comigo é <b>totalmente grátis</b> para você. Cada médico ou advogado define o valor dos próprios serviços, então pergunte direto no consultório ou escritório.', cAbout: 'A WebSwan Media Network é um diretório de <b>médicos e advogados</b>. Me diga o que você precisa e onde está, e eu encontro de 3 a 5 boas opções com o telefone e o perfil de cada um.', cWsmn: 'WSMN significa <b>WebSwan Media Network</b>, a nossa plataforma de anúncios.',
       fewQs: 'Vou te fazer umas perguntinhas rápidas para afinar a busca e depois te passo de 3 a 5 boas opções.',
@@ -1261,6 +1363,12 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       thisIs: (nm, spec) => `Men ${nm}${spec ? ` (${spec})` : ''}.`,
       phone: 'Telefòn', view: att => `Gade pwofil ${att ? 'avoka a' : 'doktè a'} →`,
       closing: att => `Klike sou <b>Gade pwofil</b> pou w wè tout enfòmasyon yo. Se pwofesyonèl yo ki peye pou yo parèt nan anyè a, epi m pa ka ba w konsèy ${att ? 'legal' : 'medikal'}, donk tanpri konfime tout detay yo dirèkteman ak biwo yo. Èske gen lòt bagay m ka fè pou ou?`,
+      askZip: c => `Mèsi! Ki <b>kòd postal (ZIP)</b> ou nan ${c}? Sa ede m jwenn sa ki pi pre w yo.`,
+      matchIntro: n => `Mwen konpare chak pwofil ak <b>${n} bagay</b> ou di m yo. Yo ranje selon konbyen nan bezwen ou yo yo genyen, apre sa selon distans, <b>pa selon piblisite oswa Google</b>.`,
+      matchOf: (m, n) => `Genyen ${m} sou ${n}`, missing: 'Pa genyen',
+      topWhy: x => `Mwen chwazi l paske ou di <b>${x}</b> se sa ki pi enpòtan, epi li genyen l.`,
+      closeWhy: 'Mwen chwazi l paske li pre w.',
+      yourMatches: 'Rezilta ou yo (peze yon non pou louvri pwofil la; lòt yo rete la pou ou):',
       startOver: 'Rekòmanse', whySay: 'Poukisa m chwazi l: ',
       cFree: 'Chèche nan anyè WebSwan Media Network la epi pale avè m <b>gratis nèt</b> pou ou. Chak doktè oswa avoka fikse pri pa yo pou sèvis yo, kidonk mande biwo yo dirèkteman.', cAbout: 'WebSwan Media Network se yon anyè <b>doktè ak avoka</b>. Di m sa w bezwen ak ki kote w ye, epi m ap jwenn apeprè 3 a 5 bon chwa pou ou ak nimewo telefòn yo ak pwofil yo.', cWsmn: 'WSMN vle di <b>WebSwan Media Network</b>, platfòm piblisite nou an.',
       fewQs: 'M ap poze w kèk ti kesyon rapid pou m ka jwenn sa ki pi bon pou ou, epi m ap ba w apeprè 3 a 5 bon chwa.',
@@ -1282,6 +1390,9 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       mode: ['Préférez-vous une consultation au cabinet ou une téléconsultation ?', ['Au cabinet', 'Téléconsultation', 'Peu importe']],
       lang: ['Dans quelle langue aimeriez-vous que votre {w} vous parle ?', ['Anglais', 'Espagnol', 'Créole haïtien', 'Français', 'Peu importe']],
       hours: ['Avez-vous besoin de rendez-vous en soirée ou le week-end ?', ['Oui, s’il vous plaît', 'Non, en semaine, ça me va']],
+      rating: ['Les avis et les étoiles sont-ils importants pour vous ?', ['Oui, 4,5 étoiles ou plus', 'Oui, 4 étoiles ou plus', 'Pas important']],
+      topD: ['Dernière question : qu’est-ce qui compte le PLUS pour vous ?', ['Le plus près de chez moi', 'D’excellents avis', 'Accepte mon assurance', 'Parle ma langue', 'Téléconsultation', 'Soirs / week-ends']],
+      topA: ['Dernière question : qu’est-ce qui compte le PLUS pour vous ?', ['Le plus près de chez moi', 'D’excellents avis', 'Consultation gratuite', 'Mode de paiement', 'Parle ma langue', 'Soirs / rendez-vous virtuels']],
       gender: ['Dernière question : préférez-vous une femme ou un homme ?', ['Une femme', 'Un homme', 'Pas de préférence']],
       stage: ['Une procédure est-elle déjà en cours, ou avez-vous une date d’audience au tribunal ?', ['Oui, j’ai une date d’audience', 'Procédure en cours, pas encore de date', 'Pas encore', 'Je ne sais pas']],
       consult: ['Souhaitez-vous un avocat qui propose une première consultation gratuite ?', ['Oui, consultation gratuite', 'Peu importe']],
@@ -1294,6 +1405,9 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       mode: ['¿Prefiere una consulta en persona o por video (telemedicina)?', ['En persona', 'Por video', 'Cualquiera']],
       lang: ['¿En qué idioma le gustaría que le hable su {w}?', ['Inglés', 'Español', 'Criollo haitiano', 'Francés', 'Cualquier idioma']],
       hours: ['¿Necesita citas en la noche o los fines de semana?', ['Sí, por favor', 'No, entre semana está bien']],
+      rating: ['¿Son importantes para usted las reseñas y las estrellas?', ['Sí, 4.5 estrellas o más', 'Sí, 4 estrellas o más', 'No es importante']],
+      topD: ['Última pregunta: ¿qué es lo MÁS importante para usted?', ['Lo más cerca de mí', 'Excelentes reseñas', 'Acepta mi seguro', 'Habla mi idioma', 'Telemedicina', 'Tardes / fines de semana']],
+      topA: ['Última pregunta: ¿qué es lo MÁS importante para usted?', ['Lo más cerca de mí', 'Excelentes reseñas', 'Consulta gratis', 'Forma de pago', 'Habla mi idioma', 'Tardes / reuniones virtuales']],
       gender: ['Última pregunta: ¿prefiere que sea mujer u hombre?', ['Mujer', 'Hombre', 'Me da igual']],
       stage: ['¿Ya tiene un caso abierto o una audiencia en la corte próximamente?', ['Sí, tengo una audiencia', 'Caso abierto, sin fecha todavía', 'Todavía no', 'No estoy seguro(a)']],
       consult: ['¿Quiere un abogado que ofrezca la primera consulta gratis?', ['Sí, consulta gratis', 'Me da igual']],
@@ -1306,6 +1420,9 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       mode: ['Você prefere consulta presencial ou por vídeo (telemedicina)?', ['Presencial', 'Por vídeo', 'Tanto faz']],
       lang: ['Em qual idioma você gostaria que o seu {w} falasse?', ['Inglês', 'Espanhol', 'Crioulo haitiano', 'Francês', 'Qualquer idioma']],
       hours: ['Você precisa de horário à noite ou no fim de semana?', ['Sim, por favor', 'Não, durante a semana está bom']],
+      rating: ['As avaliações e as estrelas são importantes pra você?', ['Sim, 4,5 estrelas ou mais', 'Sim, 4 estrelas ou mais', 'Não é importante']],
+      topD: ['Última pergunta: o que é MAIS importante pra você?', ['O mais perto de mim', 'Ótimas avaliações', 'Aceita meu plano de saúde', 'Fala minha língua', 'Telemedicina', 'Noites / fins de semana']],
+      topA: ['Última pergunta: o que é MAIS importante pra você?', ['O mais perto de mim', 'Ótimas avaliações', 'Consulta grátis', 'Forma de pagamento', 'Fala minha língua', 'Noites / reuniões virtuais']],
       gender: ['Última pergunta: você prefere mulher ou homem?', ['Mulher', 'Homem', 'Tanto faz']],
       stage: ['Já tem um processo aberto ou uma audiência marcada?', ['Sim, tenho audiência marcada', 'Processo aberto, ainda sem data', 'Ainda não', 'Não sei']],
       consult: ['Você quer um advogado que ofereça a primeira consulta grátis?', ['Sim, consulta grátis', 'Tanto faz']],
@@ -1318,6 +1435,9 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       mode: ['Èske w pito wè doktè a an pèsòn, oswa pa videyo?', ['An pèsòn', 'Pa videyo', 'Nenpòt']],
       lang: ['Ki lang ou ta renmen {w} a pale avè w?', ['Anglè', 'Panyòl', 'Kreyòl', 'Franse', 'Nenpòt lang']],
       hours: ['Èske w bezwen randevou nan aswè oswa nan wikenn?', ['Wi, tanpri', 'Non, nan semèn nan bon']],
+      rating: ['Èske avi ak zetwal yo enpòtan pou ou?', ['Wi, 4.5 zetwal oswa plis', 'Wi, 4 zetwal oswa plis', 'Sa pa enpòtan']],
+      topD: ['Dènye kesyon: kisa ki pi enpòtan pou ou?', ['Pi pre m', 'Bon avi', 'Aksepte asirans mwen', 'Pale lang mwen', 'Konsiltasyon pa videyo', 'Aswè / wikenn']],
+      topA: ['Dènye kesyon: kisa ki pi enpòtan pou ou?', ['Pi pre m', 'Bon avi', 'Konsiltasyon gratis', 'Fason pou m peye', 'Pale lang mwen', 'Aswè / reyinyon pa videyo']],
       gender: ['Dènye kesyon: èske w pito yon fanm oswa yon gason?', ['Fanm', 'Gason', 'Nenpòt']],
       stage: ['Èske ka a deja nan tribinal, oswa ou gen yon dat pou w parèt devan jij?', ['Wi, m gen yon dat tribinal', 'Ka a ouvri, men poko gen dat', 'Poko', 'M pa konnen']],
       consult: ['Èske w ta renmen yon avoka ki bay premye konsiltasyon an gratis?', ['Wi, konsiltasyon gratis', 'Sa pa fè m anyen']],
@@ -1327,15 +1447,17 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   };
   function qText(Q) {
     const L = QTX[LANG]; if (!L) return { q: Q.q, opts: Q.opts };
-    const k = Q.key === 'hours' && S.type === 'attorney' ? 'hoursA' : Q.key;
+    const k = Q.key === 'hours' && S.type === 'attorney' ? 'hoursA' : Q.key === 'top' ? (S.type === 'attorney' ? 'topA' : 'topD') : Q.key;
     const tr = L[k]; if (!tr || tr[1].length !== Q.opts.length) return { q: Q.q, opts: Q.opts };
-    return { q: tr[0].replace('{w}', whoW()), opts: Q.opts.map((v, i) => ({ label: tr[1][i], value: v })) };
+    let qq = tr[0].replace('{w}', whoW());
+    if (Q.key === 'gender') qq = qq.replace(/^(Derni[eè]re question|[UÚ]ltima pregunta|[UÚ]ltima pergunta|D[eè]nye kesyon)\s*:\s*([¿¡]?)(.)/i, (m, a, pp, c) => pp + c.toUpperCase());
+    return { q: qq, opts: Q.opts.map((v, i) => ({ label: tr[1][i], value: v })) };
   }
   const WHY = {
-    fr: [[/^in your ZIP code$/, 'dans votre code postal'], [/^in (.+)$/, 'à $1'], [/^near you$/, 'près de chez vous'], [/^treats what you described$/, 'traite ce que vous avez décrit'], [/^handles what you described$/, 's’occupe de votre situation'], [/^accepts (.+)$/, 'accepte $1'], [/^offers telehealth$/, 'offre la téléconsultation'], [/^speaks (.+)$/, 'parle $1'], [/^evening\/weekend hours$/, 'horaires soir/week-end'], [/^virtual meetings$/, 'rendez-vous en ligne'], [/^free consultation$/, 'consultation gratuite'], [/^female (doctor|attorney)$/, 'femme'], [/^male (doctor|attorney)$/, 'homme']],
-    es: [[/^in your ZIP code$/, 'en su código postal'], [/^in (.+)$/, 'en $1'], [/^near you$/, 'cerca de usted'], [/^treats what you described$/, 'trata lo que describió'], [/^handles what you described$/, 'maneja su caso'], [/^accepts (.+)$/, 'acepta $1'], [/^offers telehealth$/, 'ofrece telemedicina'], [/^speaks (.+)$/, 'habla $1'], [/^evening\/weekend hours$/, 'horario de tarde/fin de semana'], [/^virtual meetings$/, 'reuniones virtuales'], [/^free consultation$/, 'consulta gratis'], [/^female (doctor|attorney)$/, 'mujer'], [/^male (doctor|attorney)$/, 'hombre']],
-    pt: [[/^in your ZIP code$/, 'no seu CEP'], [/^in (.+)$/, 'em $1'], [/^near you$/, 'perto de você'], [/^treats what you described$/, 'trata o que você descreveu'], [/^handles what you described$/, 'atende o seu caso'], [/^accepts (.+)$/, 'aceita $1'], [/^offers telehealth$/, 'oferece telemedicina'], [/^speaks (.+)$/, 'fala $1'], [/^evening\/weekend hours$/, 'horário noturno/fim de semana'], [/^virtual meetings$/, 'reuniões online'], [/^free consultation$/, 'consulta gratuita'], [/^female (doctor|attorney)$/, 'mulher'], [/^male (doctor|attorney)$/, 'homem']],
-    ht: [[/^in your ZIP code$/, 'nan kòd postal ou'], [/^in (.+)$/, 'nan $1'], [/^near you$/, 'toupre w'], [/^treats what you described$/, 'trete sa w di m'], [/^handles what you described$/, 'okipe ka tankou pa w'], [/^accepts (.+)$/, 'aksepte $1'], [/^offers telehealth$/, 'fè konsiltasyon pa videyo'], [/^speaks (.+)$/, 'pale $1'], [/^evening\/weekend hours$/, 'lè aswè/wikenn'], [/^virtual meetings$/, 'randevou pa videyo'], [/^free consultation$/, 'konsiltasyon gratis'], [/^female (doctor|attorney)$/, 'fanm'], [/^male (doctor|attorney)$/, 'gason']]
+    fr: [[/^(\d(?:\.\d)?)★\+? reviews$/, '$1★ avis'], [/^in your ZIP code$/, 'dans votre code postal'], [/^in (.+)$/, 'à $1'], [/^near you$/, 'près de chez vous'], [/^treats what you described$/, 'traite ce que vous avez décrit'], [/^handles what you described$/, 's’occupe de votre situation'], [/^accepts (.+)$/, 'accepte $1'], [/^offers telehealth$/, 'offre la téléconsultation'], [/^speaks (.+)$/, 'parle $1'], [/^evening\/weekend hours$/, 'horaires soir/week-end'], [/^virtual meetings$/, 'rendez-vous en ligne'], [/^free consultation$/, 'consultation gratuite'], [/^female (doctor|attorney)$/, 'femme'], [/^male (doctor|attorney)$/, 'homme']],
+    es: [[/^(\d(?:\.\d)?)★\+? reviews$/, '$1★ reseñas'], [/^in your ZIP code$/, 'en su código postal'], [/^in (.+)$/, 'en $1'], [/^near you$/, 'cerca de usted'], [/^treats what you described$/, 'trata lo que describió'], [/^handles what you described$/, 'maneja su caso'], [/^accepts (.+)$/, 'acepta $1'], [/^offers telehealth$/, 'ofrece telemedicina'], [/^speaks (.+)$/, 'habla $1'], [/^evening\/weekend hours$/, 'horario de tarde/fin de semana'], [/^virtual meetings$/, 'reuniones virtuales'], [/^free consultation$/, 'consulta gratis'], [/^female (doctor|attorney)$/, 'mujer'], [/^male (doctor|attorney)$/, 'hombre']],
+    pt: [[/^(\d(?:\.\d)?)★\+? reviews$/, '$1★ avaliações'], [/^in your ZIP code$/, 'no seu CEP'], [/^in (.+)$/, 'em $1'], [/^near you$/, 'perto de você'], [/^treats what you described$/, 'trata o que você descreveu'], [/^handles what you described$/, 'atende o seu caso'], [/^accepts (.+)$/, 'aceita $1'], [/^offers telehealth$/, 'oferece telemedicina'], [/^speaks (.+)$/, 'fala $1'], [/^evening\/weekend hours$/, 'horário noturno/fim de semana'], [/^virtual meetings$/, 'reuniões online'], [/^free consultation$/, 'consulta gratuita'], [/^female (doctor|attorney)$/, 'mulher'], [/^male (doctor|attorney)$/, 'homem']],
+    ht: [[/^(\d(?:\.\d)?)★\+? reviews$/, '$1★ avi'], [/^in your ZIP code$/, 'nan kòd postal ou'], [/^in (.+)$/, 'nan $1'], [/^near you$/, 'toupre w'], [/^treats what you described$/, 'trete sa w di m'], [/^handles what you described$/, 'okipe ka tankou pa w'], [/^accepts (.+)$/, 'aksepte $1'], [/^offers telehealth$/, 'fè konsiltasyon pa videyo'], [/^speaks (.+)$/, 'pale $1'], [/^evening\/weekend hours$/, 'lè aswè/wikenn'], [/^virtual meetings$/, 'randevou pa videyo'], [/^free consultation$/, 'konsiltasyon gratis'], [/^female (doctor|attorney)$/, 'fanm'], [/^male (doctor|attorney)$/, 'gason']]
   };
   const whyT = w => { const L = WHY[LANG]; if (!L) return w; for (const [re, r] of L) if (re.test(w)) return w.replace(re, r); return w; };
   // extra words so visitors can type in their language
@@ -1684,7 +1806,9 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       { key: 'mode', q: 'Would you prefer an in-person visit or telehealth?', opts: ['In person', 'Telehealth', 'Either is fine'] },
       { key: 'lang', q: 'What language would you like your doctor to speak?', opts: ['English', 'Spanish', 'Haitian Creole', 'French', 'Any language'], free: true },
       { key: 'hours', q: 'Do you need evening or weekend appointments?', opts: ['Yes, please', 'No, weekdays are fine'] },
-      { key: 'gender', q: 'Last one: do you prefer a female or male doctor?', opts: ['Female', 'Male', 'No preference'] }
+      { key: 'rating', q: 'Are reviews and star ratings important to you?', opts: ['Yes, 4.5 stars or higher', 'Yes, 4 stars or higher', 'Not important'] },
+      { key: 'gender', q: 'Do you prefer a female or male doctor?', opts: ['Female', 'Male', 'No preference'] },
+      { key: 'top', q: 'Last one: what matters MOST to you?', opts: ['Closest to me', 'Great reviews', 'Accepts my insurance', 'Speaks my language', 'Telehealth visits', 'Evening / weekend hours'] }
     ],
     attorney: [
       { key: 'stage', q: 'Has a case already been filed, or do you have a court date coming up?', opts: ['Yes, I have a court date', 'Case filed, no date yet', 'Not yet', 'Not sure'] },
@@ -1692,7 +1816,9 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       { key: 'fee', q: 'How would you prefer to pay?', opts: ['No fee unless I win (contingency)', 'Flat fee', 'Hourly', 'Payment plan', 'Not sure'] },
       { key: 'lang', q: 'What language would you like your attorney to speak?', opts: ['English', 'Spanish', 'Haitian Creole', 'French', 'Any language'], free: true },
       { key: 'hours', q: 'Do you need evening or weekend meetings, or virtual meetings?', opts: ['Evenings / weekends', 'Virtual meetings', 'Both', 'No, weekdays are fine'] },
-      { key: 'gender', q: 'Last one: do you prefer a female or male attorney?', opts: ['Female', 'Male', 'No preference'] }
+      { key: 'rating', q: 'Are reviews and star ratings important to you?', opts: ['Yes, 4.5 stars or higher', 'Yes, 4 stars or higher', 'Not important'] },
+      { key: 'gender', q: 'Do you prefer a female or male attorney?', opts: ['Female', 'Male', 'No preference'] },
+      { key: 'top', q: 'Last one: what matters MOST to you?', opts: ['Closest to me', 'Great reviews', 'Free consultation', 'Payment type', 'Speaks my language', 'Evening / virtual meetings'] }
     ]
   };
   let qIndex = 0;
@@ -1717,21 +1843,11 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     return [...seen.values()];
   }
   // Only ask a question when the listed providers actually differ on it (keeps it short for the visitor)
+  // Match-making: Rachel asks every question so she can count how many of the visitor's needs each provider meets
   function qRelevant(Q) {
-    const rows = S.rows;
-    if (!rows) return Q.key !== 'visit';               // directory not reachable: ask the useful ones
-    if (rows.length <= 3) return false;                // already 3 or fewer matches: no need to narrow
-    const some = f => rows.some(f), both = f => rows.some(f) && rows.some(r => !f(r));
     switch (Q.key) {
       case 'visit': return false;                      // the "tell me more" step already covers the reason for care
-      case 'insurance': return some(r => (r.insuranceLower || []).length);
-      case 'mode': return both(r => !!r.telehealth);
-      case 'lang': return some(r => /[a-z]/i.test(String(r.languages || '').replace(/english|anglais|ingl[eé]s|angl[eè]/ig, '').replace(/[ ,;/]/g, '')));
-      case 'hours': return S.type === 'attorney' ? (both(r => !!r.eveningWeekend) || both(r => !!r.telehealth)) : both(r => !!r.eveningWeekend);
-      case 'gender': return some(r => r.gender === 'Female') && some(r => r.gender === 'Male');
       case 'stage': return /criminal|dui|dwi|traffic|drug|expunge|immigra|deport|asylum|custody|child support|divorce|evict|foreclos|bankrupt|protective|domestic/i.test(S.specialty + ' ' + S.need);
-      case 'consult': return both(r => !!r.freeConsult);
-      case 'fee': return some(r => (r.feeTypes || []).length);
       default: return true;
     }
   }
@@ -1745,6 +1861,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     }
     if (!S.state) { S.step = 'state'; say(t('askState')); rwChips([], { state: true }); return; }
     if (!S.city && !S.zip && !S.askedCity) { S.askedCity = true; S.step = 'city'; say(t('askCity')(esc(stateL(S.state)))); rwChips([{ label: t('anywhere')(stateL(S.state)), value: 'Anywhere in ' + stateName(S.state) }]); return; }
+    if (S.city && !S.zip && !S.askedZip) { S.askedZip = true; S.step = 'zip'; say(t('askZip')(esc(S.city))); rwChips([{ label: t('skip'), value: 'Skip' }]); return; }
     if (!S.askedNeed) { S.askedNeed = true; S.step = 'need'; say(t('askNeed')); rwChips([{ label: t('skip'), value: 'Skip' }]); return; }
     const qs = QUESTIONS[S.type];
     // look at who is actually listed first, so Rachel only asks questions that can narrow the results
@@ -1800,6 +1917,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     }
     if (S.step === 'start' && (txt === 'Provider mode' || PRO_INTENT.test(txt))) { proStart(); return; }
     if (S.step === 'start' && txt === 'Searcher mode') { S.step = 'type'; next(); setPH(); return; }
+    if (S.step === 'zip') { const z = txt.match(/\b\d{5}\b/); if (z) { S.zip = z[0]; say(t('zipIn')(esc(S.zip), esc(stateL(S.state)))); } next(); setPH(); return; }
     // pick up anything useful the person typed, at any step
     if (S.step !== 'q' && S.step !== 'need') {
       if (!S.type) S.type = /^attorney$/i.test(txt) ? 'attorney' : /^doctor$/i.test(txt) ? 'doctor' : detectType(txt);
@@ -1867,6 +1985,41 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     if (p.yearsLicensed) s += Math.min(+p.yearsLicensed || 0, 30) / 5;
     return { s, why };
   }
+  // ---- Match-making: count how many of the visitor's needs each provider meets ----
+  const TOPK = { 'Closest to me': 'loc', 'Great reviews': 'rating', 'Accepts my insurance': 'insurance', 'Speaks my language': 'lang', 'Telehealth visits': 'mode', 'Evening / weekend hours': 'hours', 'Free consultation': 'consult', 'Payment type': 'fee', 'Evening / virtual meetings': 'hours' };
+  function crit(p) {
+    const P = S.prefs, C = [], areas = p.areasLower || [], city = norm(S.city), att = p.type === 'attorney';
+    const add = (k, ok, lbl, miss) => C.push({ k, ok: !!ok, lbl, miss: miss || lbl });
+    let dist = 4;
+    if (S.zip && (p.zip === S.zip || areas.includes(S.zip))) dist = 0;
+    else if (city && (norm(p.city) === city || areas.includes(city))) dist = 1;
+    else if (S.zip && String(p.zip || '').slice(0, 3) === S.zip.slice(0, 3)) dist = 2;
+    else if (S.zip && String(p.zip || '').slice(0, 2) === S.zip.slice(0, 2)) dist = 3;
+    if (S.zip || city) add('loc', dist <= 2, dist === 0 ? 'in your ZIP code' : dist === 1 ? 'in ' + (p.city || S.city) : 'near you', 'near you');
+    const STOP = /^(pain|pains|help|need|needs|looking|have|having|doctor|doctors|attorney|lawyer|lawyers|someone|good|best|near|with|that|this|from|about|very|really|want|would|like|please|problem|problems|issue|issues|since|years|year|months|weeks|days|time|some|more|much|lots|also|been|after|before|they|their|there|what|when|where|which|your|mine|myself|family|need|just|still)$/;
+    const kw = norm(S.need).split(' ').filter(w => w.length > 3 && !STOP.test(w));
+    if (kw.length) { const hay = ' ' + norm([(p.conditions || ''), (p.bio || ''), (p.specialties || []).join(' ')].join(' ')) + ' '; add('need', kw.some(w => hay.includes(' ' + w)), att ? 'handles what you described' : 'treats what you described'); }
+    if (!att && P.insurance && !/self|skip/i.test(P.insurance)) { const ins = norm(P.insurance); add('insurance', (p.insuranceLower || []).some(i => i.includes(ins) || ins.includes(i)), 'accepts ' + P.insurance); }
+    const wantTele = P.mode === 'Telehealth' || P.top === 'Telehealth visits';
+    if (!att && wantTele) add('mode', p.telehealth, 'offers telehealth');
+    if (P.lang && !/any/i.test(P.lang) && !/^english$/i.test(P.lang)) add('lang', norm(p.languages).includes(norm(P.lang)), 'speaks ' + P.lang);
+    if (!att && (/yes/i.test(P.hours || '') || P.top === 'Evening / weekend hours')) add('hours', p.eveningWeekend, 'evening/weekend hours');
+    if (att && (/evening|both/i.test(P.hours || '') || P.top === 'Evening / virtual meetings')) add('hours', p.eveningWeekend, 'evening/weekend hours');
+    if (att && /virtual|both/i.test(P.hours || '')) add('virtual', p.telehealth, 'virtual meetings');
+    if (/^(female|male)$/i.test(P.gender || '')) add('gender', (p.gender || '').toLowerCase() === P.gender.toLowerCase(), P.gender.toLowerCase() + ' ' + who());
+    if (att && (/free/i.test(P.consult || '') || P.top === 'Free consultation')) add('consult', p.freeConsult, 'free consultation');
+    if (att && P.fee && !/not sure/i.test(P.fee)) { const f = /contingency/i.test(P.fee) ? 'Contingency' : P.fee; add('fee', (p.feeTypes || []).includes(f), f.toLowerCase() + ' fees'); }
+    const th = /4\.5/.test(P.rating || '') ? 4.5 : /^yes/i.test(P.rating || '') ? 4 : P.top === 'Great reviews' ? 4 : 0, r = +p.reviewRating || 0;
+    if (th) add('rating', r >= th, r ? r.toFixed(1) + '★ reviews' : th + '★+ reviews', th + '★+ reviews');
+    const topKey = TOPK[P.top] || '', tc = C.filter(c => c.k === topKey || (topKey === 'hours' && c.k === 'virtual'));
+    return { C, m: C.filter(c => c.ok).length, n: C.length, dist, topKey: tc.length ? topKey : '', topMet: tc.some(c => c.ok) ? 1 : 0 };
+  }
+  function matchLines(p, topLabel) {
+    if (!p.n) return p.why.length ? `<br><span class="rw-why">✓ ${esc(p.why.slice(0, 3).map(whyT).join(' · '))}</span>` : '';
+    const met = p.C.filter(c => c.ok).map(c => whyT(c.lbl)), miss = p.C.filter(c => !c.ok).map(c => whyT(c.miss));
+    const reason = p.topMet && p.topKey ? (p.topKey === 'loc' ? t('closeWhy') : t('topWhy')(esc(topLabel))) : (p.dist <= 1 ? t('closeWhy') : '');
+    return `<br><span class="rw-why">✓ ${t('matchOf')(p.m, p.n)}${met.length ? ': ' + esc(met.join(' · ')) : ''}</span>${miss.length ? `<br><span class="rw-sub">✗ ${t('missing')}: ${esc(miss.join(' · '))}</span>` : ''}${reason ? `<br>⭐ ${reason}` : ''}`;
+  }
   async function finish() {
     S.step = 'done'; setPH();
     const spLabel = S.specialty && S.specialty !== '*' ? S.specialty.replace(/ \(All\)$/, '') : whoW(true);
@@ -1889,9 +2042,13 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       say(t('none')(esc(spLabel), esc(stateL(S.state))));
       rwChips([{ label: t('startOver'), value: 'Start over' }]); return;
     }
-    const ranked = rows.map(p => Object.assign(p, score(p))).sort((a, b) => b.s - a.s || String(a.name).localeCompare(String(b.name))).slice(0, 5);
+    // Rank by number of needs met, then the visitor's #1 priority, then distance, then star rating (never by SEO)
+    const ranked = rows.map(p => Object.assign(p, score(p), crit(p))).sort((a, b) => (b.m - a.m) || (b.topMet - a.topMet) || (a.dist - b.dist) || ((+b.reviewRating || 0) - (+a.reviewRating || 0)) || ((b.accepting ? 1 : 0) - (a.accepting ? 1 : 0)) || ((b.featured ? 1 : 0) - (a.featured ? 1 : 0)) || String(a.name).localeCompare(String(b.name))).slice(0, 5);
     const total = rows.length;
+    const TQ = QUESTIONS[S.type].find(q => q.key === 'top'), tqo = TQ ? qText(TQ).opts : [];
+    const topO = tqo.find(o => (o && o.value ? o.value : o) === S.prefs.top), topLabel = topO ? (topO.label || topO) : (S.prefs.top || '');
     say(`${broadened ? t('broadened')(esc(spLabel)) : ''}${t('reviewed')(total, ranked.length)}`);
+    if (ranked[0].n) say(t('matchIntro')(ranked[0].n));
     ranked.forEach((p, i) => {
       const nm = esc(p.name) + (p.credentials ? ', ' + esc(p.credentials) : '');
       const spec = (p.specialties || []).slice(0, 3).map(esc).join(', ');
@@ -1909,8 +2066,9 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         sentence = [focus.length ? PL[0] + focus.map(esc).join(', ') : '', p.yearsLicensed ? PL[1].replace('{n}', esc(p.yearsLicensed)) : '', place ? PL[2] + place : ''].filter(Boolean).join('. ') + (focus.length || p.yearsLicensed || place ? '.' : '');
       }
       const tel = String(p.phone || '').replace(/[^\d+]/g, '');
-      say(`<div class="rw-pick"><b>${i + 1}. ${nm}</b>${p.practice ? ` <span class="rw-sub">· ${esc(p.practice)}</span>` : ''}<br>${t('thisIs')(nm, spec)} ${sentence}${p.why.length ? `<br><span class="rw-why">✓ ${esc(p.why.slice(0, 3).map(whyT).join(' · '))}</span>` : ''}${tel ? `<br>📞 ${t('phone')}: <a href="tel:${esc(tel)}">${esc(p.phone)}</a>` : ''}<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">${t('view')(p.type === 'attorney')}</button></div>`);
+      say(`<div class="rw-pick"><b>${i + 1}. ${nm}</b>${p.practice ? ` <span class="rw-sub">· ${esc(p.practice)}</span>` : ''}<br>${t('thisIs')(nm, spec)} ${sentence}${matchLines(p, topLabel)}${tel ? `<br>📞 ${t('phone')}: <a href="tel:${esc(tel)}">${esc(p.phone)}</a>` : ''}<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">${t('view')(p.type === 'attorney')}</button></div>`);
     });
+    say(`<div class="rw-pick"><b>${t('yourMatches')}</b>${ranked.map((p, i) => `<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">${i + 1}. ${esc(p.name)}${p.n ? ' · ' + t('matchOf')(p.m, p.n) : ''}</button>`).join('')}</div>`);
     say(t('closing')(S.type === 'attorney'));
     rwChips([{ label: t('startOver'), value: 'Start over' }]);
   }
@@ -2001,9 +2159,32 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       const snap = await db.collection('providers').get();
       allRows = []; snap.forEach(d => allRows.push(Object.assign({ id: d.id }, d.data())));
       allRows.sort((a, b) => String(a.name).localeCompare(String(b.name)));
-      adminLoaded = true; drawList();
+      adminLoaded = true; drawList(); loadPendingReviews();
     } catch (e) { $('adm-list').innerHTML = `<tr><td colspan="6">Could not load listings: ${esc(e.message)}</td></tr>`; }
   }
+  let pendingRevs = [];
+  async function loadPendingReviews() {
+    try {
+      const snap = await db.collection('reviews').where('approved', '==', false).limit(100).get();
+      pendingRevs = []; snap.forEach(d => pendingRevs.push(Object.assign({ id: d.id }, d.data())));
+      drawPendingReviews();
+    } catch (e) { $('adm-revs').innerHTML = `<p style="color:#911e1a">Could not load reviews: ${esc(e.message)}</p>`; }
+  }
+  function drawPendingReviews() {
+    $('adm-rev-count').textContent = pendingRevs.length ? `(${pendingRevs.length})` : '';
+    $('adm-revs').innerHTML = pendingRevs.map(r => `<div class="pro-rev"><b>${esc(r.name || 'Visitor')}</b> <span class="st">${'★'.repeat(+r.stars || 0)}${'☆'.repeat(5 - (+r.stars || 0))}</span> for <b>${esc(r.providerName || '')}</b><br>${esc(r.text || '')}<br>
+      <button class="adm-btn blue" data-rev-ok="${esc(r.id)}" style="margin-top:6px">Approve</button> <button class="adm-btn" style="color:#911e1a;border-color:#e8b4b2;margin-top:6px" data-rev-del="${esc(r.id)}">Delete</button></div>`).join('') || '<p style="color:var(--muted);margin:0">No reviews waiting.</p>';
+  }
+  $('adm-revs').addEventListener('click', async e => {
+    const ok = e.target.closest('[data-rev-ok]'), del = e.target.closest('[data-rev-del]');
+    const id = (ok || del) && (ok || del).dataset[ok ? 'revOk' : 'revDel']; if (!id) return;
+    if (del && !confirm('Delete this review? This cannot be undone.')) return;
+    try {
+      if (ok) await db.collection('reviews').doc(id).update({ approved: true, approvedAt: firebase.firestore.FieldValue.serverTimestamp() });
+      else await db.collection('reviews').doc(id).delete();
+      pendingRevs = pendingRevs.filter(r => r.id !== id); drawPendingReviews();
+    } catch (err) { alert('Could not update the review: ' + err.message); }
+  });
   function drawList() {
     const f = norm($('adm-filter').value);
     const rows = allRows.filter(p => !f || norm([p.name, p.practice, p.city, p.state, p.zip, (p.specialties || []).join(' ')].join(' ')).includes(f));
@@ -2036,7 +2217,39 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       catch (err) { alertMsg('Could not update: ' + err.message, true); tg.disabled = false; }
     }
   });
-  const F = ['name','cred:credentials','practice','phone','email','web:website','portal:portalUrl','rating:reviewRating','rcount:reviewCount','rsource:reviewSource','rlink:reviewUrl','addr:address','city','zip','lang:languages','areas:serviceAreas','bio','photo:photoUrl','exp:expires','years:yearsLicensed','gender:gender','ins:insurance','cond:conditions'];
+  const F = ['name','cred:credentials','practice','phone','email','web:website','portal:portalUrl','rating:reviewRating','rcount:reviewCount','rsource:reviewSource','rlink:reviewUrl','addr:address','city','zip','lang:languages','areas:serviceAreas','bio','photo:photoUrl','exp:expires','years:yearsLicensed','gender:gender','ins:insurance','cond:conditions','greview:googleReviewUrl','yreview:yelpReviewUrl','social-plat:socialPlatform','social:socialUrl'];
+  // ---- up to 3 profile pictures, resized in the browser and saved with the listing ----
+  let gallery = [];
+  function drawGal() {
+    $('adm-gal').innerHTML = gallery.map((g, i) => `<figure><img src="${esc(g)}" alt="Picture ${i + 1}"><button type="button" data-gal-del="${i}" aria-label="Remove picture ${i + 1}">×</button></figure>`).join('') || '<span style="color:var(--muted);font-size:13px">No pictures yet.</span>';
+    $('adm-gal-file').disabled = gallery.length >= 3;
+  }
+  function shrink(file) {
+    return new Promise((res, rej) => {
+      const url = URL.createObjectURL(file), img = new Image();
+      img.onload = () => {
+        let side = 1000, q = 0.75, out = '';
+        for (let tries = 0; tries < 5; tries++) {
+          const k = Math.min(1, side / Math.max(img.width, img.height));
+          const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          out = c.toDataURL('image/jpeg', q);
+          if (out.length < 260000) break;
+          side = Math.round(side * 0.8); q = Math.max(0.5, q - 0.07);
+        }
+        URL.revokeObjectURL(url); res(out);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('not an image')); };
+      img.src = url;
+    });
+  }
+  $('adm-gal-file').addEventListener('change', async e => {
+    const files = [...e.target.files].slice(0, 3 - gallery.length);
+    for (const f of files) { try { gallery.push(await shrink(f)); } catch (err) { alertMsg('Could not read ' + f.name + '. Please choose a JPG or PNG picture.', true); } }
+    e.target.value = ''; drawGal();
+  });
+  $('adm-gal').addEventListener('click', e => { const b = e.target.closest('[data-gal-del]'); if (b) { gallery.splice(+b.dataset.galDel, 1); drawGal(); } });
+  drawGal();
   function editRow(p) {
     $('adm-id').value = p.id; $('adm-type').value = p.type || ''; $('adm-type').dispatchEvent(new Event('change'));
     chips = (p.specialties || []).slice(); drawChips();
@@ -2045,11 +2258,12 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     $('adm-active').checked = !!p.active; $('adm-featured').checked = !!p.featured; $('adm-accepting').checked = p.accepting !== false;
     $('adm-tele').checked = !!p.telehealth; $('adm-free').checked = !!p.freeConsult; $('adm-eve').checked = !!p.eveningWeekend;
     document.querySelectorAll('.adm-fee').forEach(c => { c.checked = (p.feeTypes || []).includes(c.value); });
+    gallery = (p.gallery || []).filter(g => /^data:image\//.test(g) || /^https:\/\//.test(g)).slice(0, 3); drawGal();
     $('adm-form-title').textContent = 'Edit listing: ' + (p.name || ''); $('adm-save').textContent = 'Save changes';
     $('adm-form').scrollIntoView({behavior: 'smooth'});
   }
   function resetForm() {
-    $('adm-form').reset(); $('adm-id').value = ''; chips = []; drawChips(); fillSpecialties($('adm-spec'), '', '');
+    $('adm-form').reset(); $('adm-id').value = ''; chips = []; drawChips(); fillSpecialties($('adm-spec'), '', ''); gallery = []; drawGal();
     $('adm-form-title').textContent = 'Add a new listing'; $('adm-save').textContent = 'Save listing';
   }
   $('adm-reset').addEventListener('click', () => { resetForm(); alertMsg(''); });
@@ -2075,6 +2289,11 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     if (data.photoUrl && !/^https:\/\//i.test(data.photoUrl)) missing.push('photo URL must start with https://');
     if (data.portalUrl && !/^https:\/\//i.test(data.portalUrl)) missing.push('portal link must start with https://');
     if (data.reviewUrl && !/^https:\/\//i.test(data.reviewUrl)) missing.push('review link must start with https://');
+    if (data.googleReviewUrl && !/^https:\/\//i.test(data.googleReviewUrl)) missing.push('Google reviews link must start with https://');
+    if (data.yelpReviewUrl && !/^https:\/\//i.test(data.yelpReviewUrl)) missing.push('Yelp reviews link must start with https://');
+    if (data.socialUrl && !/^https:\/\//i.test(data.socialUrl)) missing.push('social media link must start with https://');
+    data.gallery = gallery.slice(0, 3);
+    if (data.gallery.join('').length > 850000) missing.push('smaller pictures (the 3 pictures are too large together)');
     if (data.reviewRating && !(+data.reviewRating >= 1 && +data.reviewRating <= 5)) missing.push('review rating between 1 and 5');
     if (missing.length) { alertMsg('Please add: ' + missing.join(', '), true); return; }
     data.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
