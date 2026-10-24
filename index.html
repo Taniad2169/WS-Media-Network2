@@ -951,7 +951,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       <div class="pro-rev-links">${gl}${yl}</div>
       <div id="pro-rev-list"><p class="dir-status" style="margin:0">Loading reviews left on WebSwan Media Network…</p></div>
       <details style="margin-top:8px"><summary style="cursor:pointer;font-weight:800;color:var(--navy)">✍️ Leave a review for ${esc(p.name)}</summary>
-        <form class="pro-rev-form" id="pro-rev-form" novalidate>
+        <form class="pro-rev-form" id="pro-rev-form" novalidate onsubmit="return false">
           <input id="pro-rev-name" maxlength="40" placeholder="Your first name" required>
           <select id="pro-rev-stars" required><option value="">How many stars?</option><option value="5">★★★★★ 5 · Excellent</option><option value="4">★★★★ 4 · Very good</option><option value="3">★★★ 3 · Good</option><option value="2">★★ 2 · Fair</option><option value="1">★ 1 · Poor</option></select>
           <textarea id="pro-rev-text" maxlength="600" placeholder="Share your experience (please don't include medical, legal or personal details)" required></textarea>
@@ -966,10 +966,12 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       const snap = await db.collection('reviews').where('providerId', '==', id).where('approved', '==', true).limit(30).get();
       const rows = []; snap.forEach(d => rows.push(d.data()));
       rows.sort((a, b) => ((b.createdAt && b.createdAt.seconds) || 0) - ((a.createdAt && a.createdAt.seconds) || 0));
-      if (!rows.length) { box.innerHTML = '<p style="margin:0;color:var(--muted);font-size:14px">No reviews on WebSwan Media Network yet. Be the first to leave one!</p>'; return; }
+      if (!rows.length) { box.innerHTML = '<p style="margin:0;color:var(--muted);font-size:14px">No reviews on WebSwan Media Network yet. Be the first to leave one!</p>'; }
+      else {
       const avg = rows.reduce((s, r) => s + (+r.stars || 0), 0) / rows.length;
       box.innerHTML = `<p style="margin:0 0 4px;font-weight:800;color:#8a5a00">⭐ ${avg.toFixed(1)} · ${rows.length} review${rows.length === 1 ? '' : 's'} on WebSwan Media Network</p>` +
         rows.map(r => `<div class="pro-rev"><b>${esc(r.name || 'Visitor')}</b> <span class="st">${'★'.repeat(+r.stars || 0)}${'☆'.repeat(5 - (+r.stars || 0))}</span><br>${esc(r.text || '')}</div>`).join('');
+      }
     } catch (e) { box.innerHTML = '<p style="margin:0;color:var(--muted);font-size:14px">Reviews are not available right now.</p>'; }
     const f = $('pro-rev-form'); if (!f) return;
     f.addEventListener('submit', async ev => {
