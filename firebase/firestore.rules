@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Only Tania (owner) can read, edit or delete leads.
+    function isOwner() {
+      return request.auth != null
+        && request.auth.token.email == 'thewebswann@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
+
+    function filled(d, k) {
+      return d.get(k, '') is string && d.get(k, '').trim().size() > 0;
+    }
+
+    // A lead must have a phone, company name or email (no blank leads).
+    function validLead(d) {
+      return d.size() <= 60
+        && (filled(d, 'phone') || filled(d, 'companyName') || filled(d, 'email'));
+    }
+
+    match /leads/{leadId} {
+      // Owner: full access (Daily Task after "Connect Telemarketing (owner)").
+      allow read, update, delete: if isOwner();
+
+      // Telemarketing form (anonymous sign-in): can ADD leads only, cannot read them.
+      allow create: if request.auth != null && validLead(request.resource.data);
+
+      // Safe retry: re-sending the exact same call is allowed (no real changes possible).
+      allow update: if request.auth != null && request.resource.data == resource.data;
+    }
+
+    // ===== WebSwan Media Network Directory (ads.webswanmedianetwork.com) =====
+    // Profiles now carry photos, Google/Yelp, social and portal links (~43 fields), so the cap is 60.
+    function validProvider(d) {
+      return d.size() <= 60
+        && d.type in ['doctor', 'attorney']
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 200
+        && d.state is string && d.state.size() == 2
+        && d.active is bool
+        && d.specialties is list && d.specialties.size() <= 30
+        && (!('gallery' in d) || (d.gallery is list && d.gallery.size() <= 3));
+    }
+
+    match /providers/{providerId} {
+      // Public: anyone can read listings that are switched on.
+      allow read: if resource.data.active == true || isOwner();
+      // Only Tania (owner) can add, edit, pause or delete listings.
+      allow create, update: if isOwner() && validProvider(request.resource.data);
+      allow delete: if isOwner();
+    }
+
+    // Visitor reviews on WSMN profiles.
+    // Anyone can submit one; it always arrives unapproved. Public sees approved only.
+    match /reviews/{reviewId} {
+      allow read: if resource.data.approved == true || isOwner();
+      allow create: if request.resource.data.keys().hasOnly(
+                         ['providerId', 'providerName', 'name', 'stars', 'text', 'approved', 'createdAt'])
+                    && request.resource.data.approved == false
+                    && request.resource.data.providerId is string
+                    && request.resource.data.providerId.size() > 0
+                    && request.resource.data.providerId.size() < 100
+                    && request.resource.data.providerName is string
+                    && request.resource.data.providerName.size() <= 200
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() <= 40
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() <= 600
+                    && request.resource.data.stars is int
+                    && request.resource.data.stars >= 1
+                    && request.resource.data.stars <= 5
+                    && request.resource.data.createdAt == request.time;
+      // Only Tania approves or removes reviews.
+      allow update, delete: if isOwner();
+    }
+  }
+}
