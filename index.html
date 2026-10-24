@@ -475,7 +475,7 @@
   <div class="adm-box">
     <div class="adm-row" style="justify-content:space-between">
       <div><h2 id="adm-h">Directory Admin</h2><p style="margin:0;color:var(--muted)">Onboard the doctors and attorneys who advertise with WebSwan Media Network. Only the owner account can add or edit listings.</p></div>
-      <div class="adm-row"><span id="adm-who" style="font-size:13px;color:var(--muted)"></span><button class="adm-btn blue" type="button" id="adm-signin">Sign in with Google</button><button class="adm-btn" type="button" id="adm-signout" hidden>Sign out</button><button class="adm-btn" type="button" id="adm-close">Close</button></div>
+      <div class="adm-row"><span id="adm-who" style="font-size:13px;color:var(--muted)"></span><button class="adm-btn blue" type="button" id="adm-signin">Sign in with Google</button><a class="adm-btn" id="adm-billing" hidden href="https://taniad2169.github.io/webswan-dagigoia-task/?tab=billing&amp;wsmn=1" target="_blank" rel="noopener" style="text-decoration:none;background:#339cde;color:#fff;border-color:#339cde">💳 Billing</a> <button class="adm-btn" type="button" id="adm-signout" hidden>Sign out</button><button class="adm-btn" type="button" id="adm-close">Close</button></div>
     </div>
     <p class="adm-msg" id="adm-auth-msg" role="status"></p>
   </div>
@@ -2155,7 +2155,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   $('adm-signout').addEventListener('click', () => auth && auth.signOut());
   if (auth) auth.onAuthStateChanged(async user => {
     isOwner = !!(user && user.emailVerified && (user.email || '').toLowerCase() === OWNER_EMAIL);
-    $('adm-signin').hidden = !!user; $('adm-signout').hidden = !user;
+    $('adm-signin').hidden = !!user; $('adm-signout').hidden = !user; $('adm-billing').hidden = !(user && (user.email || '').toLowerCase() === OWNER_EMAIL);
     $('adm-who').textContent = user ? 'Signed in as ' + user.email : '';
     if (user && !isOwner) { authMsg.textContent = 'This account is not allowed to manage the directory.'; await auth.signOut(); return; }
     authMsg.textContent = isOwner ? '' : (location.hash === '#admin' ? 'Please sign in with the owner Google account.' : '');
