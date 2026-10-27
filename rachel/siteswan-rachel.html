@@ -1,0 +1,56 @@
+<!-- Rachel photo + talking mouth for webswanmedianetwork.com (SiteSwan). Paste into Settings > HTML Code (bottom). By The WebSwan -->
+<style>
+.rpic{position:relative;overflow:hidden;display:inline-block;vertical-align:middle;background:#2f9fd0;flex:none}
+.rpic .rstage{position:absolute;width:166.667%;height:166.667%;left:-42.593%;top:-11.111%}
+.rpic.full .rstage{width:100%;height:100%;left:0;top:0}
+.rstage img{position:absolute;display:block;max-width:none!important;margin:0!important;border:0!important;box-shadow:none!important}
+.rstage .rb{left:0;top:0;width:100%;height:100%}
+.rstage .rg{left:43%;top:41.111%;width:24.556%;height:5.556%}
+.rstage .rj{left:37.889%;top:41.444%;width:35.667%;height:26.667%;will-change:transform}
+html.rw-talking .rstage .rj{animation:rwTalk .95s ease-in-out infinite}
+@keyframes rwTalk{0%,100%{transform:translateY(0)}12%{transform:translateY(5.5%)}26%{transform:translateY(1.5%)}40%{transform:translateY(8%)}55%{transform:translateY(2.5%)}70%{transform:translateY(6.5%)}85%{transform:translateY(1%)}}
+@media (prefers-reduced-motion:reduce){html.rw-talking .rstage .rj{animation-duration:1.6s}}
+.rw-mini{width:30px;height:30px;border-radius:50%;margin-right:8px;border:2px solid #fff}
+.rw-card{display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center;margin:0 auto 14px;max-width:760px}
+.rw-card .rpic{width:180px;height:180px;border-radius:20px;box-shadow:0 12px 28px rgba(8,42,72,.25)}
+.rw-card .rw-cap{flex:1 1 260px;min-width:0;text-align:left}
+.rw-card .rw-cap b{display:block;font-size:20px;color:#0b4164}
+.rw-card .rw-cap span{display:block;font-size:14px;color:#41606f;margin-top:4px}
+.rw-card .rw-say{margin-top:10px;display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#1b70c2;color:#fff;font-weight:700;font-size:14px;padding:9px 16px;cursor:pointer}
+.rw-card .rw-say:focus-visible{outline:3px solid #ffbf47;outline-offset:2px}
+@media(max-width:600px){.rw-card{flex-direction:column;text-align:center}.rw-card .rw-cap{text-align:center}}
+</style>
+<script>
+(function(){
+  var BASE='https://ads.webswanmedianetwork.com/rachel/';
+  var STAGE='<span class="rstage"><img class="rb" src="'+BASE+'rachel-wsmn.jpg" alt=""><img class="rg" src="'+BASE+'rachel-gap.png" alt=""><img class="rj" src="'+BASE+'rachel-jaw.png" alt=""></span>';
+  var root=document.documentElement, synth=window.speechSynthesis;
+  function pic(cls){var s=document.createElement('span');s.className='rpic '+(cls||'');s.setAttribute('aria-hidden','true');s.innerHTML=STAGE;return s;}
+  function init(){
+    // small Rachel face on every "Talk to Rachel" button
+    var btns=document.querySelectorAll('#talk-to-rachel, a.wsmn-btn[href*="ads.webswanmedianetwork.com"]');
+    for(var i=0;i<btns.length;i++){var b=btns[i]; if(!/rachel/i.test(b.textContent)||b.querySelector('.rpic'))continue; b.style.display='inline-flex';b.style.alignItems='center'; b.insertBefore(pic('rw-mini'),b.firstChild);}
+    // Rachel card above the "call Rachel" box
+    var call=document.querySelector('.call-rachel');
+    if(call&&!document.querySelector('.rw-card')){
+      var card=document.createElement('div');card.className='rw-card';
+      card.appendChild(pic('full'));
+      var cap=document.createElement('div');cap.className='rw-cap';
+      cap.innerHTML='<b>Meet Rachel</b><span>WebSwan Media Network&rsquo;s 24/7 AI receptionist. She answers every call, day or night.</span>';
+      if(synth){var say=document.createElement('button');say.type='button';say.className='rw-say';say.textContent='🔊 Hear Rachel';say.setAttribute('aria-pressed','false');
+        say.addEventListener('click',function(){ if(say.getAttribute('aria-pressed')==='true'){synth.cancel();return;}
+          var u=new SpeechSynthesisUtterance("Hi, I'm Rachel with WebSwan Media Network. I answer calls for doctors and attorneys twenty four seven, so you never miss a new patient or client. Call me any time at 3 4 7, 6 4 6, 7 0 8 6.");
+          u.lang='en-US';var vs=synth.getVoices().filter(function(v){return /^en-US/i.test(v.lang)&&/samantha|ava|allison|aria|jenny|michelle|zira|google us english|female/i.test(v.name);}); if(vs[0])u.voice=vs[0];
+          u.onstart=function(){say.textContent='⏹ Stop';say.setAttribute('aria-pressed','true');};
+          u.onend=u.onerror=function(){say.textContent='🔊 Hear Rachel';say.setAttribute('aria-pressed','false');};
+          synth.cancel();synth.speak(u);});
+        cap.appendChild(say);}
+      card.appendChild(cap);
+      call.parentNode.insertBefore(card,call);
+    }
+  }
+  // Rachel's mouth moves whenever the page is speaking (Listen button or Hear Rachel)
+  if(synth) setInterval(function(){ var on=synth.speaking&&!synth.paused; if(on!==root.classList.contains('rw-talking')) root.classList.toggle('rw-talking',on); },150);
+  if(document.readyState!=='loading') init(); else document.addEventListener('DOMContentLoaded',init);
+})();
+</script>
