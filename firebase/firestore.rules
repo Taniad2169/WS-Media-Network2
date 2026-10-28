@@ -42,6 +42,11 @@ service cloud.firestore {
         && (!('gallery' in d) || (d.gallery is list && d.gallery.size() <= 3));
     }
 
+    // WebSwan Sales Analytics (client-analytics.html): owner only.
+    match /client_sales/{saleId} {
+      allow read, write: if isOwner();
+    }
+
     match /providers/{providerId} {
       // Public: anyone can read listings that are switched on.
       allow read: if resource.data.active == true || isOwner();
