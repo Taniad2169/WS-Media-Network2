@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>WebSwan Sales Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<style>
+  :root{
+    --c-webswan:#336da6; --c-digital:#86dff7; --c-media:#03c6fc;
+    --blue:#559ee6; --sky:#97c8f7; --teal:#2baec2; --navy:#0d2f57;
+    --ink:#14263d; --muted:#5f7389; --line:#d9e7f3; --bg:#eef6fd; --good:#1f9e8f; --bad:#d64561;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+  button,input,select,textarea{font:inherit}
+  .hidden{display:none!important}
+  #lock{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(140deg,var(--navy),#174f86 55%,var(--teal))}
+  .lockcard{background:#fff;border-radius:22px;padding:34px 28px;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+  .lockcard .ico{font-size:44px}
+  .lockcard h1{margin:10px 0 6px;font-size:22px;color:var(--navy)}
+  .lockcard p{margin:0 0 20px;color:var(--muted);font-size:14px;line-height:1.5}
+  .btn{border:0;border-radius:11px;padding:10px 15px;font-weight:600;cursor:pointer}
+  .btn-main{background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff}
+  .btn-ghost{background:#eef4fa;color:var(--navy)}
+  .btn-bad{background:var(--bad);color:#fff}
+  .lockmsg{margin-top:14px;font-size:13px;color:var(--bad);min-height:18px}
+
+  header{background:linear-gradient(120deg,var(--navy),#1b5a96 60%,var(--teal));color:#fff;position:sticky;top:0;z-index:20}
+  .hwrap{max-width:1240px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .htitle b{display:block;font-size:18px}.htitle span{font-size:12px;color:#cfe4fb}
+  .hright{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .hbtn{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:7px 11px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none}
+  .pill{font-size:12px;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,.16)}
+  main{max-width:1240px;margin:0 auto;padding:18px 16px 40px;display:grid;gap:18px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+  .card h3{margin:0 0 12px;font-size:15px;color:var(--navy)}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .filters label{font-size:12px;font-weight:700;color:var(--muted)}
+  .in{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:14px;color:var(--ink)}
+  .in:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(85,158,230,.18)}
+  .filters .in{width:auto}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .kpi{border-radius:16px;padding:15px;color:#fff}
+  .kpi small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;opacity:.9}
+  .kpi b{display:block;font-size:24px;margin-top:4px}.kpi em{font-style:normal;font-size:12px;opacity:.92}
+  .k1{background:linear-gradient(135deg,var(--teal),#2493a6)}.k2{background:linear-gradient(135deg,var(--blue),#3a7fc6)}
+  .k3{background:linear-gradient(135deg,var(--navy),#1b5a96)}.k4{background:linear-gradient(135deg,#1f9e8f,#167a6f)}
+  .divs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .div{border-left:5px solid;border-radius:14px;background:#fff;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px}
+  .div h4{margin:0;font-size:15px}.div p{margin:3px 0 0;font-size:12px;color:var(--muted)}
+  .div .n{font-size:22px;font-weight:800;margin-top:6px}
+  .grid2{display:grid;grid-template-columns:400px 1fr;gap:18px;align-items:start}
+  .grid-c{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  label.lb{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:10px 0 4px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .formbtns{display:flex;gap:8px;margin-top:14px}.formbtns .btn-main{flex:1}
+  .rank{width:100%;border-collapse:collapse;font-size:13.5px}
+  .rank th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:6px;border-bottom:2px solid var(--line)}
+  .rank td{padding:8px 6px;border-bottom:1px solid #eef3f8}
+  .rank td.num{text-align:right;font-weight:700;white-space:nowrap}
+  .medal{display:inline-block;width:22px;text-align:center}
+  .bar{height:7px;background:#eef4fa;border-radius:7px;overflow:hidden;margin-top:4px}.bar div{height:100%}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tabs button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:5px 11px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer}
+  .tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .chartbox{position:relative;height:260px}
+  .list{max-height:460px;overflow:auto}
+  .item{display:flex;justify-content:space-between;gap:10px;padding:10px 4px;border-bottom:1px solid #eef3f8;align-items:center}
+  .item .nm{font-weight:700;font-size:14px}
+  .item .meta{font-size:12px;color:var(--muted);margin-top:2px}
+  .chip{display:inline-block;font-size:10.5px;font-weight:700;border-radius:6px;padding:1px 6px;margin-right:4px;text-transform:uppercase}
+  .st-lead{background:#eef4fa;color:#2e6db4}.st-proposal{background:#fff4dd;color:#a96a00}.st-won{background:#e2f6f3;color:var(--good)}.st-lost{background:#fde7ec;color:var(--bad)}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .ibtn{border:0;background:transparent;cursor:pointer;font-size:15px;padding:4px;border-radius:7px;opacity:.65}.ibtn:hover{opacity:1;background:#f1f5f9}
+  .empty{color:var(--muted);font-size:13px;text-align:center;padding:18px 8px}
+  .modal{position:fixed;inset:0;background:rgba(10,25,45,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+  .modal .box{background:#fff;border-radius:16px;padding:22px;max-width:380px;width:100%}
+  .modal h4{margin:0 0 8px;color:var(--navy)}.modal p{margin:0 0 16px;font-size:14px;color:var(--muted);line-height:1.5}
+  .modal .formbtns .btn{flex:1}
+  .note{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
+  @media(max-width:980px){.kpis{grid-template-columns:1fr 1fr}.grid2,.grid-c,.divs{grid-template-columns:1fr}}
+  @media(max-width:520px){.kpis{grid-template-columns:1fr}.htitle span{display:none}}
+</style>
+</head>
+<body>
+
+<section id="lock">
+  <div class="lockcard">
+    <div class="ico">📊</div>
+    <h1>WebSwan Sales Analytics</h1>
+    <p>Owner only. Sign in with thewebswann@gmail.com to see your clients and what is selling.</p>
+    <button class="btn btn-main" style="width:100%" id="btn-signin" type="button">🔑 Sign in with Google</button>
+    <div class="lockmsg" id="lockmsg"></div>
+  </div>
+</section>
+
+<div id="app" class="hidden">
+  <header><div class="hwrap">
+    <div class="htitle"><b>📊 WebSwan Sales Analytics</b><span>Clients, leads and what sells the most across your three divisions</span></div>
+    <div class="hright">
+      <span class="pill" id="pill">☁️ Loading…</span>
+      <button class="hbtn" type="button" onclick="exportCSV()">⬇️ Export CSV</button>
+      <button class="hbtn" type="button" onclick="signOutNow()">🔐 Lock</button>
+    </div>
+  </div></header>
+
+  <main>
+    <div class="card filters">
+      <label for="f-range">Period</label>
+      <select class="in" id="f-range" onchange="render()">
+        <option value="month">This month</option><option value="90">Last 90 days</option>
+        <option value="year" selected>This year</option><option value="all">All time</option>
+      </select>
+      <label for="f-q">Search</label>
+      <input class="in" id="f-q" type="search" placeholder="Client, service, state…" oninput="render()" style="min-width:220px">
+    </div>
+
+    <div class="kpis">
+      <div class="kpi k1"><small>Sold (one-time)</small><b id="k-rev">$0</b><em id="k-rev-d">0 deals won</em></div>
+      <div class="kpi k2"><small>Monthly recurring</small><b id="k-mrr">$0/mo</b><em id="k-mrr-d">from won clients</em></div>
+      <div class="kpi k3"><small>Win rate</small><b id="k-win">0%</b><em id="k-win-d">0 won of 0 closed</em></div>
+      <div class="kpi k4"><small>Open pipeline</small><b id="k-pipe">$0</b><em id="k-pipe-d">0 leads & proposals</em></div>
+    </div>
+
+    <div class="divs">
+      <div class="div" style="border-left-color:var(--c-webswan)"><h4 style="color:var(--c-webswan)">The WebSwan</h4><p>Web Design · PWA · E-Card</p><div class="n" id="d-webswan">0 sold · $0</div></div>
+      <div class="div" style="border-left-color:var(--c-digital)"><h4 style="color:#0284c7">WebSwan Digital Solutions</h4><p>ADA · Cookie · HIPAA Compliance</p><div class="n" id="d-digital">0 sold · $0</div></div>
+      <div class="div" style="border-left-color:var(--c-media)"><h4 style="color:#0284c7">WebSwan Media Network</h4><p>Advertising Online · Virtual Receptionist</p><div class="n" id="d-media">0 sold · $0</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3 id="ftitle">Add a client or lead</h3>
+        <form id="f" onsubmit="submitRec(event)">
+          <label class="lb" for="r-name">Client / lead name *</label>
+          <input class="in" id="r-name" required maxlength="120" placeholder="Dr. John Smith / Smith Law Firm" autocomplete="off">
+          <div class="row2">
+            <div><label class="lb" for="r-ind">Industry *</label>
+              <select class="in" id="r-ind" required><option value="Doctors">Doctors</option><option value="Dentists">Dentists</option><option value="Chiropractors">Chiropractors</option><option value="Lawyers">Lawyers</option><option value="Others">Others</option></select></div>
+            <div><label class="lb" for="r-state">State *</label><select class="in" id="r-state" required></select></div>
+          </div>
+          <label class="lb" for="r-svc">Service *</label>
+          <select class="in" id="r-svc" required></select>
+          <div class="row2">
+            <div><label class="lb" for="r-status">Status *</label>
+              <select class="in" id="r-status"><option value="lead">Lead</option><option value="proposal">Proposal sent</option><option value="won" selected>Won (sold)</option><option value="lost">Lost</option></select></div>
+            <div><label class="lb" for="r-date">Date</label><input class="in" id="r-date" type="date"></div>
+          </div>
+          <div class="row2">
+            <div><label class="lb" for="r-amt">One-time amount ($)</label><input class="in" id="r-amt" type="number" min="0" step="0.01" placeholder="0.00" inputmode="decimal"></div>
+            <div><label class="lb" for="r-mrr">Monthly amount ($)</label><input class="in" id="r-mrr" type="number" min="0" step="0.01" placeholder="0.00" inputmode="decimal"></div>
+          </div>
+          <label class="lb" for="r-src">Where the lead came from</label>
+          <select class="in" id="r-src"><option>Tatiana (AI calls)</option><option>Rachel (AI)</option><option>My own calls</option><option>Referral</option><option>Alignable</option><option>Website / Google</option><option>WSMN Directory</option><option>Social media</option><option>Email outreach</option><option>Other</option></select>
+          <label class="lb" for="r-notes">Notes</label>
+          <input class="in" id="r-notes" maxlength="300" placeholder="Optional">
+          <div class="formbtns">
+            <button class="btn btn-main" type="submit" id="r-submit">Add</button>
+            <button class="btn btn-ghost hidden" type="button" id="r-cancel" onclick="cancelEdit()">Cancel</button>
+          </div>
+          <div class="note">The division (WebSwan, Digital Solutions or Media Network) is picked automatically from the service.</div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>🏆 What sells the most</h3>
+        <div class="tabs" id="rank-tabs">
+          <button type="button" class="on" data-k="service">Service</button>
+          <button type="button" data-k="division">Division</button>
+          <button type="button" data-k="industry">Industry</button>
+          <button type="button" data-k="state">State</button>
+          <button type="button" data-k="source">Lead source</button>
+        </div>
+        <table class="rank"><thead><tr><th>#</th><th>Name</th><th style="text-align:right">Won</th><th style="text-align:right">Revenue</th><th style="text-align:right">Win rate</th></tr></thead><tbody id="rank-body"></tbody></table>
+        <div class="note">Ranked by deals won, then revenue (one-time + 12 months of monthly). Win rate = won ÷ (won + lost).</div>
+      </div>
+    </div>
+
+    <div class="grid-c">
+      <div class="card"><h3>Sales by division</h3><div class="chartbox"><canvas id="c-div"></canvas></div></div>
+      <div class="card"><h3>Revenue by month (won)</h3><div class="chartbox"><canvas id="c-month"></canvas></div></div>
+      <div class="card"><h3>Industry</h3><div class="chartbox"><canvas id="c-ind"></canvas></div></div>
+      <div class="card"><h3>States</h3><div class="chartbox"><canvas id="c-state"></canvas></div></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <h3 style="margin:0">Client & lead roster <span id="r-count" style="color:var(--muted);font-weight:600"></span></h3>
+        <div class="tabs" id="st-tabs" style="margin:0">
+          <button type="button" class="on" data-s="all">All</button><button type="button" data-s="won">Won</button>
+          <button type="button" data-s="proposal">Proposals</button><button type="button" data-s="lead">Leads</button><button type="button" data-s="lost">Lost</button>
+        </div>
+      </div>
+      <div class="list" id="roster"></div>
+    </div>
+  </main>
+</div>
+
+<div class="modal hidden" id="modal"><div class="box">
+  <h4 id="m-title"></h4><p id="m-text"></p>
+  <div class="formbtns"><button class="btn btn-ghost" type="button" onclick="closeModal()">Cancel</button><button class="btn btn-bad" type="button" id="m-ok">Yes</button></div>
+</div></div>
+
+<script>
+  var OWNER='thewebswann@gmail.com', COLL='client_sales';
+  var DIVS={
+    webswan:{name:'The WebSwan',color:'#336da6',services:['Web Design','Website Redesign','PWA','E-Card']},
+    digital:{name:'WebSwan Digital Solutions',color:'#86dff7',services:['ADA Compliance','Cookie Compliance','HIPAA Compliance','Compliance Audit','Monthly Compliance Plan']},
+    media:{name:'WebSwan Media Network',color:'#03c6fc',services:['Advertising Online','Virtual Receptionist','Directory Listing']}
+  };
+  var STATES=[['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],['CO','Colorado'],['CT','Connecticut'],['DE','Delaware'],['DC','Washington DC'],['FL','Florida'],['GA','Georgia'],['HI','Hawaii'],['ID','Idaho'],['IL','Illinois'],['IN','Indiana'],['IA','Iowa'],['KS','Kansas'],['KY','Kentucky'],['LA','Louisiana'],['ME','Maine'],['MD','Maryland'],['MA','Massachusetts'],['MI','Michigan'],['MN','Minnesota'],['MS','Mississippi'],['MO','Missouri'],['MT','Montana'],['NE','Nebraska'],['NV','Nevada'],['NH','New Hampshire'],['NJ','New Jersey'],['NM','New Mexico'],['NY','New York'],['NC','North Carolina'],['ND','North Dakota'],['OH','Ohio'],['OK','Oklahoma'],['OR','Oregon'],['PA','Pennsylvania'],['RI','Rhode Island'],['SC','South Carolina'],['SD','South Dakota'],['TN','Tennessee'],['TX','Texas'],['UT','Utah'],['VT','Vermont'],['VA','Virginia'],['WA','Washington State'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming'],['XX','Outside the US']];
+  var recs=[], editingId=null, rankKey='service', stFilter='all', charts={};
+  var db=null, auth=null;
+  var $=function(id){return document.getElementById(id);};
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function money(n){return '$'+Math.round(n||0).toLocaleString('en-US');}
+  function divOf(svc){ for(var k in DIVS) if(DIVS[k].services.indexOf(svc)>-1) return k; return 'webswan'; }
+  function stateName(c){ var s=STATES.find(function(x){return x[0]===c;}); return s?s[1]:c; }
+  function today(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function value(r){ return (+r.amount||0) + 12*(+r.monthly||0); }
+
+  /* ---- setup form ---- */
+  $('r-state').innerHTML=STATES.map(function(s){return '<option value="'+s[0]+'">'+s[1]+'</option>';}).join('');
+  $('r-state').value='NY';
+  $('r-svc').innerHTML=Object.keys(DIVS).map(function(k){return '<optgroup label="'+DIVS[k].name+'">'+DIVS[k].services.map(function(s){return '<option>'+s+'</option>';}).join('')+'</optgroup>';}).join('');
+  $('r-date').value=today();
+
+  /* ---- auth ---- */
+  try{
+    firebase.initializeApp({apiKey:"AIzaSyAqhqUzWqpS7YunkODJU_udTBG3pjsJegQ",authDomain:"webswan-marketing.firebaseapp.com",projectId:"webswan-marketing",storageBucket:"webswan-marketing.firebasestorage.app",messagingSenderId:"556357112107",appId:"1:556357112107:web:6c8bd74e3a7caf9a2d756e"});
+    db=firebase.firestore(); auth=firebase.auth();
+  }catch(e){ $('lockmsg').textContent='The database could not load. Refresh the page.'; }
+  if(auth){
+    auth.onAuthStateChanged(function(u){
+      var ok=!!(u && u.emailVerified && (u.email||'').toLowerCase()===OWNER);
+      if(ok){ $('lock').classList.add('hidden'); $('app').classList.remove('hidden'); load(); }
+      else { $('app').classList.add('hidden'); $('lock').classList.remove('hidden'); recs=[];
+        if(u){ $('lockmsg').textContent='This account ('+u.email+') does not have access.'; auth.signOut(); } }
+    });
+  }
+  $('btn-signin').addEventListener('click',function(){
+    $('lockmsg').textContent='';
+    if(!auth) return;
+    var p=new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(p).catch(function(e){
+      if(e && (e.code==='auth/popup-blocked'||e.code==='auth/cancelled-popup-request')) return auth.signInWithRedirect(p);
+      $('lockmsg').textContent = e && e.code==='auth/unauthorized-domain' ? 'This web address is not approved in Firebase yet.' : 'Sign-in did not finish. Allow pop-ups for this site and try again.';
+    });
+  });
+  function signOutNow(){ if(auth) auth.signOut(); }
+  function pill(t){ $('pill').textContent=t; }
+
+  /* ---- data ---- */
+  function load(){
+    pill('☁️ Loading…');
+    db.collection(COLL).get().then(function(snap){
+      recs=snap.docs.map(function(d){ var x=d.data(); x.id=d.id; return x; });
+      pill('✅ Synced'); render();
+    }).catch(function(e){ pill(e&&e.code==='permission-denied'?'⚠️ Database rule needed':'⚠️ Offline'); render(); });
+  }
+  function readForm(){
+    var svc=$('r-svc').value;
+    return { name:$('r-name').value.trim(), industry:$('r-ind').value, state:$('r-state').value, service:svc, division:divOf(svc),
+      status:$('r-status').value, date:$('r-date').value||today(), amount:Math.max(0,Math.round((parseFloat($('r-amt').value)||0)*100)/100),
+      monthly:Math.max(0,Math.round((parseFloat($('r-mrr').value)||0)*100)/100), source:$('r-src').value, notes:$('r-notes').value.trim().slice(0,300) };
+  }
+  function submitRec(e){
+    e.preventDefault();
+    var r=readForm(); if(!r.name) return;
+    r.updatedAt=new Date().toISOString();
+    var btn=$('r-submit'); btn.disabled=true;
+    var p = editingId ? db.collection(COLL).doc(editingId).set(r).then(function(){ var i=recs.findIndex(function(x){return x.id===editingId;}); r.id=editingId; if(i>-1) recs[i]=r; })
+                      : db.collection(COLL).add(r).then(function(ref){ r.id=ref.id; recs.push(r); });
+    p.then(function(){ pill('✅ Synced'); cancelEdit(); render(); })
+     .catch(function(err){ confirmBox('Not saved', err&&err.code==='permission-denied' ? 'Firebase is blocking saves to the new analytics section. The database rule still needs to be added.' : 'Could not save. Check your connection and try again.', 'OK', function(){}); })
+     .then(function(){ btn.disabled=false; });
+  }
+  function startEdit(id){
+    var r=recs.find(function(x){return x.id===id;}); if(!r) return;
+    editingId=id;
+    $('r-name').value=r.name; $('r-ind').value=r.industry; $('r-state').value=r.state; $('r-svc').value=r.service;
+    $('r-status').value=r.status; $('r-date').value=r.date||''; $('r-amt').value=r.amount||''; $('r-mrr').value=r.monthly||'';
+    $('r-src').value=r.source||'Other'; $('r-notes').value=r.notes||'';
+    $('ftitle').textContent='Edit '+r.name; $('r-submit').textContent='Save changes'; $('r-cancel').classList.remove('hidden');
+    window.scrollTo({top:$('f').getBoundingClientRect().top+window.scrollY-150,behavior:'smooth'});
+  }
+  function cancelEdit(){ editingId=null; $('f').reset(); $('r-state').value='NY'; $('r-date').value=today(); $('r-status').value='won';
+    $('ftitle').textContent='Add a client or lead'; $('r-submit').textContent='Add'; $('r-cancel').classList.add('hidden'); }
+  function removeRec(id){
+    var r=recs.find(function(x){return x.id===id;}); if(!r) return;
+    confirmBox('Delete '+r.name+'?', 'This removes the record from your analytics for good.', 'Delete', function(){
+      db.collection(COLL).doc(id).delete().then(function(){ recs=recs.filter(function(x){return x.id!==id;}); if(editingId===id) cancelEdit(); render(); })
+        .catch(function(){ confirmBox('Not deleted','Could not delete. Try again.','OK',function(){}); });
+    });
+  }
+  function confirmBox(t,txt,ok,fn){ $('m-title').textContent=t; $('m-text').textContent=txt; $('m-ok').textContent=ok; $('m-ok').onclick=function(){closeModal();fn();}; $('modal').classList.remove('hidden'); }
+  function closeModal(){ $('modal').classList.add('hidden'); }
+
+  /* ---- filtering ---- */
+  function inRange(r){
+    var v=$('f-range').value; if(v==='all') return true;
+    var d=new Date((r.date||'1970-01-01')+'T12:00:00'), n=new Date();
+    if(v==='month') return d.getFullYear()===n.getFullYear() && d.getMonth()===n.getMonth();
+    if(v==='year') return d.getFullYear()===n.getFullYear();
+    return (n-d)/864e5 <= +v;
+  }
+  function matchQ(r){ var q=$('f-q').value.trim().toLowerCase(); if(!q) return true;
+    return [r.name,r.service,r.industry,stateName(r.state),r.source,DIVS[r.division]&&DIVS[r.division].name,r.notes].join(' ').toLowerCase().indexOf(q)>-1; }
+
+  /* ---- render ---- */
+  function group(list,keyFn){
+    var m={};
+    list.forEach(function(r){ var k=keyFn(r); if(!m[k]) m[k]={name:k,won:0,lost:0,open:0,rev:0};
+      var g=m[k]; if(r.status==='won'){ g.won++; g.rev+=value(r); } else if(r.status==='lost') g.lost++; else g.open++; });
+    return Object.keys(m).map(function(k){return m[k];}).sort(function(a,b){ return b.won-a.won || b.rev-a.rev || b.open-a.open; });
+  }
+  var KEYS={ service:function(r){return r.service;}, division:function(r){return (DIVS[r.division]||DIVS.webswan).name;},
+    industry:function(r){return r.industry;}, state:function(r){return stateName(r.state);}, source:function(r){return r.source||'Other';} };
+  function render(){
+    var list=recs.filter(inRange).filter(matchQ);
+    var won=list.filter(function(r){return r.status==='won';}), lost=list.filter(function(r){return r.status==='lost';});
+    var open=list.filter(function(r){return r.status==='lead'||r.status==='proposal';});
+    var rev=won.reduce(function(t,r){return t+(+r.amount||0);},0), mrr=won.reduce(function(t,r){return t+(+r.monthly||0);},0);
+    $('k-rev').textContent=money(rev); $('k-rev-d').textContent=won.length+' deal'+(won.length===1?'':'s')+' won';
+    $('k-mrr').textContent=money(mrr)+'/mo'; $('k-mrr-d').textContent=money(mrr*12)+' a year';
+    var closed=won.length+lost.length; $('k-win').textContent=closed?Math.round(won.length/closed*100)+'%':'0%';
+    $('k-win-d').textContent=won.length+' won of '+closed+' closed';
+    $('k-pipe').textContent=money(open.reduce(function(t,r){return t+value(r);},0)); $('k-pipe-d').textContent=open.length+' lead'+(open.length===1?'':'s')+' & proposals';
+    ['webswan','digital','media'].forEach(function(k){ var w=won.filter(function(r){return r.division===k;});
+      $('d-'+k).textContent=w.length+' sold · '+money(w.reduce(function(t,r){return t+value(r);},0)); });
+
+    var rows=group(list,KEYS[rankKey]), top=rows.length?Math.max(1,rows[0].won):1, medals=['🥇','🥈','🥉'];
+    $('rank-body').innerHTML = rows.length ? rows.slice(0,12).map(function(g,i){
+      var wr=(g.won+g.lost)?Math.round(g.won/(g.won+g.lost)*100)+'%':'–';
+      var color = rankKey==='division' ? (Object.keys(DIVS).map(function(k){return DIVS[k];}).find(function(d){return d.name===g.name;})||{}).color : (rankKey==='service'?DIVS[divOf(g.name)].color:'#559ee6');
+      return '<tr><td><span class="medal">'+(medals[i]&&g.won?medals[i]:(i+1))+'</span></td><td>'+esc(g.name)+(g.open?' <span style="color:var(--muted);font-size:12px">· '+g.open+' open</span>':'')+
+        '<div class="bar"><div style="width:'+Math.round(g.won/top*100)+'%;background:'+(color||'#559ee6')+'"></div></div></td>'+
+        '<td class="num">'+g.won+'</td><td class="num">'+money(g.rev)+'</td><td class="num">'+wr+'</td></tr>';
+    }).join('') : '<tr><td colspan="5" class="empty">Add your first client to see what sells the most.</td></tr>';
+
+    var show=list.filter(function(r){return stFilter==='all'||r.status===stFilter;}).sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
+    $('r-count').textContent='('+show.length+')';
+    var SL={lead:'Lead',proposal:'Proposal',won:'Won',lost:'Lost'};
+    $('roster').innerHTML = show.length ? show.map(function(r){ var d=DIVS[r.division]||DIVS.webswan;
+      return '<div class="item"><div><div class="nm"><span class="dot" style="background:'+d.color+'"></span>'+esc(r.name)+'</div>'+
+        '<div class="meta"><span class="chip st-'+r.status+'">'+SL[r.status]+'</span>'+esc(r.service)+' · '+esc(r.industry)+' · '+esc(stateName(r.state))+' · '+esc(r.source||'')+' · '+esc(r.date||'')+(r.notes?' · '+esc(r.notes):'')+'</div></div>'+
+        '<div style="display:flex;align-items:center;gap:4px;white-space:nowrap"><b style="font-size:13.5px">'+(r.amount?money(r.amount):'')+(r.monthly?' + '+money(r.monthly)+'/mo':'')+'</b>'+
+        '<button class="ibtn" type="button" title="Edit" onclick="startEdit(\''+r.id+'\')">✏️</button><button class="ibtn" type="button" title="Delete" onclick="removeRec(\''+r.id+'\')">🗑️</button></div></div>';
+    }).join('') : '<div class="empty">No clients here yet.</div>';
+
+    drawCharts(list, won);
+  }
+  function chart(id,cfg){ if(typeof Chart==='undefined') return; if(charts[id]) charts[id].destroy(); charts[id]=new Chart($(id),cfg); }
+  function drawCharts(list, won){
+    var dk=['webswan','digital','media'];
+    var dv=dk.map(function(k){return won.filter(function(r){return r.division===k;}).length;});
+    var has=dv.some(function(x){return x>0;});
+    chart('c-div',{type:'doughnut',data:{labels:dk.map(function(k){return DIVS[k].name;}),datasets:[{data:has?dv:[1,1,1],backgroundColor:has?dk.map(function(k){return DIVS[k].color;}):['#e3edf7','#e3edf7','#e3edf7'],borderColor:'#fff',borderWidth:2}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true}},tooltip:{enabled:has}}}});
+    var months=[], n=new Date(); for(var i=11;i>=0;i--){ var d=new Date(n.getFullYear(),n.getMonth()-i,1); months.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')); }
+    var allWon=recs.filter(function(r){return r.status==='won';}).filter(matchQ);
+    var mv=months.map(function(m){ return allWon.filter(function(r){return (r.date||'').slice(0,7)===m;}).reduce(function(t,r){return t+(+r.amount||0)+(+r.monthly||0);},0); });
+    chart('c-month',{type:'bar',data:{labels:months.map(function(m){var p=m.split('-');return new Date(+p[0],+p[1]-1,1).toLocaleDateString('en-US',{month:'short'});}),datasets:[{data:mv,backgroundColor:'#559ee6',borderRadius:6}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+money(c.raw);}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return money(v);}}},x:{grid:{display:false}}}}});
+    var ig=group(list,KEYS.industry);
+    chart('c-ind',{type:'bar',data:{labels:ig.map(function(g){return g.name;}),datasets:[{label:'Won',data:ig.map(function(g){return g.won;}),backgroundColor:'#2baec2',borderRadius:6},{label:'Open',data:ig.map(function(g){return g.open;}),backgroundColor:'#97c8f7',borderRadius:6}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true,ticks:{precision:0}},x:{grid:{display:false}}}}});
+    var sg=group(list,KEYS.state).slice(0,12);
+    chart('c-state',{type:'bar',data:{labels:sg.map(function(g){return g.name;}),datasets:[{label:'Won',data:sg.map(function(g){return g.won;}),backgroundColor:'#336da6',borderRadius:6},{label:'Open',data:sg.map(function(g){return g.open;}),backgroundColor:'#86dff7',borderRadius:6}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{x:{beginAtZero:true,ticks:{precision:0}},y:{grid:{display:false}}}}});
+  }
+  document.getElementById('rank-tabs').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; rankKey=b.dataset.k;
+    this.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);}); render(); });
+  document.getElementById('st-tabs').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; stFilter=b.dataset.s;
+    this.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);}); render(); });
+
+  function exportCSV(){
+    var h=['Name','Status','Service','Division','Industry','State','Source','Date','One-time','Monthly','Notes'];
+    var lines=[h].concat(recs.map(function(r){return [r.name,r.status,r.service,(DIVS[r.division]||{}).name,r.industry,stateName(r.state),r.source,r.date,r.amount||0,r.monthly||0,r.notes||''];}));
+    var csv=lines.map(function(l){return l.map(function(v){ v=String(v==null?'':v); if(/^[=+\-@]/.test(v)) v="'"+v; return '"'+v.replace(/"/g,'""')+'"'; }).join(',');}).join('\n');
+    var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='webswan-sales-'+today()+'.csv';
+    document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
+  }
+</script>
+</body>
+</html>
