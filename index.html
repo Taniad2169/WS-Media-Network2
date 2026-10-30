@@ -2765,11 +2765,11 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     const f = document.createElement('form'); f.className = 'rw-cform'; f.style.cssText = 'margin-top:8px;display:grid;gap:6px';
     f.innerHTML = `<input name="n" required maxlength="80" placeholder="Your name" aria-label="Your name" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">
       <input name="ph" required inputmode="tel" maxlength="20" placeholder="Best phone number" aria-label="Best phone number" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">
-      ${kind === 'lead' ? '<input name="em" type="email" maxlength="120" placeholder="Email (optional)" aria-label="Email" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">' : ''}
+      <input name="em" type="email" maxlength="120" placeholder="Email (optional)" aria-label="Email" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">
       <input name="bt" maxlength="80" placeholder="Best time to reach you (optional)" aria-label="Best time to reach you" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">
       <label style="font-size:12px;line-height:1.4;display:flex;gap:6px;align-items:flex-start"><input type="checkbox" name="ok" required style="margin-top:2px">
-      <span>${kind === 'call' ? 'I agree to receive a call at this number from Jennifer, an AI assistant for WebSwan Media Network, about booking with this provider. The call may be recorded.' : 'I agree to share my name and contact details with this office so they can contact me.'}</span></label>
-      <button type="submit" class="rw-link" style="justify-self:start">${kind === 'call' ? 'Call me' : 'Send to the office'}</button><span class="rw-sub" role="status" aria-live="polite"></span>`;
+      <span>${'I agree to share my name and contact details with this office so they can contact me.'}</span></label>
+      <button type="submit" class="rw-link" style="justify-self:start">Send to the office</button><span class="rw-sub" role="status" aria-live="polite"></span>`;
     b.after(f); f.querySelector('input').focus();
     f.addEventListener('submit', async ev => {
       ev.preventDefault(); const st = f.querySelector('[role=status]'), btn = f.querySelector('button');
