@@ -135,10 +135,152 @@
    "alternateName": "WSMN",
    "url": "https://www.webswanmedianetwork.com/",
    "description": "Online advertising platform and nationwide professional directory exclusively for doctors and attorneys, powered by The WebSwan.",
-   "areaServed": {
-    "@type": "Country",
-    "name": "United States"
-   },
+   "areaServed": [
+    {
+     "@type": "Country",
+     "name": "United States"
+    },
+    {
+     "@type": "State",
+     "name": "New York",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "NY",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Florida",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "FL",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Texas",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "TX",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "City",
+     "name": "Washington",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "DC",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Connecticut",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "CT",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "New Jersey",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "NJ",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Illinois",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "IL",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Utah",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "UT",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Virginia",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "VA",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Nevada",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "NV",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "California",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Pennsylvania",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "PA",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "City",
+     "name": "Oakland",
+     "containedInPlace": {
+      "@type": "State",
+      "name": "California"
+     }
+    },
+    {
+     "@type": "City",
+     "name": "Berkeley",
+     "containedInPlace": {
+      "@type": "State",
+      "name": "California"
+     }
+    },
+    {
+     "@type": "City",
+     "name": "Walnut Creek",
+     "containedInPlace": {
+      "@type": "State",
+      "name": "California"
+     }
+    },
+    {
+     "@type": "City",
+     "name": "San Ramon",
+     "containedInPlace": {
+      "@type": "State",
+      "name": "California"
+     }
+    }
+   ],
    "knowsAbout": [
     "Online advertising for doctors",
     "Online advertising for attorneys",
@@ -148,7 +290,16 @@
     "Medical practice marketing",
     "AI receptionist",
     "Website accessibility",
-    "HIPAA-aware intake"
+    "HIPAA-aware intake",
+    "Chiropractor advertising",
+    "Physician advertising",
+    "Orthopedic surgeon advertising",
+    "Plastic and cosmetic surgeon advertising",
+    "Orthodontist advertising",
+    "Dentist advertising",
+    "Family law attorney advertising",
+    "Criminal defense lawyer advertising",
+    "Personal injury lawyer advertising"
    ],
    "founder": {
     "@type": "Person",
@@ -247,78 +398,232 @@
    "provider": {
     "@id": "https://www.webswanmedianetwork.com/#organization"
    },
-   "areaServed": {
-    "@type": "Country",
-    "name": "United States"
-   },
+   "areaServed": [
+    {
+     "@type": "Country",
+     "name": "United States"
+    },
+    {
+     "@type": "State",
+     "name": "New York",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "NY",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Florida",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "FL",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Texas",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "TX",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "City",
+     "name": "Washington",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "DC",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Connecticut",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "CT",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "New Jersey",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "NJ",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Illinois",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "IL",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Utah",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "UT",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Virginia",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "VA",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Nevada",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "NV",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "California",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "State",
+     "name": "Pennsylvania",
+     "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "PA",
+      "addressCountry": "US"
+     }
+    },
+    {
+     "@type": "City",
+     "name": "Oakland",
+     "containedInPlace": {
+      "@type": "State",
+      "name": "California"
+     }
+    },
+    {
+     "@type": "City",
+     "name": "Berkeley",
+     "containedInPlace": {
+      "@type": "State",
+      "name": "California"
+     }
+    },
+    {
+     "@type": "City",
+     "name": "Walnut Creek",
+     "containedInPlace": {
+      "@type": "State",
+      "name": "California"
+     }
+    },
+    {
+     "@type": "City",
+     "name": "San Ramon",
+     "containedInPlace": {
+      "@type": "State",
+      "name": "California"
+     }
+    }
+   ],
    "audience": {
     "@type": "BusinessAudience",
-    "audienceType": "Doctors, dentists, chiropractors, medical specialists, attorneys and law firms"
+    "audienceType": "Chiropractors, physicians, orthopedic surgeons, plastic and cosmetic surgeons, orthodontists, dentists, family law attorneys, criminal defense lawyers, personal injury lawyers and law firms"
    },
    "description": "A verified provider profile in the WebSwan Media Network directory, recommendations to matching patients or clients by Rachel, optional contact requests and AI call-backs. Online advertising only; no billboards, TV or print.",
    "hasOfferCatalog": {
     "@type": "OfferCatalog",
-    "name": "WSMN membership plans",
+    "name": "Advertising by specialty",
     "itemListElement": [
      {
       "@type": "Offer",
-      "name": "Found",
-      "description": "Verified directory profile; Rachel recommends you to matching patients or clients; people contact your office directly.",
-      "priceCurrency": "USD",
-      "url": "https://ads.webswanmedianetwork.com/#membership",
-      "priceSpecification": {
-       "@type": "UnitPriceSpecification",
-       "price": "49",
-       "priceCurrency": "USD",
-       "unitText": "month"
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Online advertising for chiropractors",
+       "url": "https://www.webswanmedianetwork.com/online-advertising-for-chiropractors"
       }
      },
      {
       "@type": "Offer",
-      "name": "Found + Leads",
-      "description": "Everything in Found, plus contact requests from people who choose you, sent to your office right away.",
-      "priceCurrency": "USD",
-      "url": "https://ads.webswanmedianetwork.com/#membership",
-      "priceSpecification": {
-       "@type": "UnitPriceSpecification",
-       "price": "69",
-       "priceCurrency": "USD",
-       "unitText": "month"
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Online advertising for family law attorneys",
+       "url": "https://www.webswanmedianetwork.com/family-law-attorney-advertising"
       }
      },
      {
       "@type": "Offer",
-      "name": "Premium",
-      "description": "Everything in Found + Leads, plus your own AI receptionist calls them back and books the appointment.",
-      "priceCurrency": "USD",
-      "url": "https://ads.webswanmedianetwork.com/#membership",
-      "priceSpecification": {
-       "@type": "UnitPriceSpecification",
-       "price": "149",
-       "priceCurrency": "USD",
-       "unitText": "month"
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Online advertising for plastic & cosmetic surgeons",
+       "url": "https://www.webswanmedianetwork.com/plastic-and-cosmetic-surgeon-advertising"
       }
      },
      {
       "@type": "Offer",
-      "name": "Network and infrastructure",
-      "description": "Yearly network fee for every plan.",
-      "priceCurrency": "USD",
-      "url": "https://ads.webswanmedianetwork.com/#membership",
-      "priceSpecification": {
-       "@type": "UnitPriceSpecification",
-       "price": "289",
-       "priceCurrency": "USD",
-       "unitText": "year"
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Online advertising for criminal defense lawyers",
+       "url": "https://www.webswanmedianetwork.com/criminal-defense-lawyer-advertising"
       }
      },
      {
       "@type": "Offer",
-      "name": "Setup and onboarding",
-      "description": "One-time setup. Waived when The WebSwan builds your website, landing page or phone application.",
-      "priceCurrency": "USD",
-      "url": "https://ads.webswanmedianetwork.com/#membership",
-      "price": "400"
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Online advertising for orthopedic surgeons",
+       "url": "https://www.webswanmedianetwork.com/orthopedic-surgeon-advertising"
+      }
+     },
+     {
+      "@type": "Offer",
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Online advertising for orthodontists",
+       "url": "https://www.webswanmedianetwork.com/orthodontist-advertising"
+      }
+     },
+     {
+      "@type": "Offer",
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Online advertising for physicians (md & do)",
+       "url": "https://www.webswanmedianetwork.com/physician-advertising"
+      }
+     },
+     {
+      "@type": "Offer",
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Online advertising for dentists",
+       "url": "https://www.webswanmedianetwork.com/online-advertising-for-dentists"
+      }
+     },
+     {
+      "@type": "Offer",
+      "itemOffered": {
+       "@type": "Service",
+       "name": "Online advertising for personal injury lawyers",
+       "url": "https://www.webswanmedianetwork.com/personal-injury-lawyer-advertising"
+      }
      }
     ]
    }
@@ -365,6 +670,38 @@
      "acceptedAnswer": {
       "@type": "Answer",
       "text": "No. Information submitted through our contact form is used solely to help you advertise online through WebSwan Media Network. We do not sell or share it with third parties."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Which doctors and attorneys does WebSwan Media Network advertise?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "We advertise chiropractors, physicians (MD and DO), orthopedic surgeons, plastic and cosmetic surgeons, orthodontists, dentists, family law attorneys, criminal defense lawyers and personal injury lawyers, along with other licensed medical and legal professionals."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Which states does WebSwan Media Network serve?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "We advertise licensed doctors and attorneys nationwide, with a focus on New York, Florida, Texas, Washington, DC, Connecticut, New Jersey, Illinois, Utah, Virginia, Nevada, California and Pennsylvania."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Do you serve doctors and lawyers in the Bay Area?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. We are based in the East Bay and advertise providers in Oakland, Berkeley, Walnut Creek, San Ramon and across the San Francisco Bay Area."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How does Rachel match patients and clients to my practice?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Rachel asks each patient or client for their city, state and ZIP code and what matters most to them, then recommends up to five verified providers who meet the most of their criteria, with proximity counted."
      }
     }
    ]
@@ -622,6 +959,58 @@
   </main>
   
 <style>
+.area-section{padding:60px 0;background:#f4fafd}
+.area-section .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+.area-section h2{font-size:26px;color:#082a48;text-align:center;margin:0 0 10px}
+.area-section .area-lead{text-align:center;color:#547189;font-size:15px;line-height:1.6;max-width:720px;margin:0 auto 26px}
+.area-section h3{font-size:17px;color:#082a48;margin:26px 0 12px}
+.area-chips{display:flex;flex-wrap:wrap;gap:10px;list-style:none;padding:0;margin:0}
+.area-chips li a,.area-chips li span{display:inline-block;background:#fff;border:1.5px solid #cfe5f2;color:#082a48;font-size:14px;font-weight:700;padding:8px 14px;border-radius:999px;text-decoration:none}
+.area-chips li a:hover,.area-chips li a:focus-visible{border-color:#339cde;background:#e8f5fc;outline:none}
+.area-note{font-size:14px;color:#547189;line-height:1.6;margin:12px 0 0}
+</style>
+<section class="area-section" id="service-area" aria-labelledby="area-h">
+  <div class="wrap">
+    <h2 id="area-h">Specialties we advertise and where we serve</h2>
+    <p class="area-lead">WebSwan Media Network is online advertising built only for licensed doctors and attorneys. Every provider is license-checked before listing, then matched to patients and clients by Rachel by city, state and ZIP code.</p>
+    <h3>Specialties</h3>
+    <ul class="area-chips">
+      <li><a href="https://www.webswanmedianetwork.com/online-advertising-for-chiropractors">Chiropractors</a></li>
+      <li><a href="https://www.webswanmedianetwork.com/family-law-attorney-advertising">Family law attorneys</a></li>
+      <li><a href="https://www.webswanmedianetwork.com/plastic-and-cosmetic-surgeon-advertising">Plastic & cosmetic surgeons</a></li>
+      <li><a href="https://www.webswanmedianetwork.com/criminal-defense-lawyer-advertising">Criminal defense lawyers</a></li>
+      <li><a href="https://www.webswanmedianetwork.com/orthopedic-surgeon-advertising">Orthopedic surgeons</a></li>
+      <li><a href="https://www.webswanmedianetwork.com/orthodontist-advertising">Orthodontists</a></li>
+      <li><a href="https://www.webswanmedianetwork.com/physician-advertising">Physicians (MD & DO)</a></li>
+      <li><a href="https://www.webswanmedianetwork.com/online-advertising-for-dentists">Dentists</a></li>
+      <li><a href="https://www.webswanmedianetwork.com/personal-injury-lawyer-advertising">Personal injury lawyers</a></li>
+    </ul>
+    <h3>Featured states</h3>
+    <ul class="area-chips">
+      <li><span>New York</span></li>
+      <li><span>Florida</span></li>
+      <li><span>Texas</span></li>
+      <li><span>Washington, DC</span></li>
+      <li><span>Connecticut</span></li>
+      <li><span>New Jersey</span></li>
+      <li><span>Illinois</span></li>
+      <li><span>Utah</span></li>
+      <li><span>Virginia</span></li>
+      <li><span>Nevada</span></li>
+      <li><span>California</span></li>
+      <li><span>Pennsylvania</span></li>
+    </ul>
+    <h3>San Francisco Bay Area &amp; East Bay</h3>
+    <ul class="area-chips">
+      <li><span>Oakland, CA</span></li>
+      <li><span>Berkeley, CA</span></li>
+      <li><span>Walnut Creek, CA</span></li>
+      <li><span>San Ramon, CA</span></li>
+    </ul>
+    <p class="area-note">Based in the East Bay (Emeryville, CA) and advertising providers nationwide. Don't see your state? Licensed doctors and attorneys anywhere in the U.S. can apply; call (347) 646-7086.</p>
+  </div>
+</section>
+<style>
 .faq-section{padding:60px 0;background:#fff}
 .faq-section .wrap{max-width:760px;margin:0 auto;padding:0 20px}
 .faq-section h2{font-size:26px;color:#082a48;text-align:center;margin-bottom:30px}
@@ -651,6 +1040,22 @@
     <div class="faq-item">
       <h3>Does WebSwan Media Network sell or share my information?</h3>
       <p>No. Information submitted through our contact form is used solely to help you advertise online through WebSwan Media Network. We do not sell or share it with third parties.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Which doctors and attorneys does WebSwan Media Network advertise?</h3>
+      <p>We advertise chiropractors, physicians (MD and DO), orthopedic surgeons, plastic and cosmetic surgeons, orthodontists, dentists, family law attorneys, criminal defense lawyers and personal injury lawyers, along with other licensed medical and legal professionals.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Which states does WebSwan Media Network serve?</h3>
+      <p>We advertise licensed doctors and attorneys nationwide, with a focus on New York, Florida, Texas, Washington, DC, Connecticut, New Jersey, Illinois, Utah, Virginia, Nevada, California and Pennsylvania.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do you serve doctors and lawyers in the Bay Area?</h3>
+      <p>Yes. We are based in the East Bay and advertise providers in Oakland, Berkeley, Walnut Creek, San Ramon and across the San Francisco Bay Area.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How does Rachel match patients and clients to my practice?</h3>
+      <p>Rachel asks each patient or client for their city, state and ZIP code and what matters most to them, then recommends up to five verified providers who meet the most of their criteria, with proximity counted.</p>
     </div>
   </div>
 </section>
