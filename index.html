@@ -121,97 +121,255 @@
     @media(prefers-reduced-motion:reduce){#rw-chips{transition:none}}
     #rw-chips:empty{min-height:0;padding:0}
     @media (max-height:720px){#rw-panel .rw-top{padding:8px 14px}#rw-panel .rw-top .rw-face{width:32px;height:32px}#rw-panel .rw-top small{font-size:11px}#rw-panel #rw-bar{padding:5px 12px}#rw-panel #rw-voice{padding:4px 10px}#rw-panel #rw-lang{height:28px}#rw-panel .rw-foot{font-size:9.5px;padding:0 10px 5px}#rw-panel #rw-form{padding-top:6px;padding-bottom:6px}}
+.plan-total{font-size:14px;line-height:1.5;color:var(--muted);margin:-4px 0 12px}.verify-note{max-width:860px;margin:14px auto 0;font-size:15px;line-height:1.6;background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:12px;padding:14px 18px;text-align:left}
 </style>
 
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@graph": [
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://www.webswanmedianetwork.com/#organization",
+   "name": "WebSwan Media Network",
+   "alternateName": "WSMN",
+   "url": "https://www.webswanmedianetwork.com/",
+   "description": "Online advertising platform and nationwide professional directory exclusively for doctors and attorneys, powered by The WebSwan.",
+   "areaServed": {
+    "@type": "Country",
+    "name": "United States"
+   },
+   "knowsAbout": [
+    "Online advertising for doctors",
+    "Online advertising for attorneys",
+    "Medical directory listings",
+    "Attorney directory listings",
+    "Law firm marketing",
+    "Medical practice marketing",
+    "AI receptionist",
+    "Website accessibility",
+    "HIPAA-aware intake"
+   ],
+   "founder": {
+    "@type": "Person",
+    "@id": "https://www.thewebswan.com/#tania",
+    "name": "Tania Domingue",
+    "jobTitle": "Founder, certified web developer and SEO content writer"
+   },
+   "parentOrganization": {
+    "@type": "Organization",
+    "@id": "https://www.thewebswan.com/#organization",
+    "name": "The WebSwan",
+    "url": "https://www.thewebswan.com/",
+    "sameAs": [
+     "https://www.youtube.com/@TaniaDomingue",
+     "https://www.instagram.com/the_webswan",
+     "https://www.facebook.com/profile.php?id=61564322427695"
+    ]
+   },
+   "contactPoint": [
     {
-      "@type": "Service",
-      "@id": "https://www.webswanmedianetwork.com/#service",
-      "name": "WebSwan Media Network",
-      "serviceType": "Online Advertising",
-      "provider": {
-        "@type": "Organization",
-        "name": "WebSwan Media Network",
-        "url": "https://www.webswanmedianetwork.com",
-        "logo": "https://www.webswanmedianetwork.com/logo.png",
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "telephone": "+1-347-646-7086",
-          "contactType": "sales"
-        }
-      },
-      "description": "WebSwan Media Network is an online advertising platform that helps doctors, dentists, chiropractors, medical specialists and attorneys reach more patients and clients through targeted digital campaigns. Online advertising only; no billboards, benches, or bus advertising.",
-      "areaServed": {
-        "@type": "Country",
-        "name": "United States"
-      },
-      "audience": {
-        "@type": "Audience",
-        "audienceType": "Doctors, Dentists, Chiropractors, Medical Specialists, Lawyers and Law Firms"
-      }
+     "@type": "ContactPoint",
+     "telephone": "+1-347-646-7086",
+     "contactType": "customer service",
+     "name": "Rachel, WSMN virtual receptionist (calls only, 24/7)",
+     "areaServed": "US",
+     "availableLanguage": [
+      "English",
+      "Spanish",
+      "French",
+      "Portuguese",
+      "Haitian Creole"
+     ]
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://www.webswanmedianetwork.com/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is WebSwan Media Network?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "WebSwan Media Network is an online advertising platform that helps doctors and attorneys reach more patients and clients through targeted digital campaigns. We focus exclusively on online advertising - we do not offer billboards, bench ads, or bus advertising."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Who is WebSwan Media Network for?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "We work exclusively with doctors and attorneys nationwide, including physicians, dentists, chiropractors, medical specialists, lawyers and law firms looking to attract more patients and clients online."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do I need a large budget to advertise with WebSwan Media Network?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No. We offer flexible plans designed for independent doctors, small practices and law firms, not just large groups."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I get started?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You can book a call at (347) 646-7086 or fill out the contact form on this page, and our team will walk you through the available advertising plans."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does WebSwan Media Network sell or share my information?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No. Information submitted through our contact form is used solely to help you advertise online through WebSwan Media Network. We do not sell or share it with third parties."
-          }
-        }
-      ]
-    },
-    {
-      "@type": "WebPage",
-      "@id": "https://ads.webswanmedianetwork.com/#webpage",
-      "url": "https://ads.webswanmedianetwork.com/",
-      "name": "Doctors & Attorneys: Advertise Your Practice | WebSwan Media Network",
-      "description": "Doctors and attorneys: join WebSwan Media Network for a verified provider profile, directory placement and online advertising nationwide.",
-      "publisher": {
-        "@type": "Organization",
-        "name": "WebSwan Media Network",
-        "url": "https://www.webswanmedianetwork.com"
-      }
+     "@type": "ContactPoint",
+     "telephone": "+1-415-877-0687",
+     "contactType": "sales",
+     "name": "Tania Domingue, owner (call or text)",
+     "areaServed": "US"
     }
-  ]
+   ]
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://ads.webswanmedianetwork.com/#website",
+   "url": "https://ads.webswanmedianetwork.com/",
+   "name": "WebSwan Media Network: Advertise Your Practice",
+   "publisher": {
+    "@id": "https://www.webswanmedianetwork.com/#organization"
+   },
+   "inLanguage": "en-US"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://ads.webswanmedianetwork.com/#webpage",
+   "url": "https://ads.webswanmedianetwork.com/",
+   "name": "Doctors & Attorneys: Advertise Your Practice | WebSwan Media Network",
+   "description": "Doctors and attorneys: join WebSwan Media Network for a verified provider profile, directory placement and online advertising nationwide. Plans from $49/month.",
+   "isPartOf": {
+    "@id": "https://ads.webswanmedianetwork.com/#website"
+   },
+   "about": {
+    "@id": "https://www.webswanmedianetwork.com/#organization"
+   },
+   "mainEntity": {
+    "@id": "https://ads.webswanmedianetwork.com/#service"
+   },
+   "breadcrumb": {
+    "@id": "https://ads.webswanmedianetwork.com/#breadcrumb"
+   },
+   "inLanguage": "en-US"
+  },
+  {
+   "@type": "BreadcrumbList",
+   "@id": "https://ads.webswanmedianetwork.com/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "WebSwan Media Network",
+     "item": "https://www.webswanmedianetwork.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Advertise your practice",
+     "item": "https://ads.webswanmedianetwork.com/"
+    }
+   ]
+  },
+  {
+   "@type": "Service",
+   "@id": "https://ads.webswanmedianetwork.com/#service",
+   "name": "Online advertising and directory membership for doctors and attorneys",
+   "serviceType": "Online advertising and professional directory listing",
+   "provider": {
+    "@id": "https://www.webswanmedianetwork.com/#organization"
+   },
+   "areaServed": {
+    "@type": "Country",
+    "name": "United States"
+   },
+   "audience": {
+    "@type": "BusinessAudience",
+    "audienceType": "Doctors, dentists, chiropractors, medical specialists, attorneys and law firms"
+   },
+   "description": "A verified provider profile in the WebSwan Media Network directory, recommendations to matching patients or clients by Rachel, optional contact requests and AI call-backs. Online advertising only; no billboards, TV or print.",
+   "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "WSMN membership plans",
+    "itemListElement": [
+     {
+      "@type": "Offer",
+      "name": "Found",
+      "description": "Verified directory profile; Rachel recommends you to matching patients or clients; people contact your office directly.",
+      "priceCurrency": "USD",
+      "url": "https://ads.webswanmedianetwork.com/#membership",
+      "priceSpecification": {
+       "@type": "UnitPriceSpecification",
+       "price": "49",
+       "priceCurrency": "USD",
+       "unitText": "month"
+      }
+     },
+     {
+      "@type": "Offer",
+      "name": "Found + Leads",
+      "description": "Everything in Found, plus contact requests from people who choose you, sent to your office right away.",
+      "priceCurrency": "USD",
+      "url": "https://ads.webswanmedianetwork.com/#membership",
+      "priceSpecification": {
+       "@type": "UnitPriceSpecification",
+       "price": "69",
+       "priceCurrency": "USD",
+       "unitText": "month"
+      }
+     },
+     {
+      "@type": "Offer",
+      "name": "Premium",
+      "description": "Everything in Found + Leads, plus your own AI receptionist calls them back and books the appointment.",
+      "priceCurrency": "USD",
+      "url": "https://ads.webswanmedianetwork.com/#membership",
+      "priceSpecification": {
+       "@type": "UnitPriceSpecification",
+       "price": "149",
+       "priceCurrency": "USD",
+       "unitText": "month"
+      }
+     },
+     {
+      "@type": "Offer",
+      "name": "Network and infrastructure",
+      "description": "Yearly network fee for every plan.",
+      "priceCurrency": "USD",
+      "url": "https://ads.webswanmedianetwork.com/#membership",
+      "priceSpecification": {
+       "@type": "UnitPriceSpecification",
+       "price": "289",
+       "priceCurrency": "USD",
+       "unitText": "year"
+      }
+     },
+     {
+      "@type": "Offer",
+      "name": "Setup and onboarding",
+      "description": "One-time setup. Waived when The WebSwan builds your website, landing page or phone application.",
+      "priceCurrency": "USD",
+      "url": "https://ads.webswanmedianetwork.com/#membership",
+      "price": "400"
+     }
+    ]
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://ads.webswanmedianetwork.com/#faq",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What is WebSwan Media Network?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "WebSwan Media Network is an online advertising platform that helps doctors and attorneys reach more patients and clients through targeted digital campaigns. We focus exclusively on online advertising - we do not offer billboards, bench ads, or bus advertising."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Who is WebSwan Media Network for?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "We work exclusively with doctors and attorneys nationwide, including physicians, dentists, chiropractors, medical specialists, lawyers and law firms looking to attract more patients and clients online."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Do I need a large budget to advertise with WebSwan Media Network?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. We offer flexible plans designed for independent doctors, small practices and law firms, not just large groups."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I get started?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "You can book a call at (347) 646-7086 or fill out the contact form on this page, and our team will walk you through the available advertising plans."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does WebSwan Media Network sell or share my information?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. Information submitted through our contact form is used solely to help you advertise online through WebSwan Media Network. We do not sell or share it with third parties."
+     }
+    }
+   ]
+  }
+ ]
 }
 </script></head>
 <body>
@@ -399,7 +557,7 @@
     </div>
   </div>
 </section>
-    <section class="split" id="approach"><div class="wrap split-grid"><div class="split-art" aria-hidden="true"><div class="metric"><span class="metric-label">A clearer customer journey</span><strong>Find → Trust → Connect</strong><p>Make every next step feel simple.</p><div class="line"></div></div><div class="badge"><strong>Made for doctors &amp; lawyers</strong><small>Helpful tools. Human guidance.</small></div></div><div class="split-copy"><div class="eyebrow">The right plan for your business</div><h2>Choose your plan.</h2><p>Choose a full digital package that includes web design, or advertise on its own through WebSwan Media Network.</p><div class="benefit"><span class="check">✓</span><div><strong>Reach the right audience</strong><small>Choose online placements that match your ideal customers and service area.</small></div></div><div class="benefit"><span class="check">✓</span><div><strong>Make a strong first impression</strong><small>Use clear, engaging creative that explains what you offer and how customers can take the next step.</small></div></div><div class="benefit"><span class="check">✓</span><div><strong>Keep your campaign moving</strong><small>Get help coordinating the details, from choosing placements to preparing your message.</small></div></div><a class="btn dark" href="#contact">Let’s talk advertising</a></div></div></section>
+    <section class="split" id="approach"><div class="wrap split-grid"><div class="split-art" aria-hidden="true"><div class="metric"><span class="metric-label">A clearer customer journey</span><strong>Find → Trust → Connect</strong><p>Make every next step feel simple.</p><div class="line"></div></div><div class="badge"><strong>Made for doctors &amp; lawyers</strong><small>Helpful tools. Human guidance.</small></div></div><div class="split-copy"><div class="eyebrow">The right plan for your business</div><h2>Find the right fit for your practice.</h2><p>Choose a full digital package that includes web design, or advertise on its own through WebSwan Media Network.</p><div class="benefit"><span class="check">✓</span><div><strong>Reach the right audience</strong><small>Choose online placements that match your ideal customers and service area.</small></div></div><div class="benefit"><span class="check">✓</span><div><strong>Make a strong first impression</strong><small>Use clear, engaging creative that explains what you offer and how customers can take the next step.</small></div></div><div class="benefit"><span class="check">✓</span><div><strong>Keep your campaign moving</strong><small>Get help coordinating the details, from choosing placements to preparing your message.</small></div></div><a class="btn dark" href="#contact">Let’s talk advertising</a></div></div></section>
     <section id="presence" aria-labelledby="presence-h"><div class="wrap"><div class="section-head"><div class="eyebrow">For doctors &amp; attorneys</div><h2 id="presence-h">Your WebSwan Media Network presence.</h2><p>WebSwan Media Network provides doctors and attorneys with a professionally developed digital presence within a searchable professional network. A participating provider’s WSMN ecosystem may include:</p></div><div class="cards">
       <article class="card"><h3>Your professional profile</h3><p>How patients and clients find and understand your practice.</p><ul><li>Professionally developed provider profile placement within the WSMN professional directory</li><li>Searchable provider information</li><li>Hosted WSMN profile link</li><li>Professional service and specialty information</li><li>Location and service area information</li><li>Relevant provider credentials and business information</li></ul></article>
       <article class="card"><h3>Connected to your practice</h3><p>Your WSMN presence points people to the tools you already use.</p><ul><li>Links to your existing website</li><li>Links to your existing patient or client portal</li><li>Integration and display of authentic review information, where applicable</li></ul></article>
@@ -411,10 +569,10 @@
       <article class="plan-card featured"><div class="plan-kicker">THE COMPLETE DIGITAL PACKAGE</div><h3>Full Package</h3><p class="plan-intro">Build your digital front door and promote it together.</p><ul><li>Custom website designed for your business</li><li>A focused landing page to convert visitors</li><li>Installable phone application (SBPA)</li><li>Online advertising through WebSwan Media Network</li></ul><div class="fee-note"><strong>Website design bonus</strong><span>Your $400 setup fee is waived when we build your website, landing page or phone application.</span></div><a class="btn" href="#contact">Ask about the Full Package</a></article>
       <article class="plan-card"><div class="plan-kicker">PROMOTE YOUR BUSINESS</div><h3>Standalone Advertising</h3><p class="plan-intro">Already have a website? Start with online advertising.</p><ul><li>Advertising placement on our platform</li><li>Your business and services clearly featured</li><li>Direct link to your website or landing page</li><li>Available locally and nationwide</li></ul><div class="fee-note"><strong>Advertising onboarding</strong><span>Standalone advertising includes the standard onboarding fee.</span></div><a class="btn dark" href="#contact">Ask about Advertising</a></article>
     </div></div></section>
-    <section class="plans-section" id="membership" aria-labelledby="mem-h"><div class="wrap"><div class="section-head"><div class="eyebrow">Directory membership</div><h2 id="mem-h">Choose how patients and clients reach you.</h2><p>Every plan includes your verified directory listing, Rachel recommending you to people searching for your specialty, monitoring and maintenance. Plus a one-time $400 setup (waived when we build your website, landing page or phone application) and a $289 yearly network fee.</p></div><div class="plans-grid mem-grid">
-      <article class="plan-card"><div class="plan-kicker">GET FOUND</div><h3>Found</h3><p class="plan-intro"><b>$49/month</b></p><ul><li>Your verified profile in the WSMN directory</li><li>Rachel recommends you to matching patients or clients</li><li>People contact your office directly</li></ul><a class="btn dark" href="#contact" data-plan="found">Choose Found</a></article>
-      <article class="plan-card featured"><div class="plan-kicker">MOST POPULAR</div><h3>Found + Leads</h3><p class="plan-intro"><b>$69/month</b></p><ul><li>Everything in Found</li><li>Rachel offers to have your office contact the people who choose you</li><li>You receive their name, phone or email and best time, right away</li></ul><a class="btn" href="#contact" data-plan="leads">Choose Found + Leads</a></article>
-      <article class="plan-card"><div class="plan-kicker">BOOKED FOR YOU</div><h3>Premium</h3><p class="plan-intro"><b>$149/month</b></p><ul><li>Everything in Found + Leads</li><li>Your own AI receptionist calls them back within minutes</li><li>Answers common questions about your office and books the appointment</li></ul><a class="btn dark" href="#contact" data-plan="premium">Choose Premium</a></article>
+    <section class="plans-section" id="membership" aria-labelledby="mem-h"><div class="wrap"><div class="section-head"><div class="eyebrow">Directory membership</div><h2 id="mem-h">Choose how patients and clients reach you.</h2><p>Every plan includes your verified directory listing, Rachel recommending you to people searching for your specialty, monitoring and maintenance. Plus a one-time $400 setup (waived when we build your website, landing page or phone application) and a $289 yearly network fee.</p><p class="verify-note"><b>Your total cost</b> is the monthly plan you choose, plus $289 once a year, plus the one-time $400 setup (unless it is waived). No contract. <b>What “verified” means:</b> before a profile goes live, we check the professional’s license with the state board or state bar, their online reviews, years in practice and listed specialties. Visitors should still confirm a provider’s license with their state board or bar.</p></div><div class="plans-grid mem-grid">
+      <article class="plan-card"><div class="plan-kicker">GET FOUND</div><h3>Found</h3><p class="plan-intro"><b>$49/month</b></p><p class="plan-total">First year: <b>$1,277</b> total ($400 setup + $289 network fee + 12 × $49). <b>$877</b> if your setup is waived.</p><ul><li>Your verified profile in the WSMN directory</li><li>Rachel recommends you to matching patients or clients</li><li>People contact your office directly</li></ul><a class="btn dark" href="#contact" data-plan="found">Choose Found</a></article>
+      <article class="plan-card featured"><div class="plan-kicker">MOST POPULAR</div><h3>Found + Leads</h3><p class="plan-intro"><b>$69/month</b></p><p class="plan-total">First year: <b>$1,517</b> total ($400 setup + $289 network fee + 12 × $69). <b>$1,117</b> if your setup is waived.</p><ul><li>Everything in Found</li><li>Rachel offers to have your office contact the people who choose you</li><li>You receive their name, phone or email and best time, right away</li></ul><a class="btn" href="#contact" data-plan="leads">Choose Found + Leads</a></article>
+      <article class="plan-card"><div class="plan-kicker">BOOKED FOR YOU</div><h3>Premium</h3><p class="plan-intro"><b>$149/month</b></p><p class="plan-total">First year: <b>$2,477</b> total ($400 setup + $289 network fee + 12 × $149). <b>$2,077</b> if your setup is waived.</p><ul><li>Everything in Found + Leads</li><li>Your own AI receptionist calls them back within minutes</li><li>Answers common questions about your office and books the appointment</li></ul><a class="btn dark" href="#contact" data-plan="premium">Choose Premium</a></article>
     </div></div></section>
     <section class="plans-section" id="receptionist" aria-labelledby="vr-h"><div class="wrap"><div class="section-head"><div class="eyebrow">24/7 virtual receptionist</div><h2 id="vr-h">Meet Rachel: every call answered, day or night.</h2><p>You're with a patient. You're in court. It's after hours. Callers won't wait, so they dial the next practice. Rachel, our virtual receptionist, answers every call 24/7, trained on your practice, your services and the way you want calls handled. <strong>Try Rachel free for one full week.</strong></p></div><div class="plans-grid">
       <article class="plan-card"><div class="plan-kicker">AFTER-HOURS &amp; OVERFLOW</div><h3>Partial Service</h3><p class="plan-intro">$299/month + $200 one-time setup</p><ul><li>Custom greeting in your practice's voice</li><li>Answers common questions: hours, location, services</li><li>Captures the caller's name, number and reason</li><li>Sends you a summary after every call</li></ul><a class="btn dark" href="tel:+13476467086">Call Rachel: (347) 646-7086</a></article>
