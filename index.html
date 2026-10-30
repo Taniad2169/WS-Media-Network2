@@ -1147,7 +1147,7 @@
       <div id="adm-revs"></div>
     </div>
     <div class="adm-box">
-      <div class="adm-row" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">All listings <span id="adm-count" style="color:var(--muted);font-size:14px"></span></h3><button type="button" class="adm-btn" id="adm-demo-clear" hidden style="color:#911e1a;border-color:#e8b4b2">Remove all samples</button><input id="adm-filter" placeholder="Filter by name, city, specialty…" style="height:40px;border:1.5px solid #cfe2ea;border-radius:12px;padding:0 12px;min-width:240px"></div>
+      <div class="adm-row" style="justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">All listings <span id="adm-count" style="color:var(--muted);font-size:14px"></span></h3><button type="button" class="adm-btn" id="adm-demo-clear" hidden style="color:#911e1a;border-color:#e8b4b2">Remove all samples</button><input id="adm-filter" placeholder="Type a code (CA, DE, FL, CJ, IA…) or filter by name, city, specialty…" style="height:40px;border:1.5px solid #cfe2ea;border-radius:12px;padding:0 12px;min-width:240px"></div>
       <div class="adm-scroll"><table class="adm-table"><thead><tr><th>Name</th><th>Type / specialties</th><th>Location</th><th>Status</th><th>Paid through</th><th></th></tr></thead><tbody id="adm-list"></tbody></table></div>
     </div>
   </div>
@@ -1384,6 +1384,23 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   const $ = id => document.getElementById(id);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const norm = s => String(s || '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  // ---- Provider codes: PREFIX-####XY (specialty prefix, 4-digit number, initials), e.g. CA-0045TB ----
+  const CODE_RULES = [
+    [/chiropract/i, 'CA'], [/orthodont/i, 'OR'], [/oral & maxillofacial/i, 'OS'], [/dentist|dental|endodont|periodont|prosthodont/i, 'DE'],
+    [/orthopedic|spine surg|sports med/i, 'OP'], [/plastic|cosmetic surg/i, 'PS'], [/dermatolog/i, 'DR'], [/pediatric/i, 'PD'],
+    [/obstetric|ob\/gyn|gynecolog|fertility/i, 'OB'], [/cardiolog/i, 'CD'], [/psychiatr|psycholog|mental|counsel/i, 'MH'],
+    [/family medicine|internal medicine|primary care|urgent care|telehealth|general practice/i, 'PH'],
+    [/criminal|dui|dwi|drug crime|expunge|traffic ticket|white collar/i, 'CJ'], [/divorce|custody|child support|alimony|adoption|prenup|family law|domestic/i, 'FL'],
+    [/immigra|green card|citizenship|visa|asylum|deportation/i, 'IA'], [/tax/i, 'TX'], [/bankrupt|debt|foreclos|consumer/i, 'BK'],
+    [/will|estate|trust|probate|elder/i, 'ES'], [/employment|labor|wrongful termination|discrimination|harassment|wage/i, 'EL'],
+    [/real estate|landlord|tenant|property/i, 'RE'], [/patent|trademark|copyright|intellectual/i, 'IP'], [/business|corporate|llc|contract/i, 'BL'],
+    [/injur|accident|malpractice|wrongful death|slip|dog bite|workers/i, 'PI']
+  ];
+  const ATTY_CODES = ['CJ', 'FL', 'IA', 'TX', 'BK', 'ES', 'EL', 'RE', 'IP', 'BL', 'PI'];
+  const codePrefix = p => { const s = (p.specialties || []).join(' | '), att = p.type === 'attorney'; const r = CODE_RULES.find(([re, c]) => ATTY_CODES.includes(c) === att && re.test(s)); return r ? r[1] : (p.type === 'attorney' ? 'AT' : 'MD'); };
+  const codeInitials = name => { const w = String(name || '').replace(/^(dr|doctor|atty|attorney)\.?\s+/i, '').replace(/,.*$/, '').split(/\s+/).filter(x => /^[A-Za-z]/.test(x)); return ((w[0] || 'X')[0] + ((w.length > 1 ? w[w.length - 1] : 'X')[0])).toUpperCase(); };
+  const codeNum = c => { const m = String(c || '').match(/^[A-Z]{2}-(\d{4})[A-Z]{2}$/); return m ? +m[1] : 0; };
+  const makeCode = (p, n) => codePrefix(p) + '-' + String(n).padStart(4, '0') + codeInitials(p.name);
   const stateName = code => (DIR_STATES.find(s => s[0] === code) || [code, code])[1];
 
   let db = null, auth = null;
@@ -2790,6 +2807,12 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       allRows = []; snap.forEach(d => allRows.push(Object.assign({ id: d.id }, d.data())));
       allRows.sort((a, b) => String(a.name).localeCompare(String(b.name)));
       adminLoaded = true; drawList(); loadPendingReviews();
+      if (isOwner) {
+        const missing = allRows.filter(p => !/^[A-Z]{2}-\d{4}[A-Z]{2}$/.test(p.code || '')).sort((a, b) => ((a.createdAt && a.createdAt.seconds) || 0) - ((b.createdAt && b.createdAt.seconds) || 0));
+        let n = Math.max(0, ...allRows.map(p => codeNum(p.code)));
+        for (const p of missing) { p.code = makeCode(p, ++n); try { await db.collection('providers').doc(p.id).set({ code: p.code }, { merge: true }); } catch (e) { p.code = ''; } }
+        if (missing.length) drawList();
+      }
     } catch (e) { $('adm-list').innerHTML = `<tr><td colspan="6">Could not load listings: ${esc(e.message)}</td></tr>`; }
   }
   let pendingRevs = [];
@@ -2817,12 +2840,14 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   });
   function drawList() {
     const f = norm($('adm-filter').value);
-    const rows = allRows.filter(p => !f || norm([p.name, p.practice, p.city, p.state, p.zip, (p.specialties || []).join(' ')].join(' ')).includes(f));
+    const raw = $('adm-filter').value.trim().toUpperCase();
+    const rows = /^[A-Z]{2}-?$/.test(raw) ? allRows.filter(p => String(p.code || '').startsWith(raw.slice(0, 2) + '-'))
+      : allRows.filter(p => !f || norm([p.code, p.name, p.practice, p.city, p.state, p.zip, (p.specialties || []).join(' ')].join(' ')).includes(f));
     $('adm-count').textContent = `(${allRows.filter(p => p.active).length} live · ${allRows.filter(p => !p.active).length} paused · ${allRows.length} total${allRows.some(p => p.demo) ? ' · ' + allRows.filter(p => p.demo).length + ' samples' : ''})`;
     const dz = $('adm-demo-clear'); if (dz) dz.hidden = !allRows.some(p => p.demo);
     const today = new Date().toISOString().slice(0, 10);
     $('adm-list').innerHTML = rows.map(p => `<tr>
-      <td><b>${esc(p.name)}</b>${p.practice ? '<br><span style="color:var(--muted)">' + esc(p.practice) + '</span>' : ''}</td>
+      <td>${p.code ? '<span class="adm-pill" style="background:#e8f5fc;color:#0b5c8a;font-family:monospace">' + esc(p.code) + '</span><br>' : ''}<b>${esc(p.name)}</b>${p.practice ? '<br><span style="color:var(--muted)">' + esc(p.practice) + '</span>' : ''}</td>
       <td>${p.type === 'attorney' ? 'Attorney' : 'Doctor'}<br><span style="color:var(--muted)">${esc((p.specialties || []).join(', '))}</span></td>
       <td>${esc(p.city)}, ${esc(p.state)} ${esc(p.zip)}</td>
       <td>${p.active ? '<span class="adm-pill on">Live</span>' : '<span class="adm-pill off">Paused</span>'} ${p.featured ? '<span class="adm-pill feat">Featured</span>' : ''} ${p.demo ? '<span class="adm-pill" style="background:#fff4d6;color:#8a5a00">Sample</span>' : ''}</td>
@@ -2942,7 +2967,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     try {
       const id = $('adm-id').value;
       if (id) await db.collection('providers').doc(id).set(data, { merge: true });
-      else { data.createdAt = firebase.firestore.FieldValue.serverTimestamp(); await db.collection('providers').add(data); }
+      else { data.createdAt = firebase.firestore.FieldValue.serverTimestamp(); data.code = makeCode(data, Math.max(0, ...allRows.map(p => codeNum(p.code))) + 1); await db.collection('providers').add(data); }
       alertMsg((id ? 'Saved changes for ' : 'Added ') + data.name + '. ' + (data.active ? 'It is live in the directory.' : 'It is paused (hidden from the directory).'));
       resetForm(); loadAll();
     } catch (err) { alertMsg('Could not save: ' + err.message, true); }
