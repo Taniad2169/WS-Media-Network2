@@ -1123,6 +1123,9 @@
           <input type="file" id="adm-gal-file" accept="image/*" multiple style="height:auto;padding:10px">
           <small style="color:var(--muted)">Choose up to 3 photos (office, team, the doctor or attorney). They are resized automatically before saving.</small></div>
         <div class="adm-field"><label for="adm-exp">Listing paid through</label><input id="adm-exp" type="date"></div>
+        <div class="adm-field"><label for="adm-plan">WSMN plan</label><select id="adm-plan"><option value="">Not set</option><option value="found">Found ($49): listed only</option><option value="leads">Found + Leads ($69): practice gets an email with each lead</option><option value="premium">Premium ($149): Jennifer Reid calls patients to book</option></select></div>
+        <div class="adm-field"><label for="adm-hours">Office hours <span style="font-weight:400;color:var(--muted)">(Jennifer can share)</span></label><input id="adm-hours" placeholder="Mon–Fri 8 AM–5 PM, Sat 9 AM–12 PM"></div>
+        <div class="adm-field"><label for="adm-book">Online booking link <span style="font-weight:400;color:var(--muted)">(Premium: Calendly, Google, practice portal)</span></label><input id="adm-book" type="url" placeholder="https://"></div>
         <div class="adm-field full adm-checks">
           <label><input type="checkbox" id="adm-active" checked> Live on the directory (uncheck to pause)</label>
           <label><input type="checkbox" id="adm-featured"> Featured (shows first)</label>
@@ -2695,6 +2698,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     }
     // Rank by number of needs met, then the visitor's #1 priority, then distance, then star rating (never by SEO)
     const ranked = rows.map(p => Object.assign(p, score(p), crit(p))).sort((a, b) => (b.m - a.m) || (b.topMet - a.topMet) || (a.dist - b.dist) || ((+b.reviewRating || 0) - (+a.reviewRating || 0)) || ((b.accepting ? 1 : 0) - (a.accepting ? 1 : 0)) || ((b.featured ? 1 : 0) - (a.featured ? 1 : 0)) || String(a.name).localeCompare(String(b.name))).slice(0, 5);
+    window.__rwRanked = ranked;
     const total = rows.length;
     const TQ = QUESTIONS[S.type].find(q => q.key === 'top'), tqo = TQ ? qText(TQ).opts : [];
     const topO = tqo.find(o => (o && o.value ? o.value : o) === S.prefs.top), topLabel = topO ? (topO.label || topO) : (S.prefs.top || '');
@@ -2717,7 +2721,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         sentence = [focus.length ? PL[0] + focus.map(esc).join(', ') : '', p.yearsLicensed ? PL[1].replace('{n}', esc(p.yearsLicensed)) : '', place ? PL[2] + place : ''].filter(Boolean).join('. ') + (focus.length || p.yearsLicensed || place ? '.' : '');
       }
       const tel = String(p.phone || '').replace(/[^\d+]/g, '');
-      say(`<div class="rw-pick"><b>${i + 1}. ${nm}</b>${p.practice ? ` <span class="rw-sub">· ${esc(p.practice)}</span>` : ''}<br>${t('thisIs')(nm, spec)} ${sentence}${matchLines(p, topLabel)}${tel ? `<br>📞 ${t('phone')}: <a href="tel:${esc(tel)}">${esc(p.phone)}</a>` : ''}<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">${t('view')(p.type === 'attorney')}</button></div>`);
+      say(`<div class="rw-pick"><b>${i + 1}. ${nm}</b>${p.practice ? ` <span class="rw-sub">· ${esc(p.practice)}</span>` : ''}<br>${t('thisIs')(nm, spec)} ${sentence}${matchLines(p, topLabel)}${tel ? `<br>📞 ${t('phone')}: <a href="tel:${esc(tel)}">${esc(p.phone)}</a>` : ''}<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">${t('view')(p.type === 'attorney')}</button>${p.plan === 'premium' && p.code ? `<br><button type="button" class="rw-link" data-central="${esc(p.id)}" data-kind="call">📞 Have Jennifer call me to book</button>` : p.plan === 'leads' ? `<br><button type="button" class="rw-link" data-central="${esc(p.id)}" data-kind="lead">✉️ Ask the office to contact me</button>` : ''}</div>`);
     });
     say(`<div class="rw-pick"><b>${t('yourMatches')}</b>${ranked.map((p, i) => `<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">${i + 1}. ${esc(p.name)}${p.n ? ' · ' + t('matchOf')(p.m, p.n) : ''}</button>`).join('')}</div>`);
     say(t('closing')(S.type === 'attorney'));
@@ -2753,6 +2757,31 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   $('rw-close').addEventListener('click', closeRachel);
   document.querySelectorAll('[data-open-rachel]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); openRachel(); }));
   document.querySelectorAll('[data-open-rachel-pro]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); openRachel(); if (S.mode !== 'pro') { say(P().chip, 'me'); proStart(); } }));
+  // ---- Rachel -> Jennifer Reid ($149) or the practice ($69): the visitor asks to be contacted ----
+  const CENTRAL_API = 'https://webswan-billing.netlify.app/.netlify/functions/central-request';
+  R.log.addEventListener('click', e => {
+    const b = e.target.closest('[data-central]'); if (!b) return;
+    const pid = b.dataset.central, kind = b.dataset.kind, prov = (window.__rwRanked || []).find(x => x.id === pid) || {};
+    if (b.nextElementSibling && b.nextElementSibling.classList && b.nextElementSibling.classList.contains('rw-cform')) return;
+    const f = document.createElement('form'); f.className = 'rw-cform'; f.style.cssText = 'margin-top:8px;display:grid;gap:6px';
+    f.innerHTML = `<input name="n" required maxlength="80" placeholder="Your name" aria-label="Your name" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">
+      <input name="ph" required inputmode="tel" maxlength="20" placeholder="Best phone number" aria-label="Best phone number" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">
+      ${kind === 'lead' ? '<input name="em" type="email" maxlength="120" placeholder="Email (optional)" aria-label="Email" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">' : ''}
+      <input name="bt" maxlength="80" placeholder="Best time to reach you (optional)" aria-label="Best time to reach you" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">
+      <label style="font-size:12px;line-height:1.4;display:flex;gap:6px;align-items:flex-start"><input type="checkbox" name="ok" required style="margin-top:2px">
+      <span>${kind === 'call' ? 'I agree to receive a call at this number from Jennifer, an AI assistant for WebSwan Media Network, about booking with this provider. The call may be recorded.' : 'I agree to share my name and contact details with this office so they can contact me.'}</span></label>
+      <button type="submit" class="rw-link" style="justify-self:start">${kind === 'call' ? 'Call me' : 'Send to the office'}</button><span class="rw-sub" role="status" aria-live="polite"></span>`;
+    b.after(f); f.querySelector('input').focus();
+    f.addEventListener('submit', async ev => {
+      ev.preventDefault(); const st = f.querySelector('[role=status]'), btn = f.querySelector('button');
+      btn.disabled = true; st.textContent = 'Sending…';
+      try {
+        const r = await fetch(CENTRAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind, providerId: pid, providerCode: prov.code || '', name: f.n.value, phone: f.ph.value, email: f.em ? f.em.value : '', bestTime: f.bt.value, consent: f.ok.checked, state: S.state || '', city: S.city || '' }) });
+        const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.error || 'Something went wrong.');
+        f.innerHTML = '<span class="rw-why">✓ ' + (d.message || 'Sent!') + '</span>';
+      } catch (err) { st.textContent = err.message; btn.disabled = false; }
+    });
+  });
   R.form.addEventListener('submit', e => {
     e.preventDefault(); const v = R.input.value.trim(); if (!v) return; R.input.value = '';
     if (S.step === 'start') { if (/^find a doctor$/i.test(v)) S.type = 'doctor'; else if (/^find an attorney$/i.test(v)) S.type = 'attorney'; }
@@ -2854,7 +2883,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       <td>${p.code ? '<span class="adm-pill" style="background:#e8f5fc;color:#0b5c8a;font-family:monospace">' + esc(p.code) + '</span><br>' : ''}<b>${esc(p.name)}</b>${p.practice ? '<br><span style="color:var(--muted)">' + esc(p.practice) + '</span>' : ''}</td>
       <td>${p.type === 'attorney' ? 'Attorney' : 'Doctor'}<br><span style="color:var(--muted)">${esc((p.specialties || []).join(', '))}</span></td>
       <td>${esc(p.city)}, ${esc(p.state)} ${esc(p.zip)}</td>
-      <td>${p.active ? '<span class="adm-pill on">Live</span>' : '<span class="adm-pill off">Paused</span>'} ${p.featured ? '<span class="adm-pill feat">Featured</span>' : ''} ${p.demo ? '<span class="adm-pill" style="background:#fff4d6;color:#8a5a00">Sample</span>' : ''}</td>
+      <td>${p.active ? '<span class="adm-pill on">Live</span>' : '<span class="adm-pill off">Paused</span>'} ${p.featured ? '<span class="adm-pill feat">Featured</span>' : ''} ${p.plan ? '<span class="adm-pill" style="background:#e8f5fc;color:#0b5c8a">' + ({ found: '$49 Found', leads: '$69 Leads', premium: '$149 Premium' }[p.plan] || p.plan) + '</span>' : ''} ${p.demo ? '<span class="adm-pill" style="background:#fff4d6;color:#8a5a00">Sample</span>' : ''}</td>
       <td>${p.expires ? esc(p.expires) + (p.expires < today ? ' <span class="adm-pill off">Expired</span>' : '') : '—'}</td>
       <td style="white-space:nowrap"><button class="adm-btn" data-edit="${esc(p.id)}">Edit</button> <button class="adm-btn" data-toggle="${esc(p.id)}">${p.active ? 'Pause' : 'Resume'}</button> <button class="adm-btn" style="color:#911e1a;border-color:#e8b4b2" data-del="${esc(p.id)}">Delete</button></td></tr>`).join('') || '<tr><td colspan="6">No listings yet. Add your first doctor or attorney above.</td></tr>';
   }
@@ -2888,7 +2917,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       catch (err) { alertMsg('Could not update: ' + err.message, true); tg.disabled = false; }
     }
   });
-  const F = ['name','cred:credentials','practice','phone','email','web:website','portal:portalUrl','rating:reviewRating','rcount:reviewCount','rsource:reviewSource','rlink:reviewUrl','addr:address','city','zip','lang:languages','areas:serviceAreas','bio','photo:photoUrl','exp:expires','years:yearsLicensed','gender:gender','ins:insurance','cond:conditions','greview:googleReviewUrl','yreview:yelpReviewUrl','social-plat:socialPlatform','social:socialUrl'];
+  const F = ['name','cred:credentials','practice','phone','email','web:website','portal:portalUrl','rating:reviewRating','rcount:reviewCount','rsource:reviewSource','rlink:reviewUrl','addr:address','city','zip','lang:languages','areas:serviceAreas','bio','photo:photoUrl','exp:expires','years:yearsLicensed','gender:gender','ins:insurance','cond:conditions','greview:googleReviewUrl','yreview:yelpReviewUrl','social-plat:socialPlatform','social:socialUrl','plan:plan','hours:officeHours','book:bookingUrl'];
   // ---- up to 3 profile pictures, resized in the browser and saved with the listing ----
   let gallery = [];
   function drawGal() {
@@ -2963,6 +2992,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     if (data.googleReviewUrl && !/^https:\/\//i.test(data.googleReviewUrl)) missing.push('Google reviews link must start with https://');
     if (data.yelpReviewUrl && !/^https:\/\//i.test(data.yelpReviewUrl)) missing.push('Yelp reviews link must start with https://');
     if (data.socialUrl && !/^https:\/\//i.test(data.socialUrl)) missing.push('social media link must start with https://');
+    if (data.bookingUrl && !/^https:\/\//i.test(data.bookingUrl)) missing.push('booking link must start with https://');
     data.gallery = gallery.slice(0, 3);
     if (data.gallery.join('').length > 850000) missing.push('smaller pictures (the 3 pictures are too large together)');
     if (data.reviewRating && !(+data.reviewRating >= 1 && +data.reviewRating <= 5)) missing.push('review rating between 1 and 5');
