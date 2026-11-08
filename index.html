@@ -703,6 +703,46 @@
       "@type": "Answer",
       "text": "Rachel asks each patient or client for their city, state and ZIP code and what matters most to them, then recommends up to five verified providers who meet the most of their criteria, with proximity counted."
      }
+    },
+    {
+     "@type": "Question",
+     "name": "How can I find a doctor who takes my insurance?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Ask Rachel. She asks whether you are paying cash or which insurance plan you have, then shows verified doctors who list your plan or welcome self-pay patients. Always confirm coverage with the office."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I find a doctor if I am paying cash (self-pay)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Tell Rachel you are paying cash and she will match you with doctors who welcome self-pay patients."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How can I find a female or male doctor, or a doctor with evening or weekend hours?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Tell Rachel what matters to you and she will prefer professionals who match, such as the doctor's gender or evening and weekend hours."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I see a doctor by video (telehealth)?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Profiles that offer telehealth show a video visits badge, and Rachel can show only professionals who offer it."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How can I find a top-rated doctor?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Look for the Highly recommended badge, earned with a strong rating backed by enough reviews, or tell Rachel that great reviews matter most."
+     }
     }
    ]
   }
@@ -909,6 +949,7 @@
     <section class="plans-section" id="membership" aria-labelledby="mem-h"><div class="wrap"><div class="section-head"><div class="eyebrow">Directory membership</div><h2 id="mem-h">Choose how patients and clients reach you.</h2><p>Every plan includes your verified directory listing, Rachel recommending you to people searching for your specialty, monitoring and maintenance. Plans start at just <b>$49/month</b>, with no contract.</p><p class="verify-note"><b>Your exact pricing</b> depends on the plan that fits your practice. Call Rachel, our Ad Specialist, at <a href="tel:+13162486839">(316) 248-6839</a> for the details. <b>What “verified” means:</b> every professional’s license is confirmed with their state board or state bar, and each practice passes our qualification review before its profile goes live. Visitors should still confirm a provider’s license with their state board or bar.</p></div><div class="plans-grid mem-grid">
       <article class="plan-card"><div class="plan-kicker">GET FOUND</div><h3>Found</h3><p class="plan-intro"><b>From $49/month</b></p><p class="plan-total">📞 Call Rachel, our Ad Specialist, at <a href="tel:+13162486839">(316) 248-6839</a> for your exact pricing.</p><ul><li>Your verified profile in the WSMN directory</li><li>Rachel recommends you to matching patients or clients</li><li>People contact your office directly</li></ul><a class="btn dark" href="#contact" data-plan="found">Choose Found</a></article>
       <article class="plan-card featured"><div class="plan-kicker">MOST POPULAR</div><h3>Found + Leads</h3><p class="plan-intro"><b>From $49/month</b></p><p class="plan-total">📞 Call Rachel, our Ad Specialist, at <a href="tel:+13162486839">(316) 248-6839</a> for your exact pricing.</p><ul><li>Everything in Found</li><li>Rachel offers to have your office contact the people who choose you</li><li>You receive their name, phone or email and best time, right away</li></ul><a class="btn" href="#contact" data-plan="leads">Choose Found + Leads</a></article>
+      <article class="plan-card"><div class="plan-kicker">BOOK ONLINE</div><h3>Found + Leads + Calendar</h3><p class="plan-intro"><b>$89/month</b></p><p class="plan-total">📞 Call Rachel, our Ad Specialist, at <a href="tel:+13162486839">(316) 248-6839</a> to set it up.</p><ul><li>Everything in Found + Leads</li><li>An online booking calendar on your profile</li><li>Patients and clients book their own appointment, day or night</li><li>Want it fully handled? Add Eva, your AI executive assistant, to manage the bookings</li></ul><a class="btn dark" href="#contact" data-plan="calendar">Choose Calendar</a></article>
     </div></div></section>
     <section class="plans-section" id="receptionist" aria-labelledby="vr-h"><div class="wrap"><div class="section-head"><div class="eyebrow">SwanDesk AI · your AI front office</div><h2 id="vr-h">Every call answered, day or night.</h2><p>You're with a patient. You're in court. It's after hours. Callers won't wait, so they dial the next practice. SwanDesk AI answers every call 24/7, trained on your practice, your services and the way you want calls handled. Add an executive assistant and a social media manager, or take all three. <strong>Try the AI receptionist complimentary for one full week.</strong></p><p class="verify-note"><b>Starting prices shown.</b> Your final pricing depends on your call volume and what your practice needs, and Tania may have a current introductory offer. Call Rachel at <a href="tel:+13162486839">(316) 248-6839</a> to set up a quick 10-minute appointment with Tania.</p></div><div class="plans-grid">
       <article class="plan-card featured"><div class="plan-kicker">YOUR FRONT DESK, 24/7</div><h3>AI Receptionist</h3><p class="plan-intro"><b>Starting at $399/month</b></p><ul><li>Answers every call in your practice's voice</li><li>Common questions: hours, location, services</li><li>Books appointments and captures new patient or client details</li><li>Sends you a summary after every call</li><li>Privacy-first: no sensitive health or case details taken by phone</li></ul><div class="fee-note"><strong>One-week complimentary trial</strong><span>See every call your AI receptionist answers before you commit.</span></div><a class="btn" href="tel:+13162486839">Start my complimentary week</a></article>
@@ -933,7 +974,7 @@
           <div class="form-field"><label for="lead-email">Email address <span>*</span></label><input id="lead-email" name="email" type="email" autocomplete="email" required></div>
           <div class="form-field"><label for="lead-years">Years in business <span>*</span></label><select id="lead-years" name="years_in_business" required><option value="">Choose one</option><option>Start-up</option><option>6 months to 1 year</option><option>1 year to 4 years</option><option>5 years to 10 years</option><option>10 years+</option><option>Other</option></select></div>
           <div class="form-field"><label for="lead-industry">Industry <span>*</span></label><select id="lead-industry" name="industry" required><option value="">Choose one</option><option>Doctor</option><option>Chiropractor</option><option>Dermatologist</option><option>Dentist</option><option>Plastic/cosmetic surgeon</option><option>Orthodontist</option><option>Orthopedic</option><option>Lawyer / Attorney</option><option>Law firm</option><option value="Other">Other medical or legal specialty</option></select></div>
-          <div class="form-field full"><label for="lead-plan">Membership plan <span>*</span></label><select id="lead-plan" name="membership_plan" required><option value="">Choose one</option><option value="found">Found: $49/month</option><option value="leads">Found + Leads: $69/month</option><option value="leads_receptionist">Found + Leads + Jennifer receptionist: $69 + $399/month</option><option value="unsure">Not sure yet, help me choose</option></select></div>
+          <div class="form-field full"><label for="lead-plan">Membership plan <span>*</span></label><select id="lead-plan" name="membership_plan" required><option value="">Choose one</option><option value="found">Found: $49/month</option><option value="leads">Found + Leads: $69/month</option><option value="calendar">Found + Leads + Booking calendar: $89/month</option><option value="leads_receptionist">Found + Leads + Jennifer receptionist: $69 + $399/month</option><option value="unsure">Not sure yet, help me choose</option></select></div>
           <div class="form-field full conditional" id="years-other-wrap" hidden><label for="years-other">Tell us about your time in business <span class="optional">(up to 50 words)</span></label><textarea id="years-other" name="years_in_business_other" rows="3" data-word-limit="50" placeholder="Add a short note"></textarea><small class="word-count" aria-live="polite">0 / 50 words</small></div>
           <div class="form-field full conditional" id="industry-other-wrap" hidden><label for="industry-other">Tell us about your industry <span class="optional">(up to 50 words)</span></label><textarea id="industry-other" name="industry_other" rows="3" data-word-limit="50" placeholder="Add a short note"></textarea><small class="word-count" aria-live="polite">0 / 50 words</small></div>
         </div>
@@ -1124,7 +1165,7 @@
           <input type="file" id="adm-gal-file" accept="image/*" multiple style="height:auto;padding:10px">
           <small style="color:var(--muted)">Choose up to 3 photos (office, team, the doctor or attorney). They are resized automatically before saving.</small></div>
         <div class="adm-field"><label for="adm-exp">Listing paid through</label><input id="adm-exp" type="date"></div>
-        <div class="adm-field"><label for="adm-plan">WSMN plan</label><select id="adm-plan"><option value="">Not set</option><option value="found">Found ($49): listed only</option><option value="leads">Found + Leads ($69): practice gets an email with each lead</option></select></div>
+        <div class="adm-field"><label for="adm-plan">WSMN plan</label><select id="adm-plan"><option value="">Not set</option><option value="found">Found ($49): listed only</option><option value="leads">Found + Leads ($69): practice gets an email with each lead</option><option value="calendar">Found + Leads + Calendar ($89): email leads + online booking link on the profile</option></select></div>
         <div class="adm-field"><label for="adm-hours">Office hours <span style="font-weight:400;color:var(--muted)">(Jennifer can share)</span></label><input id="adm-hours" placeholder="Mon–Fri 8 AM–5 PM, Sat 9 AM–12 PM"></div>
         <div class="adm-field"><label for="adm-book">Online booking link <span style="font-weight:400;color:var(--muted)">(optional: shown so patients can book online)</span></label><input id="adm-book" type="url" placeholder="https://"></div>
         <div class="adm-field full adm-checks">
@@ -1134,6 +1175,7 @@
           <label><input type="checkbox" id="adm-tele"> Telehealth / virtual meetings</label>
           <label><input type="checkbox" id="adm-free"> Free consultation</label>
           <label><input type="checkbox" id="adm-eve"> Evening / weekend hours</label>
+          <label><input type="checkbox" id="adm-cash"> Welcomes self-pay / cash patients (doctors)</label>
         </div>
         <div class="adm-field full adm-checks"><span style="font-weight:800;font-size:12.5px;color:var(--navy)">Attorney fee types:</span>
           <label><input type="checkbox" class="adm-fee" value="Contingency"> Contingency</label>
@@ -1494,6 +1536,24 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   const portalLbl = p => p.type === 'attorney' ? 'Client portal' : 'Patient portal';
   const portalOk = p => /^https:\/\//i.test(p.portalUrl || '');
   const wsmnLink = id => { try { const u = new URL(location.origin + location.pathname); u.searchParams.set('pro', id); return u.toString(); } catch (e) { return '?pro=' + encodeURIComponent(id); } };
+  // "Highly recommended" like the big booking sites: strong rating backed by enough reviews
+  function highlyRec(p) { return (+p.reviewRating || 0) >= 4.8 && (+p.reviewCount || 0) >= 20; }
+  // Structured data for the listings on screen (Google reads it): each provider as a Physician/Dentist/Attorney
+  function listingSchema(list) {
+    try {
+      const typeOf = p => p.type === 'attorney' ? 'Attorney' : /dent|orthodon|endodon|periodon|oral/i.test((p.specialties || []).join(' ') + ' ' + (p.credentials || '')) ? 'Dentist' : 'Physician';
+      const items = list.slice(0, 30).map((p, i) => {
+        const o = { '@type': typeOf(p), name: (p.practice || p.name), address: { '@type': 'PostalAddress', streetAddress: p.address || undefined, addressLocality: p.city, addressRegion: p.state, postalCode: p.zip, addressCountry: 'US' } };
+        if (p.type !== 'attorney') { o.employee = { '@type': 'Person', honorificPrefix: /^dr\.?\s/i.test(p.name) ? 'Dr.' : undefined, name: p.name.replace(/^dr\.?\s*/i, ''), honorificSuffix: p.credentials || undefined }; o.medicalSpecialty = (p.specialties || []).slice(0, 3); if (p.accepting) o.isAcceptingNewPatients = true; if (listOf(p.insurance).length) o.paymentAccepted = (p.selfPay ? ['Cash'] : []).concat(listOf(p.insurance)).join(', '); else if (p.selfPay) o.paymentAccepted = 'Cash'; }
+        if (p.telephone || p.phone) o.telephone = p.phone; if (/^https?:/i.test(p.website || '')) o.url = p.website; if (/^https:/i.test(p.photoUrl || '')) o.image = p.photoUrl;
+        if (+p.reviewRating && +p.reviewCount) o.aggregateRating = { '@type': 'AggregateRating', ratingValue: +p.reviewRating, reviewCount: +p.reviewCount };
+        if (p.languages) o.knowsLanguage = listOf(p.languages);
+        return { '@type': 'ListItem', position: i + 1, item: o };
+      });
+      let el = document.getElementById('dir-ld'); if (!el) { el = document.createElement('script'); el.type = 'application/ld+json'; el.id = 'dir-ld'; document.head.appendChild(el); }
+      el.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': [{ '@type': 'MedicalWebPage', audience: { '@type': 'Patient' } }, { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items }] });
+    } catch (e) {}
+  }
   function card(p) {
     const initials = (p.name || '?').replace(/^(dr\.?|attorney)\s+/i, '').split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
     const photo = /^https:\/\//i.test(p.photoUrl || '') ? `<img class="dir-avatar" src="${esc(p.photoUrl)}" alt="${esc(p.name)}" loading="lazy">` : `<div class="dir-avatar" aria-hidden="true">${esc(initials)}</div>`;
@@ -1510,6 +1570,10 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         ${addr ? `<span>📍 ${esc(addr)}</span>` : ''}
         ${p.languages ? `<span>🗣️ ${esc(p.languages)}</span>` : ''}
         ${p.accepting ? `<span>✅ Accepting new ${p.type === 'attorney' ? 'clients' : 'patients'}</span>` : ''}
+        ${highlyRec(p) ? '<span>🏅 Highly recommended</span>' : ''}
+        ${p.telehealth ? `<span>💻 ${p.type === 'attorney' ? 'Virtual consultations' : 'Video visits'}</span>` : ''}
+        ${p.selfPay && p.type !== 'attorney' ? '<span>💵 Self-pay welcome</span>' : ''}
+        ${listOf(p.insurance).length && p.type !== 'attorney' ? `<span>🩺 Takes ${esc(listOf(p.insurance).slice(0, 3).join(', '))}${listOf(p.insurance).length > 3 ? ' +' + (listOf(p.insurance).length - 3) + ' more' : ''}</span>` : ''}
         ${reviewHTML(p)}
       </div>
       <div class="dir-actions">
@@ -1568,6 +1632,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     }
     if (nearby.length) html += `<p class="dir-status" style="margin-top:26px">Nearby in ${esc(stateName(st))}</p><div class="dir-results">${nearby.map(card).join('')}</div>`;
     out.innerHTML = html;
+    try { listingSchema(exact.concat(nearby)); } catch (e) {}
   }
   if (form) form.addEventListener('submit', e => { e.preventDefault(); runSearch(); });
 
@@ -1658,6 +1723,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       p.telehealth ? (p.type === 'attorney' ? '💻 Virtual consultations' : '💻 Telehealth visits') : '',
       p.freeConsult ? '🤝 Free consultation' : '',
       p.eveningWeekend ? '🌙 Evening / weekend hours' : '',
+      p.selfPay && p.type !== 'attorney' ? '💵 Welcomes self-pay / cash patients' : '',
+      highlyRec(p) ? '🏅 Highly recommended by patients' : '',
       p.languages ? `🗣️ ${esc(p.languages)}` : '',
       (p.feeTypes || []).length ? `💵 ${esc(p.feeTypes.join(', '))}` : ''
     ].filter(Boolean).map(f => `<li>${f}</li>`).join('');
@@ -1674,6 +1741,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       ${addr ? `<h3>Location</h3><p>📍 ${esc(addr)}</p>` : ''}
       ${p.serviceAreas ? `<p style="color:var(--muted);font-size:14px">Service area: ${esc(p.serviceAreas)}</p>` : ''}
       <div class="dir-actions" style="margin-top:14px">
+        ${p.plan === 'calendar' && /^https:\/\//i.test(p.bookingUrl || '') ? `<a class="primary" href="${esc(p.bookingUrl)}" target="_blank" rel="noopener">📅 Book online</a>` : ''}
         ${tel ? `<a class="primary" href="tel:${esc(tel)}">📞 Call ${esc(p.phone)}</a>` : ''}
         ${web ? `<a href="${esc(web)}" target="_blank" rel="noopener sponsored">🌐 Visit website</a>` : '<span class="ph-btn" aria-disabled="true" title="Coming soon">🌐 Website · coming soon</span>'}
         ${socialOk(p) ? `<a href="${esc(p.socialUrl)}" target="_blank" rel="noopener">📱 ${esc(p.socialPlatform || 'Social media')}</a>` : `<span class="ph-btn" aria-disabled="true" title="Coming soon">📱 ${esc(p.socialPlatform || 'Social media')} · coming soon</span>`}
@@ -2039,7 +2107,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   const QTX = {
     fr: {
       visit: ['S’agit-il d’un nouveau problème, d’un suivi, ou souhaitez-vous un deuxième avis ?', ['Nouveau problème', 'Suivi', 'Deuxième avis', 'Passer']],
-      insurance: ['Avez-vous une assurance santé ? Écrivez le nom de votre assurance ou choisissez une option.', ['Sans assurance / je paie moi-même', 'Medicare', 'Medicaid', 'Passer']],
+      insurance: ['Allez-vous payer comptant, ou avez-vous une assurance ? Si oui, écrivez le nom de votre assurance ou choisissez-la.', ['Je paie comptant / sans assurance', 'Medicare', 'Medicaid', 'Aetna', 'Cigna', 'UnitedHealthcare', 'Blue Cross Blue Shield', 'Delta Dental', 'Passer']],
       mode: ['Préférez-vous une consultation au cabinet ou une téléconsultation ?', ['Au cabinet', 'Téléconsultation', 'Peu importe']],
       lang: ['Dans quelle langue aimeriez-vous que votre {w} vous parle ?', ['Anglais', 'Espagnol', 'Créole haïtien', 'Français', 'Peu importe']],
       hours: ['Avez-vous besoin de rendez-vous en soirée ou le week-end ?', ['Oui, s’il vous plaît', 'Non, en semaine, ça me va']],
@@ -2054,7 +2122,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     },
     es: {
       visit: ['¿Es un problema nuevo, un tratamiento que ya está siguiendo o quiere una segunda opinión?', ['Problema nuevo', 'Tratamiento continuo', 'Segunda opinión', 'Omitir']],
-      insurance: ['¿Tiene seguro médico? Escriba el nombre de su plan o elija una opción.', ['Sin seguro / pago yo', 'Medicare', 'Medicaid', 'Omitir']],
+      insurance: ['¿Va a pagar en efectivo o tiene seguro médico? Si tiene seguro, escriba el nombre de su plan o elíjalo.', ['Pago en efectivo / sin seguro', 'Medicare', 'Medicaid', 'Aetna', 'Cigna', 'UnitedHealthcare', 'Blue Cross Blue Shield', 'Delta Dental', 'Omitir']],
       mode: ['¿Prefiere una consulta en persona o por video (telemedicina)?', ['En persona', 'Por video', 'Cualquiera']],
       lang: ['¿En qué idioma le gustaría que le hable su {w}?', ['Inglés', 'Español', 'Criollo haitiano', 'Francés', 'Cualquier idioma']],
       hours: ['¿Necesita citas en la noche o los fines de semana?', ['Sí, por favor', 'No, entre semana está bien']],
@@ -2069,7 +2137,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     },
     pt: {
       visit: ['É um problema novo, um acompanhamento ou você quer uma segunda opinião?', ['Problema novo', 'Acompanhamento', 'Segunda opinião', 'Pular']],
-      insurance: ['Você tem plano de saúde? Digite o nome do plano ou escolha uma opção.', ['Particular / sem plano', 'Medicare', 'Medicaid', 'Pular']],
+      insurance: ['Você vai pagar particular ou tem plano de saúde? Se tiver plano, digite o nome ou escolha.', ['Particular (pago à vista) / sem plano', 'Medicare', 'Medicaid', 'Aetna', 'Cigna', 'UnitedHealthcare', 'Blue Cross Blue Shield', 'Delta Dental', 'Pular']],
       mode: ['Você prefere consulta presencial ou por vídeo (telemedicina)?', ['Presencial', 'Por vídeo', 'Tanto faz']],
       lang: ['Em qual idioma você gostaria que o seu {w} falasse?', ['Inglês', 'Espanhol', 'Crioulo haitiano', 'Francês', 'Qualquer idioma']],
       hours: ['Você precisa de horário à noite ou no fim de semana?', ['Sim, por favor', 'Não, durante a semana está bom']],
@@ -2084,7 +2152,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     },
     ht: {
       visit: ['Èske se yon nouvo pwoblèm, yon swivi, oswa ou vle yon dezyèm opinyon?', ['Nouvo pwoblèm', 'Swivi', 'Dezyèm opinyon', 'Pase']],
-      insurance: ['Èske w gen asirans sante? Ekri non asirans ou, oswa chwazi youn anba a.', ['M peye pou kont mwen / m pa gen asirans', 'Medicare', 'Medicaid', 'Pase']],
+      insurance: ['Èske w ap peye kach, oswa w gen asirans? Si w gen asirans, ekri non l oswa chwazi l.', ['M peye kach / m pa gen asirans', 'Medicare', 'Medicaid', 'Aetna', 'Cigna', 'UnitedHealthcare', 'Blue Cross Blue Shield', 'Delta Dental', 'Pase']],
       mode: ['Èske w pito wè doktè a an pèsòn, oswa pa videyo?', ['An pèsòn', 'Pa videyo', 'Nenpòt']],
       lang: ['Ki lang ou ta renmen {w} a pale avè w?', ['Anglè', 'Panyòl', 'Kreyòl', 'Franse', 'Nenpòt lang']],
       hours: ['Èske w bezwen randevou nan aswè oswa nan wikenn?', ['Wi, tanpri', 'Non, nan semèn nan bon']],
@@ -2243,11 +2311,11 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         what: 'To join WebSwan Media Network, you must be a <b>doctor or attorney with an active license</b>. 🩺⚖️ Every practice goes through a short qualification review before it\'s listed, so the network stays first class.<br><br>Tania, our founder, will go over the full qualification criteria with you.<br><br>Want to know the pricing and how fast you can be listed?<br>📞 <b>Call Rachel, our Ad Specialist, at <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. She’ll walk you through every plan and fee and help you see if your practice qualifies.',
         included: 'WebSwan Media Network gives participating doctors and attorneys a <b>professional digital ecosystem</b>. It can include:<br>• Your WSMN provider profile<br>• Directory visibility<br>• A hosted WSMN profile link<br>• Your professional, business and service information<br>• Links to your existing website<br>• Links to your existing patient or client portal<br>• Review visibility, where applicable<br>• Searchability within the WSMN network<br>• WSMN-controlled infrastructure<br>• Ongoing technical maintenance',
         scope: 'WSMN takes care of the WSMN pages, applications, database and infrastructure we control. We are not responsible for maintaining, repairing or making compliant a separate website we did not build, like one on Wix, GoDaddy or another platform. Your own website and patient or client portal stay with you and your website vendor. If you’d like us to build you a new website, call or text <b>(415) 877-0687</b>.',
-        pricing: 'Great question! 😊 Memberships start at just <b>$49/month</b>, with <b>no contract</b>.<br><br>There are 2 plans: get <b>found</b> by people searching for your specialty, or get found <b>and receive every request by email</b> right at your office. And for every call answered day or night, you can add <b>Jennifer, your own 24/7 AI receptionist</b>. And if WebSwan built your website or SBPA, your setup fee may be waived.<br><br>The right plan depends on your practice and your goals, so let’s get you the full picture:<br>📞 <b>Call Rachel, our Ad Specialist, at <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. She’ll walk you through every plan and fee and help you see if your practice qualifies.',
+        pricing: 'Great question! 😊 Memberships start at just <b>$49/month</b>, with <b>no contract</b>.<br><br>There are 3 plans: get <b>found</b> by people searching for your specialty; get found <b>and receive every request by email</b> right at your office; or add an <b>online booking calendar</b> so patients and clients book their own appointment (<b>$89/month</b>). Want the bookings fully handled? Add <b>Eva</b>, your AI executive assistant. And for every call answered day or night, you can add <b>Jennifer, your own 24/7 AI receptionist</b>. And if WebSwan built your website or SBPA, your setup fee may be waived.<br><br>The right plan depends on your practice and your goals, so let’s get you the full picture:<br>📞 <b>Call Rachel, our Ad Specialist, at <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. She’ll walk you through every plan and fee and help you see if your practice qualifies.',
         wsmn: 'WSMN stands for <b>WebSwan Media Network</b>, our advertising platform.',
         about: 'WSMN stands for <b>WebSwan Media Network</b>, our advertising platform.',
         annual: 'The annual network fee keeps your <b>verified spot in the WSMN directory all year</b>: your hosted profile, your links and the infrastructure behind them.<br><br>For the amount and exactly how it’s billed:<br>📞 <b>Call Rachel, our Ad Specialist, at <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. She’ll walk you through every plan and fee and help you see if your practice qualifies.',
-        monthly: 'Plans start at <b>$49/month</b>: being found, or being found and receiving each request by email. You can also add Jennifer, your own 24/7 AI receptionist. Every plan includes monitoring and maintenance of your WSMN presence.<br><br>Which plan fits your practice best?<br>📞 <b>Call Rachel, our Ad Specialist, at <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. She’ll walk you through every plan and fee and help you see if your practice qualifies.',
+        monthly: 'Plans start at <b>$49/month</b>: being found, being found and receiving each request by email, or adding an online booking calendar for <b>$89/month</b>. You can also add Jennifer, your own 24/7 AI receptionist. Every plan includes monitoring and maintenance of your WSMN presence.<br><br>Which plan fits your practice best?<br>📞 <b>Call Rachel, our Ad Specialist, at <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. She’ll walk you through every plan and fee and help you see if your practice qualifies.',
         cancel: 'There is <b>no contract</b>. 🙌<br><br>For the full terms on setup, renewal and cancellation, Rachel will go over everything with you on a quick call:<br>📞 <b>Call Rachel, our Ad Specialist, at <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. She’ll walk you through every plan and fee and help you see if your practice qualifies.',
         tania: 'Of course! You can schedule a <b>10-minute appointment with Tania</b> to talk about joining WebSwan Media Network. Call <b>(316) 248-6839</b> to set it up. That number is for phone calls only.',
         listed: 'To join WebSwan Media Network, you must be a <b>doctor or attorney with an active license</b>. 🩺⚖️ Every practice goes through a short qualification review before it\'s listed, so the network stays first class.<br><br>Tania, our founder, will go over the full qualification criteria with you.<br><br>Want to know the pricing and how fast you can be listed?<br>📞 <b>Call Rachel, our Ad Specialist, at <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. She’ll walk you through every plan and fee and help you see if your practice qualifies.',
@@ -2268,7 +2336,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         what: 'Pour rejoindre WebSwan Media Network, vous devez être <b>médecin ou avocat avec une licence active</b>. 🩺⚖️ Chaque cabinet passe par une courte vérification avant d’être publié, pour que le réseau reste de premier ordre.<br><br>Tania, notre fondatrice, vous expliquera tous les critères de qualification.<br><br>Vous voulez connaître les tarifs et les délais d’inscription ?<br>📞 <b>Appelez Rachel, notre spécialiste en publicité, au <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Elle vous présentera chaque formule et chaque frais, et vérifiera si votre cabinet est admissible.',
         included: 'WebSwan Media Network offre aux médecins et avocats participants un <b>écosystème numérique professionnel</b>. Il peut comprendre :<br>• Votre profil de professionnel WSMN<br>• Une visibilité dans l’annuaire<br>• Un lien de profil hébergé par WSMN<br>• Vos informations professionnelles, commerciales et sur vos services<br>• Des liens vers votre site web actuel<br>• Des liens vers votre portail patients ou clients actuel<br>• La visibilité de vos avis, le cas échéant<br>• La possibilité d’être trouvé dans le réseau WSMN<br>• Une infrastructure contrôlée par WSMN<br>• Une maintenance technique continue',
         scope: 'WSMN s’occupe des pages, applications, bases de données et de l’infrastructure que WSMN contrôle. Nous ne sommes pas responsables de l’entretien, de la réparation ou de la mise en conformité d’un site que nous n’avons pas créé, par exemple sur Wix, GoDaddy ou une autre plateforme. Votre propre site et votre portail patients ou clients restent sous votre responsabilité et celle de votre fournisseur. Si vous souhaitez que nous créions un nouveau site, appelez ou envoyez un SMS au <b>(415) 877-0687</b>.',
-        pricing: 'Excellente question ! 😊 Les abonnements commencent à seulement <b>49 $/mois</b>, <b>sans contrat</b>.<br><br>Il y a 2 formules : être <b>trouvé</b> par les personnes qui cherchent votre spécialité, ou être trouvé <b>et recevoir chaque demande par email</b> à votre cabinet. Et pour que chaque appel soit répondu jour et nuit, vous pouvez ajouter <b>Jennifer, votre réceptionniste IA 24/7</b>. Et si WebSwan a créé votre site ou votre SBPA, les frais de mise en place peuvent être offerts.<br><br>La bonne formule dépend de votre cabinet et de vos objectifs. Pour tous les détails :<br>📞 <b>Appelez Rachel, notre spécialiste en publicité, au <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Elle vous présentera chaque formule et chaque frais, et vérifiera si votre cabinet est admissible.',
+        pricing: 'Excellente question ! 😊 Les abonnements commencent à seulement <b>49 $/mois</b>, <b>sans contrat</b>.<br><br>Il y a 3 formules : être <b>trouvé</b> par les personnes qui cherchent votre spécialité, être trouvé <b>et recevoir chaque demande par email</b> à votre cabinet, ou ajouter un <b>calendrier de réservation en ligne</b> (<b>89 $/mois</b>). Et pour que chaque appel soit répondu jour et nuit, vous pouvez ajouter <b>Jennifer, votre réceptionniste IA 24/7</b>. Et si WebSwan a créé votre site ou votre SBPA, les frais de mise en place peuvent être offerts.<br><br>La bonne formule dépend de votre cabinet et de vos objectifs. Pour tous les détails :<br>📞 <b>Appelez Rachel, notre spécialiste en publicité, au <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Elle vous présentera chaque formule et chaque frais, et vérifiera si votre cabinet est admissible.',
         wsmn: 'WSMN signifie <b>WebSwan Media Network</b>, notre plateforme publicitaire.',
         about: 'WSMN signifie <b>WebSwan Media Network</b>, notre plateforme publicitaire.',
         annual: 'Les frais annuels de réseau gardent votre <b>place vérifiée dans l’annuaire WSMN toute l’année</b> : votre profil hébergé, vos liens et l’infrastructure qui les soutient.<br><br>Pour le montant et la facturation :<br>📞 <b>Appelez Rachel, notre spécialiste en publicité, au <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Elle vous présentera chaque formule et chaque frais, et vérifiera si votre cabinet est admissible.',
@@ -2293,7 +2361,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         what: 'Para unirse a WebSwan Media Network, debe ser <b>médico o abogado con licencia activa</b>. 🩺⚖️ Cada consulta pasa por una breve revisión antes de publicarse, para que la red sea de primera clase.<br><br>Tania, nuestra fundadora, le explicará todos los criterios de calificación.<br><br>¿Quiere saber los precios y qué tan rápido puede aparecer?<br>📞 <b>Llame a Rachel, nuestra especialista en publicidad, al <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Le explicará cada plan y cada cargo, y verá si su consulta califica.',
         included: 'WebSwan Media Network les ofrece a los médicos y abogados participantes un <b>ecosistema digital profesional</b>. Puede incluir:<br>• Su perfil de proveedor en WSMN<br>• Visibilidad en el directorio<br>• Un enlace a su perfil alojado en WSMN<br>• Su información profesional, del negocio y de sus servicios<br>• Enlaces a su sitio web actual<br>• Enlaces a su portal actual de pacientes o clientes<br>• Visibilidad de sus reseñas, cuando aplique<br>• Poder ser encontrado dentro de la red WSMN<br>• Infraestructura controlada por WSMN<br>• Mantenimiento técnico continuo',
         scope: 'WSMN se encarga de las páginas, aplicaciones, base de datos e infraestructura que WSMN controla. No somos responsables de mantener, reparar ni poner en cumplimiento un sitio web que no hicimos nosotros, como uno en Wix, GoDaddy u otra plataforma. Su propio sitio web y su portal de pacientes o clientes siguen siendo responsabilidad suya y de su proveedor. Si quiere que le hagamos un sitio web nuevo, llame o envíe un mensaje de texto al <b>(415) 877-0687</b>.',
-        pricing: '¡Excelente pregunta! 😊 Las membresías empiezan en solo <b>$49 al mes</b>, <b>sin contrato</b>.<br><br>Hay 2 planes: que lo <b>encuentren</b> las personas que buscan su especialidad, o que lo encuentren <b>y recibir cada solicitud por email</b> en su oficina. Y para que cada llamada sea atendida día y noche, puede agregar a <b>Jennifer, su recepcionista con IA 24/7</b>. Y si WebSwan creó su sitio web o su SBPA, el cargo de configuración puede no aplicarse.<br><br>El plan correcto depende de su consulta y sus metas. Para todos los detalles:<br>📞 <b>Llame a Rachel, nuestra especialista en publicidad, al <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Le explicará cada plan y cada cargo, y verá si su consulta califica.',
+        pricing: '¡Excelente pregunta! 😊 Las membresías empiezan en solo <b>$49 al mes</b>, <b>sin contrato</b>.<br><br>Hay 3 planes: que lo <b>encuentren</b> las personas que buscan su especialidad, que lo encuentren <b>y recibir cada solicitud por email</b> en su oficina, o agregar un <b>calendario de citas en línea</b> (<b>$89 al mes</b>). Y para que cada llamada sea atendida día y noche, puede agregar a <b>Jennifer, su recepcionista con IA 24/7</b>. Y si WebSwan creó su sitio web o su SBPA, el cargo de configuración puede no aplicarse.<br><br>El plan correcto depende de su consulta y sus metas. Para todos los detalles:<br>📞 <b>Llame a Rachel, nuestra especialista en publicidad, al <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Le explicará cada plan y cada cargo, y verá si su consulta califica.',
         wsmn: 'WSMN significa <b>WebSwan Media Network</b>, nuestra plataforma de publicidad.',
         about: 'WSMN significa <b>WebSwan Media Network</b>, nuestra plataforma de publicidad.',
         annual: 'La cuota anual de red mantiene su <b>lugar verificado en el directorio WSMN todo el año</b>: su perfil alojado, sus enlaces y la infraestructura que los respalda.<br><br>Para el monto y cómo se cobra:<br>📞 <b>Llame a Rachel, nuestra especialista en publicidad, al <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Le explicará cada plan y cada cargo, y verá si su consulta califica.',
@@ -2318,7 +2386,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         what: 'Para entrar na WebSwan Media Network, você precisa ser <b>médico ou advogado com licença ativa</b>. 🩺⚖️ Todo consultório passa por uma breve verificação antes de ser publicado, para a rede continuar de primeira.<br><br>A Tania, nossa fundadora, vai explicar todos os critérios de qualificação.<br><br>Quer saber os preços e em quanto tempo você pode aparecer?<br>📞 <b>Ligue para a Rachel, nossa especialista em publicidade, no <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Ela explica cada plano e cada taxa e vê se o seu consultório se qualifica.',
         included: 'A WebSwan Media Network oferece aos médicos e advogados participantes um <b>ecossistema digital profissional</b>. Ele pode incluir:<br>• O seu perfil de profissional na WSMN<br>• Visibilidade no diretório<br>• Um link do seu perfil hospedado na WSMN<br>• As suas informações profissionais, do negócio e dos seus serviços<br>• Links para o seu site atual<br>• Links para o seu portal de pacientes ou clientes atual<br>• Visibilidade das suas avaliações, quando for o caso<br>• Ser encontrado dentro da rede WSMN<br>• Infraestrutura controlada pela WSMN<br>• Manutenção técnica contínua',
         scope: 'A WSMN cuida das páginas, aplicativos, banco de dados e infraestrutura que a WSMN controla. Não somos responsáveis por manter, consertar ou deixar em conformidade um site que não fomos nós que fizemos, como um site no Wix, GoDaddy ou outra plataforma. O seu próprio site e o seu portal de pacientes ou clientes continuam sob a sua responsabilidade e do seu fornecedor. Se quiser que a gente faça um site novo pra você, ligue ou mande mensagem para <b>(415) 877-0687</b>.',
-        pricing: 'Ótima pergunta! 😊 As assinaturas começam em apenas <b>$49 por mês</b>, <b>sem contrato</b>.<br><br>São 2 planos: ser <b>encontrado</b> por quem procura a sua especialidade, ou ser encontrado <b>e receber cada pedido por email</b> no seu consultório. E para que toda ligação seja atendida dia e noite, você pode adicionar a <b>Jennifer, sua recepcionista com IA 24/7</b>. E se a WebSwan fez o seu site ou o seu SBPA, a taxa de configuração pode ser dispensada.<br><br>O plano certo depende do seu consultório e dos seus objetivos. Para todos os detalhes:<br>📞 <b>Ligue para a Rachel, nossa especialista em publicidade, no <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Ela explica cada plano e cada taxa e vê se o seu consultório se qualifica.',
+        pricing: 'Ótima pergunta! 😊 As assinaturas começam em apenas <b>$49 por mês</b>, <b>sem contrato</b>.<br><br>São 3 planos: ser <b>encontrado</b> por quem procura a sua especialidade, ser encontrado <b>e receber cada pedido por email</b> no seu consultório, ou adicionar uma <b>agenda de marcação online</b> (<b>$89 por mês</b>). E para que toda ligação seja atendida dia e noite, você pode adicionar a <b>Jennifer, sua recepcionista com IA 24/7</b>. E se a WebSwan fez o seu site ou o seu SBPA, a taxa de configuração pode ser dispensada.<br><br>O plano certo depende do seu consultório e dos seus objetivos. Para todos os detalhes:<br>📞 <b>Ligue para a Rachel, nossa especialista em publicidade, no <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Ela explica cada plano e cada taxa e vê se o seu consultório se qualifica.',
         wsmn: 'WSMN significa <b>WebSwan Media Network</b>, a nossa plataforma de anúncios.',
         about: 'WSMN significa <b>WebSwan Media Network</b>, a nossa plataforma de anúncios.',
         annual: 'A taxa anual de rede garante o seu <b>lugar verificado no diretório WSMN o ano todo</b>: o seu perfil hospedado, os seus links e a infraestrutura por trás deles.<br><br>Para o valor e como é cobrada:<br>📞 <b>Ligue para a Rachel, nossa especialista em publicidade, no <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. Ela explica cada plano e cada taxa e vê se o seu consultório se qualifica.',
@@ -2343,7 +2411,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         what: 'Pou antre nan WebSwan Media Network, ou dwe yon <b>doktè oswa avoka ki gen yon lisans aktif</b>. 🩺⚖️ Chak biwo pase yon ti verifikasyon anvan yo mete l sou lis la, pou rezo a rete premye klas.<br><br>Tania, fondatris nou an, ap esplike w tout kritè kalifikasyon yo.<br><br>Ou vle konnen pri yo ak konbyen tan sa pran pou w parèt?<br>📞 <b>Rele Rachel, espesyalis piblisite nou an, nan <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. L ap esplike w chak plan ak chak frè, epi l ap gade si biwo w kalifye.',
         included: 'WebSwan Media Network bay doktè ak avoka ki patisipe yo yon <b>ekosistèm dijital pwofesyonèl</b>. Li ka gen ladan l:<br>• Pwofil pwofesyonèl ou sou WSMN<br>• Vizibilite nan anyè a<br>• Yon lyen pwofil WSMN<br>• Enfòmasyon pwofesyonèl ou, biznis ou ak sèvis ou<br>• Lyen sou sit entènèt ou deja genyen an<br>• Lyen sou pòtay pasyan oswa kliyan ou deja genyen an<br>• Avi moun bay sou ou, lè sa aplike<br>• Moun ka jwenn ou lè yo chèche nan rezo WSMN nan<br>• Enfrastrikti WSMN kontwole<br>• Antretyen teknik tout tan',
         scope: 'WSMN okipe paj, aplikasyon, baz done ak enfrastrikti WSMN kontwole yo. Nou pa responsab pou n kenbe, repare oswa mete an règ yon sit entènèt nou pa t fè, tankou yon sit sou Wix, GoDaddy oswa yon lòt platfòm. Pwòp sit ou ak pòtay pasyan oswa kliyan ou rete responsablite pa w ak konpayi ki bay sèvis sit la. Si w ta renmen nou fè yon nouvo sit pou ou, rele oswa voye tèks bay <b>(415) 877-0687</b>.',
-        pricing: 'Bon kesyon! 😊 Manm yo kòmanse a sèlman <b>$49 pa mwa</b>, <b>san kontra</b>.<br><br>Gen 2 plan: moun k ap chèche espesyalite w ka <b>jwenn</b> ou, oswa yo jwenn ou <b>epi ou resevwa chak demann pa imel</b> nan biwo w. Epi pou chak apèl jwenn repons lajounen kou lannwit, ou ka ajoute <b>Jennifer, resepsyonis IA 24/7 pa w</b>. Epi si WebSwan te fè sit entènèt ou oswa SBPA w, yo ka retire frè konfigirasyon an.<br><br>Bon plan an depann de biwo w ak objektif ou. Pou tout detay yo:<br>📞 <b>Rele Rachel, espesyalis piblisite nou an, nan <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. L ap esplike w chak plan ak chak frè, epi l ap gade si biwo w kalifye.',
+        pricing: 'Bon kesyon! 😊 Manm yo kòmanse a sèlman <b>$49 pa mwa</b>, <b>san kontra</b>.<br><br>Gen 3 plan: moun k ap chèche espesyalite w ka <b>jwenn</b> ou; yo jwenn ou <b>epi ou resevwa chak demann pa imel</b> nan biwo w; oswa ou ajoute yon <b>kalandriye randevou sou entènèt</b> (<b>$89 pa mwa</b>). Epi pou chak apèl jwenn repons lajounen kou lannwit, ou ka ajoute <b>Jennifer, resepsyonis IA 24/7 pa w</b>. Epi si WebSwan te fè sit entènèt ou oswa SBPA w, yo ka retire frè konfigirasyon an.<br><br>Bon plan an depann de biwo w ak objektif ou. Pou tout detay yo:<br>📞 <b>Rele Rachel, espesyalis piblisite nou an, nan <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. L ap esplike w chak plan ak chak frè, epi l ap gade si biwo w kalifye.',
         wsmn: 'WSMN vle di <b>WebSwan Media Network</b>, platfòm piblisite nou an.',
         about: 'WSMN vle di <b>WebSwan Media Network</b>, platfòm piblisite nou an.',
         annual: 'Frè chak ane pou rezo a kenbe <b>plas verifye w nan anyè WSMN pandan tout ane a</b>: pwofil ou, lyen ou yo ak enfrastrikti ki soutni yo.<br><br>Pou montan an ak kijan yo fè w peye l:<br>📞 <b>Rele Rachel, espesyalis piblisite nou an, nan <a href="tel:+13162486839"><b>(316) 248-6839</b></a></b>. L ap esplike w chak plan ak chak frè, epi l ap gade si biwo w kalifye.',
@@ -2457,7 +2525,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   const QUESTIONS = {
     doctor: [
       { key: 'visit', q: 'Is this a new concern, ongoing care, or a second opinion?', opts: ['New concern', 'Ongoing care', 'Second opinion', 'Skip'] },
-      { key: 'insurance', q: 'Do you have health insurance? Type the name of your plan, or tap an option.', opts: ['Self-pay / no insurance', 'Medicare', 'Medicaid', 'Skip'], free: true },
+      { key: 'insurance', q: 'Will you be paying cash (self-pay), or do you have insurance? If you have insurance, type your plan or tap it.', opts: ['Paying cash / self-pay', 'Medicare', 'Medicaid', 'Aetna', 'Cigna', 'UnitedHealthcare', 'Blue Cross Blue Shield', 'Delta Dental', 'Skip'], free: true },
       { key: 'mode', q: 'Would you prefer an in-person visit or telehealth?', opts: ['In person', 'Telehealth', 'Either is fine'] },
       { key: 'lang', q: 'What language would you like your doctor to speak?', opts: ['English', 'Spanish', 'Haitian Creole', 'French', 'Any language'], free: true },
       { key: 'hours', q: 'Do you need evening or weekend appointments?', opts: ['Yes, please', 'No, weekdays are fine'] },
@@ -2499,6 +2567,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   }
   // Only ask a question when the listed providers actually differ on it (keeps it short for the visitor)
   // Match-making: Rachel asks every question so she can count how many of the visitor's needs each provider meets
+  const isCash = v => /self|cash|efectivo|sin seguro|particular|sem plano|comptant|sans assurance|kach|peye pou kont|pa gen asirans/i.test(v || '');
+  const isSkipIns = v => /^(skip|omitir|pular|passer|pase)$/i.test(String(v || '').trim());
   function qRelevant(Q) {
     switch (Q.key) {
       case 'visit': return false;                      // the "tell me more" step already covers the reason for care
@@ -2627,7 +2697,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     const hits = [...new Set(kw.filter(w => hay.includes(' ' + w)))]; if (hits.length) { s += Math.min(hits.length * 6, 24); why.push('treats what you described'.replace('treats', p.type === 'attorney' ? 'handles' : 'treats')); }
     if (S.specialty && S.specialty !== '*' && (p.specialties || []).includes(S.specialty)) s += 20;
     const P = S.prefs;
-    if (P.insurance && !/self|skip/i.test(P.insurance)) { const ins = norm(P.insurance); if ((p.insuranceLower || []).some(i => i.includes(ins) || ins.includes(i))) { s += 18; why.push('accepts ' + P.insurance); } }
+    if (P.insurance && isCash(P.insurance)) { if (p.selfPay) { s += 18; why.push('welcomes self-pay patients'); } }
+    else if (P.insurance && !isSkipIns(P.insurance)) { const ins = norm(P.insurance); if ((p.insuranceLower || []).some(i => i.includes(ins) || ins.includes(i))) { s += 18; why.push('accepts ' + P.insurance); } }
     if (P.mode === 'Telehealth' && p.telehealth) { s += 12; why.push('offers telehealth'); }
     if (P.lang && !/any/i.test(P.lang) && !/^english$/i.test(P.lang)) { if (norm(p.languages).includes(norm(P.lang))) { s += 18; why.push('speaks ' + P.lang); } }
     if (/yes|evening|both/i.test(P.hours || '') && p.eveningWeekend) { s += 10; why.push('evening/weekend hours'); }
@@ -2654,7 +2725,8 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     const STOP = /^(pain|pains|help|need|needs|looking|have|having|doctor|doctors|attorney|lawyer|lawyers|someone|good|best|near|with|that|this|from|about|very|really|want|would|like|please|problem|problems|issue|issues|since|years|year|months|weeks|days|time|some|more|much|lots|also|been|after|before|they|their|there|what|when|where|which|your|mine|myself|family|need|just|still)$/;
     const kw = norm(S.need).split(' ').filter(w => w.length > 3 && !STOP.test(w));
     if (kw.length) { const hay = ' ' + norm([(p.conditions || ''), (p.bio || ''), (p.specialties || []).join(' ')].join(' ')) + ' '; add('need', kw.some(w => hay.includes(' ' + w)), att ? 'handles what you described' : 'treats what you described'); }
-    if (!att && P.insurance && !/self|skip/i.test(P.insurance)) { const ins = norm(P.insurance); add('insurance', (p.insuranceLower || []).some(i => i.includes(ins) || ins.includes(i)), 'accepts ' + P.insurance); }
+    if (!att && P.insurance && isCash(P.insurance)) add('insurance', !!p.selfPay, 'welcomes self-pay patients');
+    else if (!att && P.insurance && !isSkipIns(P.insurance)) { const ins = norm(P.insurance); add('insurance', (p.insuranceLower || []).some(i => i.includes(ins) || ins.includes(i)), 'accepts ' + P.insurance); }
     const wantTele = P.mode === 'Telehealth' || P.top === 'Telehealth visits';
     if (!att && wantTele) add('mode', p.telehealth, 'offers telehealth');
     if (P.lang && !/any/i.test(P.lang) && !/^english$/i.test(P.lang)) add('lang', norm(p.languages).includes(norm(P.lang)), 'speaks ' + P.lang);
@@ -2722,7 +2794,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
         sentence = [focus.length ? PL[0] + focus.map(esc).join(', ') : '', p.yearsLicensed ? PL[1].replace('{n}', esc(p.yearsLicensed)) : '', place ? PL[2] + place : ''].filter(Boolean).join('. ') + (focus.length || p.yearsLicensed || place ? '.' : '');
       }
       const tel = String(p.phone || '').replace(/[^\d+]/g, '');
-      say(`<div class="rw-pick"><b>${i + 1}. ${nm}</b>${p.practice ? ` <span class="rw-sub">· ${esc(p.practice)}</span>` : ''}<br>${t('thisIs')(nm, spec)} ${sentence}${matchLines(p, topLabel)}${tel ? `<br>📞 ${t('phone')}: <a href="tel:${esc(tel)}">${esc(p.phone)}</a>` : ''}<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">${t('view')(p.type === 'attorney')}</button>${p.plan === 'leads' ? `<br><button type="button" class="rw-link" data-central="${esc(p.id)}" data-kind="lead">✉️ Ask the office to contact me</button>` : ''}</div>`);
+      say(`<div class="rw-pick"><b>${i + 1}. ${nm}</b>${p.practice ? ` <span class="rw-sub">· ${esc(p.practice)}</span>` : ''}<br>${t('thisIs')(nm, spec)} ${sentence}${matchLines(p, topLabel)}${tel ? `<br>📞 ${t('phone')}: <a href="tel:${esc(tel)}">${esc(p.phone)}</a>` : ''}<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">${t('view')(p.type === 'attorney')}</button>${p.plan === 'calendar' && /^https:\/\//i.test(p.bookingUrl || '') ? `<br><a class="rw-link" href="${esc(p.bookingUrl)}" target="_blank" rel="noopener">📅 Book online now</a>` : ''}${p.plan === 'leads' || p.plan === 'calendar' ? `<br><button type="button" class="rw-link" data-central="${esc(p.id)}" data-kind="lead">✉️ Ask the office to contact me</button>` : ''}</div>`);
     });
     say(`<div class="rw-pick"><b>${t('yourMatches')}</b>${ranked.map((p, i) => `<br><button type="button" class="rw-link" data-pro="${esc(p.id)}">${i + 1}. ${esc(p.name)}${p.n ? ' · ' + t('matchOf')(p.m, p.n) : ''}</button>`).join('')}</div>`);
     say(t('closing')(S.type === 'attorney'));
@@ -2769,6 +2841,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       <input name="ph" required inputmode="tel" maxlength="20" placeholder="Best phone number" aria-label="Best phone number" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">
       <input name="em" type="email" maxlength="120" placeholder="Email (optional)" aria-label="Email" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">
       <input name="bt" maxlength="80" placeholder="Best time to reach you (optional)" aria-label="Best time to reach you" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px">
+      ${S.type === 'attorney' ? '' : `<input name="pay" maxlength="40" list="rw-pay-list" placeholder="Paying cash, or which insurance?" aria-label="Paying cash, or which insurance?" value="${esc((() => { const v = (S.prefs || {}).insurance || ''; return !v || isSkipIns(v) ? '' : (isCash(v) ? 'Cash / self-pay' : v); })())}" style="padding:8px;border:1px solid #cfe3ef;border-radius:8px"><datalist id="rw-pay-list"><option>Cash / self-pay</option><option>Medicare</option><option>Medicaid</option><option>Aetna</option><option>Cigna</option><option>UnitedHealthcare</option><option>Blue Cross Blue Shield</option><option>Delta Dental</option></datalist>`}
       <label style="font-size:12px;line-height:1.4;display:flex;gap:6px;align-items:flex-start"><input type="checkbox" name="ok" required style="margin-top:2px">
       <span>${'I agree to share my name and contact details with this office so they can contact me.'}</span></label>
       <button type="submit" class="rw-link" style="justify-self:start">Send to the office</button><span class="rw-sub" role="status" aria-live="polite"></span>`;
@@ -2777,7 +2850,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       ev.preventDefault(); const st = f.querySelector('[role=status]'), btn = f.querySelector('button');
       btn.disabled = true; st.textContent = 'Sending…';
       try {
-        const r = await fetch(CENTRAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind, providerId: pid, providerCode: prov.code || '', name: f.n.value, phone: f.ph.value, email: f.em ? f.em.value : '', bestTime: f.bt.value, consent: f.ok.checked, state: S.state || '', city: S.city || '' }) });
+        const r = await fetch(CENTRAL_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind, providerId: pid, providerCode: prov.code || '', name: f.n.value, phone: f.ph.value, email: f.em ? f.em.value : '', bestTime: [f.bt.value.trim(), f.pay && f.pay.value.trim() ? 'Paying: ' + f.pay.value.trim() : ''].filter(Boolean).join(' · ').slice(0, 80), payment: f.pay ? f.pay.value.trim().slice(0, 40) : '', consent: f.ok.checked, state: S.state || '', city: S.city || '' }) });
         const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.error || 'Something went wrong.');
         f.innerHTML = '<span class="rw-why">✓ ' + (d.message || 'Sent!') + '</span>';
       } catch (err) { st.textContent = err.message; btn.disabled = false; }
@@ -2957,7 +3030,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     F.forEach(k => { const [el, key] = k.includes(':') ? k.split(':') : [k, k]; $('adm-' + el).value = p[key] || ''; });
     $('adm-state').value = p.state || '';
     $('adm-active').checked = !!p.active; $('adm-featured').checked = !!p.featured; $('adm-accepting').checked = p.accepting !== false;
-    $('adm-tele').checked = !!p.telehealth; $('adm-free').checked = !!p.freeConsult; $('adm-eve').checked = !!p.eveningWeekend;
+    $('adm-tele').checked = !!p.telehealth; $('adm-free').checked = !!p.freeConsult; $('adm-eve').checked = !!p.eveningWeekend; $('adm-cash').checked = !!p.selfPay;
     document.querySelectorAll('.adm-fee').forEach(c => { c.checked = (p.feeTypes || []).includes(c.value); });
     gallery = (p.gallery || []).filter(g => /^data:image\//.test(g) || /^https:\/\//.test(g)).slice(0, 3); drawGal();
     $('adm-form-title').textContent = 'Edit listing: ' + (p.name || ''); $('adm-save').textContent = 'Save changes';
@@ -2977,7 +3050,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     F.forEach(k => { const [el, key] = k.includes(':') ? k.split(':') : [k, k]; data[key] = $('adm-' + el).value.trim(); });
     data.type = $('adm-type').value; data.state = $('adm-state').value; data.specialties = chips.slice();
     data.active = $('adm-active').checked; data.featured = $('adm-featured').checked; data.accepting = $('adm-accepting').checked;
-    data.telehealth = $('adm-tele').checked; data.freeConsult = $('adm-free').checked; data.eveningWeekend = $('adm-eve').checked;
+    data.telehealth = $('adm-tele').checked; data.freeConsult = $('adm-free').checked; data.eveningWeekend = $('adm-eve').checked; data.selfPay = $('adm-cash').checked;
     data.feeTypes = [...document.querySelectorAll('.adm-fee:checked')].map(c => c.value);
     data.insuranceLower = data.insurance.split(',').map(norm).filter(Boolean).slice(0, 40);
     data.zip = (data.zip.match(/\d{5}/) || [data.zip])[0];
