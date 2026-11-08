@@ -873,12 +873,13 @@
     #rw-input{flex:1;height:42px;border:1.5px solid #cfe2ea;border-radius:999px;padding:0 14px;font:inherit;font-size:14px}
     #rw-form button{border:none;background:#1b70c2;color:#fff;border-radius:999px;padding:0 16px;font-weight:800;cursor:pointer}
     .rw-foot{font-size:10.5px;color:#5c7180;text-align:center;padding:0 12px 8px;background:#fff}
+    .pro-back{position:sticky;bottom:0;margin:18px -4px -4px;padding:12px 4px;background:linear-gradient(180deg,rgba(255,255,255,0),#fff 35%);display:flex;justify-content:center}.pro-back button{background:#082a48;color:#fff;border:0;border-radius:999px;padding:12px 22px;font:700 15px system-ui,sans-serif;cursor:pointer;box-shadow:0 6px 18px rgba(8,42,72,.3)}
     #pro-modal{position:fixed;inset:0;z-index:99999;background:rgba(6,39,67,.6);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
     #pro-modal[hidden]{display:none}
     .pro-card{position:relative;background:#fff;border-radius:24px;max-width:760px;width:100%;padding:30px;box-shadow:0 40px 90px rgba(0,0,0,.35)}
     .pro-card h2{color:var(--navy);margin:4px 0 2px;font-size:clamp(24px,3vw,32px);letter-spacing:-.03em}
     .pro-card h3{color:var(--navy);font-size:16px;margin:20px 0 8px}
-    #pro-close{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:1.5px solid #cfe2ea;background:#f7fbfd;font-size:22px;cursor:pointer;color:var(--navy)}
+    #pro-close{position:fixed;top:16px;right:16px;z-index:100001;box-shadow:0 4px 14px rgba(8,42,72,.25);width:40px;height:40px;border-radius:50%;border:1.5px solid #cfe2ea;background:#f7fbfd;font-size:22px;cursor:pointer;color:var(--navy)}
     .pro-head{display:flex;gap:18px;align-items:center;padding-right:40px}
     .dir-avatar.pro-big{width:96px;height:96px;font-size:32px}
     .pro-bio{font-size:15.5px;color:#3d5566;margin-top:18px}
@@ -1757,8 +1758,10 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
   }
   const proModal = $('pro-modal'), proBody = $('pro-body');
   let proReturnFocus = null;
+  let proFromRachel = false;
   async function openProfile(id) {
     proReturnFocus = document.activeElement;
+    const rl = document.getElementById('rw-log'); proFromRachel = !!(rl && proReturnFocus && rl.contains(proReturnFocus));
     proBody.innerHTML = '<p class="dir-status">Loading profile…</p>';
     proModal.hidden = false; document.body.style.overflow = 'hidden';
     $('pro-close').focus();
@@ -1768,7 +1771,7 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
       const p = d.exists ? d.data() : null;
       const today = new Date().toISOString().slice(0, 10);
       if (!p || !p.active || (p.expires && p.expires < today) || !showable(p)) throw new Error('gone');
-      p._id = id; proBody.innerHTML = profileHTML(p); loadProReviews(id, p.name);
+      p._id = id; proBody.innerHTML = profileHTML(p) + (proFromRachel ? '<div class="pro-back"><button type="button" data-pro-back>← Back to Rachel and the other doctors</button></div>' : ''); loadProReviews(id, p.name);
       const cp = proBody.querySelector('.pro-copy');
       if (cp) cp.addEventListener('click', () => {
         const link = cp.dataset.link, done = () => { cp.textContent = '✓ Link copied'; setTimeout(() => { cp.textContent = '🔗 Copy WSMN profile link'; }, 2000); };
@@ -1783,8 +1786,11 @@ html.ada-dyslexic body,html.ada-dyslexic *{font-family:Comic Sans MS,Comic Sans,
     proModal.hidden = true; document.body.style.overflow = '';
     document.title = 'Find Doctors & Attorneys Near You | WebSwan Media Network';
     try { const u = new URL(location.href); u.searchParams.delete('pro'); history.replaceState(null, '', u); } catch (e) {}
+    // Back from a profile opened in Rachel's chat: the chat stays open with the whole conversation, so they can open the next doctor
+    if (proFromRachel) { const rp = document.getElementById('rw-panel'); if (rp && rp.hidden) { const lb = document.getElementById('rw-launch'); if (lb) lb.click(); } }
     if (proReturnFocus && proReturnFocus.focus) proReturnFocus.focus();
   }
+  document.addEventListener('click', e => { if (e.target.closest('[data-pro-back]')) closeProfile(); });
   $('pro-close').addEventListener('click', closeProfile);
   proModal.addEventListener('click', e => { if (e.target === proModal) closeProfile(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !proModal.hidden) closeProfile(); });
